@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — TAJ LEATHERS</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>body{font-family:'Inter',sans-serif;background:#0c0c0c}.font-serif{font-family:'Playfair Display',serif}
+.field{width:100%;background:#141414;border:1px solid rgba(255,255,255,.12);border-radius:.9rem;padding:.85rem 1.1rem;color:#fff;font-size:.95rem}
+.field:focus{outline:none;border-color:#b07d4f}.field.err{border-color:#ef4444}
+label.lbl{display:block;font-size:.8rem;color:#9ca3af;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em}</style>
+</head>
+<body class="text-gray-200">
+<div id="site-header"></div>
+
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-14">
+  <h1 class="font-serif text-3xl sm:text-4xl text-white mb-8">Checkout</h1>
+
+  <div id="checkout-main" class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+    <!-- form -->
+    <form id="order-form" class="lg:col-span-3 bg-[#141414] border border-white/10 rounded-2xl p-6 sm:p-8" novalidate>
+      <h2 class="text-white font-semibold text-lg mb-6">Delivery Details</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div><label class="lbl">Full Name *</label><input id="f-name" class="field" placeholder="e.g. Ahmed Raza"></div>
+        <div><label class="lbl">Phone *</label><input id="f-phone" class="field" inputmode="tel" placeholder="03XX XXXXXXX"></div>
+        <div class="sm:col-span-2"><label class="lbl">Complete Address *</label><textarea id="f-addr" class="field" rows="2" placeholder="House, street, area"></textarea></div>
+        <div><label class="lbl">City *</label><input id="f-city" class="field" placeholder="e.g. Lahore"></div>
+        <div><label class="lbl">Order Notes (optional)</label><input id="f-notes" class="field" placeholder="Any special instructions"></div>
+      </div>
+      <h2 class="text-white font-semibold text-lg mt-8 mb-4">Payment Method</h2>
+      <div class="border border-[#b07d4f]/60 bg-[#b07d4f]/10 rounded-2xl p-5 flex items-center gap-4">
+        <span class="w-6 h-6 rounded-full bg-[#b07d4f] flex items-center justify-center text-black text-sm font-bold">✓</span>
+        <div><p class="text-white font-semibold">Cash on Delivery</p><p class="text-sm text-gray-400">Pay in cash when your order arrives.</p></div>
+      </div>
+      <p id="form-err" class="hidden text-red-400 text-sm mt-5">Please fill all required fields correctly.</p>
+      <button type="submit" class="w-full mt-6 bg-[#b07d4f] text-black font-bold py-4 rounded-full hover:bg-[#c9925f] transition text-lg">Place Order</button>
+    </form>
+
+    <!-- summary -->
+    <div class="lg:col-span-2">
+      <div class="bg-[#141414] border border-white/10 rounded-2xl p-6 sm:p-7 sticky top-24">
+        <h2 class="text-white font-semibold text-lg mb-5">Order Summary</h2>
+        <div id="sum-items" class="space-y-4 mb-6 max-h-64 overflow-auto"></div>
+        <div class="flex justify-between text-sm text-gray-400 mb-2"><span>Subtotal</span><span id="s-sub" class="text-white"></span></div>
+        <div class="flex justify-between text-sm text-gray-400 mb-4"><span>Shipping</span><span id="s-ship" class="text-white"></span></div>
+        <div class="flex justify-between font-bold text-lg text-white border-t border-white/10 pt-4"><span>Total</span><span id="s-grand" class="text-[#b07d4f]"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- success -->
+  <div id="order-success" class="hidden text-center py-16 max-w-lg mx-auto">
+    <div class="w-20 h-20 mx-auto rounded-full bg-green-900/40 flex items-center justify-center mb-6">
+      <span class="text-green-400 text-4xl">✓</span>
+    </div>
+    <h2 class="font-serif text-3xl text-white mb-3">Shukriya! Order placed.</h2>
+    <p class="text-gray-400 mb-2">Order <span id="ord-num" class="text-[#b07d4f] font-bold"></span> is confirmed.</p>
+    <p class="text-gray-400 mb-8 text-sm">Our team will call you shortly to confirm. Pay cash on delivery.</p>
+    <a href="index.html" class="bg-[#b07d4f] text-black font-semibold px-8 py-3 rounded-full hover:bg-[#c9925f] transition">Back to Home</a>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="assets/js/products.js"></script>
+<script src="assets/js/store.js"></script>
+<script>
+renderChrome();
+const cart = getCart();
+if (cart.length === 0 && !sessionStorage.getItem("taj_just_ordered")) {
+  location.href = "cart.html";
+}
+function render() {
+  const c = getCart();
+  document.getElementById("sum-items").innerHTML = c.map(i => {
+    const p = PRODUCTS.find(p => p.id === i.id);
+    return `<div class="flex gap-3 items-center">
+      <img src="assets/img/${p.img}" class="w-14 h-14 object-cover rounded-lg" alt="">
+      <div class="flex-1 min-w-0"><p class="text-sm text-white truncate">${p.name}</p>
+      <p class="text-xs text-gray-500">Qty ${i.qty}</p></div>
+      <span class="text-sm text-[#b07d4f] font-semibold">${fmt(p.price * i.qty)}</span></div>`;
+  }).join("");
+  const sub = cartTotal();
+  const sc = sub >= FREE_SHIP_THRESHOLD ? 0 : 199;
+  document.getElementById("s-sub").textContent = fmt(sub);
+  document.getElementById("s-ship").textContent = sc === 0 ? "FREE" : fmt(sc);
+  document.getElementById("s-grand").textContent = fmt(sub + sc);
+}
+render();
+
+document.getElementById("order-form").addEventListener("submit", e => {
+  e.preventDefault();
+  const name = document.getElementById("f-name"),
+        phone = document.getElementById("f-phone"),
+        addr = document.getElementById("f-addr"),
+        city = document.getElementById("f-city");
+  let ok = true;
+  [name, addr, city].forEach(f => {
+    const bad = f.value.trim().length < 3;
+    f.classList.toggle("err", bad); if (bad) ok = false;
+  });
+  const digits = phone.value.replace(/\D/g, "");
+  const phoneBad = !(digits.length >= 10 && digits.length <= 12);
+  phone.classList.toggle("err", phoneBad); if (phoneBad) ok = false;
+  document.getElementById("form-err").classList.toggle("hidden", ok);
+  if (!ok) return;
+
+  const num = "TJ-" + Date.now().toString().slice(-6);
+  document.getElementById("ord-num").textContent = "#" + num;
+  clearCart();
+  sessionStorage.setItem("taj_just_ordered", "1");
+  document.getElementById("checkout-main").classList.add("hidden");
+  document.getElementById("order-success").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+</script>
+</body>
+</html>

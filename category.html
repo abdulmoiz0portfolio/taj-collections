@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — TAJ LEATHERS</title>
+<meta name="description" content="Shop handcrafted leather belts, wallets and watch straps at TAJ LEATHERS.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>body{font-family:'Inter',sans-serif;background:#0c0c0c}.font-serif{font-family:'Playfair Display',serif}</style>
+</head>
+<body class="text-gray-200">
+<div id="site-header"></div>
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+  <h1 id="cat-title" class="font-serif text-3xl sm:text-5xl text-white mb-2">Shop All</h1>
+  <p id="cat-sub" class="text-gray-400 mb-8">Every piece, handcrafted.</p>
+
+  <div class="flex flex-col sm:flex-row gap-4 sm:items-center justify-between mb-8">
+    <div id="cat-tabs" class="flex flex-wrap gap-2"></div>
+    <select id="sort" class="bg-[#141414] border border-white/10 rounded-full px-5 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-[#b07d4f]">
+      <option value="featured">Sort: Featured</option>
+      <option value="low">Price: Low to High</option>
+      <option value="high">Price: High to Low</option>
+      <option value="discount">Biggest Discount</option>
+    </select>
+  </div>
+
+  <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+  <p id="empty" class="hidden text-center text-gray-500 py-20">No products found.</p>
+</section>
+
+<div id="site-footer"></div>
+<script src="assets/js/products.js"></script>
+<script src="assets/js/store.js"></script>
+<script>
+const qs = new URLSearchParams(location.search);
+let curCat = qs.get("cat") || "all";
+
+function tabBtn(key, label) {
+  const on = curCat === key;
+  return `<button onclick="setCat('${key}')" class="px-5 py-2.5 rounded-full text-sm font-medium transition ${on ? "bg-[#b07d4f] text-black" : "bg-[#141414] border border-white/10 text-gray-300 hover:border-[#b07d4f]"}">${label}</button>`;
+}
+function renderTabs() {
+  document.getElementById("cat-tabs").innerHTML =
+    tabBtn("all", "All") +
+    Object.entries(CATS).map(([k, v]) => tabBtn(k, v.name)).join("");
+}
+function setCat(k) {
+  curCat = k;
+  history.replaceState(null, "", k === "all" ? "category.html" : "category.html?cat=" + k);
+  render();
+}
+function render() {
+  renderTabs();
+  const meta = CATS[curCat];
+  document.getElementById("cat-title").textContent = meta ? meta.name : "Shop All";
+  document.getElementById("cat-sub").textContent = meta ? meta.tag : "Every piece, handcrafted.";
+  renderChrome(curCat === "all" ? "shop" : curCat);
+
+  let list = PRODUCTS.filter(p => curCat === "all" || p.cat === curCat);
+  const sort = document.getElementById("sort").value;
+  if (sort === "low") list = [...list].sort((a, b) => a.price - b.price);
+  if (sort === "high") list = [...list].sort((a, b) => b.price - a.price);
+  if (sort === "discount") list = [...list].sort((a, b) => (1 - b.price / b.oldPrice) - (1 - a.price / a.oldPrice));
+
+  document.getElementById("grid").innerHTML = list.map(productCard).join("");
+  document.getElementById("empty").classList.toggle("hidden", list.length > 0);
+}
+document.getElementById("sort").addEventListener("change", render);
+render();
+</script>
+</body>
+</html>
