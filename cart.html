@@ -7,29 +7,29 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>body{font-family:'Inter',sans-serif;background:#0c0c0c}.font-serif{font-family:'Playfair Display',serif}</style>
+<style>body{font-family:'Inter',sans-serif;background:#ffffff}.font-serif{font-family:'Playfair Display',serif}</style>
 </head>
-<body class="text-gray-200">
+<body class="text-[#44403c]">
 <div id="site-header"></div>
 
 <section class="max-w-5xl mx-auto px-4 sm:px-6 py-14">
-  <h1 class="font-serif text-3xl sm:text-4xl text-white mb-8">Your Cart</h1>
+  <h1 class="font-serif text-3xl sm:text-4xl text-[#1c1917] mb-8">Your Cart</h1>
   <div id="ship-bar" class="mb-8"></div>
   <div id="cart-items" class="space-y-4"></div>
 
   <div id="cart-empty" class="hidden text-center py-20">
-    <p class="font-serif text-2xl text-white mb-3">Your cart is empty</p>
-    <p class="text-gray-400 mb-8">Good leather waits for no one.</p>
-    <a href="category.html" class="bg-[#b07d4f] text-black font-semibold px-8 py-3 rounded-full hover:bg-[#c9925f] transition">Start Shopping</a>
+    <p class="font-serif text-2xl text-[#1c1917] mb-3">Your cart is empty</p>
+    <p class="text-[#78716c] mb-8">Good leather waits for no one.</p>
+    <a href="category.html" class="bg-[#f97316] text-white font-semibold px-8 py-3 rounded-full hover:bg-[#ea580c] transition">Start Shopping</a>
   </div>
 
-  <div id="cart-summary" class="hidden mt-10 bg-[#141414] border border-white/10 rounded-2xl p-7">
-    <div class="flex justify-between text-sm text-gray-400 mb-2"><span>Subtotal</span><span id="sub" class="text-white"></span></div>
-    <div class="flex justify-between text-sm text-gray-400 mb-4"><span>Shipping</span><span id="ship" class="text-white"></span></div>
-    <div class="flex justify-between font-bold text-lg text-white border-t border-white/10 pt-4 mb-6"><span>Total</span><span id="grand" class="text-[#b07d4f]"></span></div>
+  <div id="cart-summary" class="hidden mt-10 bg-[#f7f5f2] border border-black/10 rounded-2xl p-7">
+    <div class="flex justify-between text-sm text-[#78716c] mb-2"><span>Subtotal</span><span id="sub" class="text-[#1c1917]"></span></div>
+    <div class="flex justify-between text-sm text-[#78716c] mb-4"><span>Shipping</span><span id="ship" class="text-[#1c1917]"></span></div>
+    <div class="flex justify-between font-bold text-lg text-[#1c1917] border-t border-black/10 pt-4 mb-6"><span>Total</span><span id="grand" class="text-[#f97316]"></span></div>
     <div class="flex flex-col sm:flex-row gap-3">
-      <a href="checkout.html" class="flex-1 text-center bg-[#b07d4f] text-black font-bold py-3.5 rounded-full hover:bg-[#c9925f] transition">Proceed to Checkout</a>
-      <a href="category.html" class="flex-1 text-center border border-white/20 text-white font-semibold py-3.5 rounded-full hover:border-[#b07d4f] transition">Continue Shopping</a>
+      <a href="checkout.html" class="flex-1 text-center bg-[#f97316] text-white font-bold py-3.5 rounded-full hover:bg-[#ea580c] transition">Proceed to Checkout</a>
+      <a href="category.html" class="flex-1 text-center border border-black/20 text-[#1c1917] font-semibold py-3.5 rounded-full hover:border-[#f97316] transition">Continue Shopping</a>
     </div>
   </div>
 </section>
@@ -49,33 +49,33 @@ function render() {
   const sub = cartTotal();
   const pct = Math.min(100, Math.round(sub / FREE_SHIP_THRESHOLD * 100));
   document.getElementById("ship-bar").innerHTML = empty ? "" : `
-    <div class="bg-[#141414] border border-white/10 rounded-2xl p-5">
+    <div class="bg-[#f7f5f2] border border-black/10 rounded-2xl p-5">
       <p class="text-sm mb-3">${sub >= FREE_SHIP_THRESHOLD
         ? '<span class="text-green-400 font-semibold">🎉 You unlocked FREE delivery!</span>'
-        : `Add <span class="text-[#b07d4f] font-semibold">${fmt(FREE_SHIP_THRESHOLD - sub)}</span> more for FREE delivery`}</p>
-      <div class="h-2 bg-white/10 rounded-full overflow-hidden">
-        <div class="h-full bg-[#b07d4f] rounded-full transition-all duration-500" style="width:${pct}%"></div>
+        : `Add <span class="text-[#f97316] font-semibold">${fmt(FREE_SHIP_THRESHOLD - sub)}</span> more for FREE delivery`}</p>
+      <div class="h-2 bg-black/10 rounded-full overflow-hidden">
+        <div class="h-full bg-[#f97316] rounded-full transition-all duration-500" style="width:${pct}%"></div>
       </div>
     </div>`;
 
   document.getElementById("cart-items").innerHTML = cart.map(i => {
     const p = PRODUCTS.find(p => p.id === i.id);
     if (!p) return "";
-    return `<div class="bg-[#141414] border border-white/10 rounded-2xl p-4 flex gap-4 items-center">
+    return `<div class="bg-[#f7f5f2] border border-black/10 rounded-2xl p-4 flex gap-4 items-center">
       <a href="product.html?id=${p.id}"><img src="assets/img/${p.img}" alt="${p.name}" class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl"></a>
       <div class="flex-1 min-w-0">
-        <a href="product.html?id=${p.id}" class="text-white font-medium hover:text-[#b07d4f] block truncate">${p.name}</a>
-        <p class="text-xs text-gray-500 mt-1">${[i.color, i.size].filter(Boolean).join(" · ")}</p>
+        <a href="product.html?id=${p.id}" class="text-[#1c1917] font-medium hover:text-[#f97316] block truncate">${p.name}</a>
+        <p class="text-xs text-[#a8a29e] mt-1">${[i.color, i.size].filter(Boolean).join(" · ")}</p>
         <div class="flex items-center justify-between mt-3">
-          <div class="flex items-center border border-white/15 rounded-full">
-            <button onclick="setQty('${i.key}', ${i.qty - 1}); render()" class="w-8 h-8 text-gray-300 hover:text-[#b07d4f]">−</button>
-            <span class="w-7 text-center text-sm text-white font-semibold">${i.qty}</span>
-            <button onclick="setQty('${i.key}', ${i.qty + 1}); render()" class="w-8 h-8 text-gray-300 hover:text-[#b07d4f]">+</button>
+          <div class="flex items-center border border-black/15 rounded-full">
+            <button onclick="setQty('${i.key}', ${i.qty - 1}); render()" class="w-8 h-8 text-[#57534e] hover:text-[#f97316]">−</button>
+            <span class="w-7 text-center text-sm text-[#1c1917] font-semibold">${i.qty}</span>
+            <button onclick="setQty('${i.key}', ${i.qty + 1}); render()" class="w-8 h-8 text-[#57534e] hover:text-[#f97316]">+</button>
           </div>
-          <span class="text-[#b07d4f] font-bold">${fmt(p.price * i.qty)}</span>
+          <span class="text-[#f97316] font-bold">${fmt(p.price * i.qty)}</span>
         </div>
       </div>
-      <button onclick="setQty('${i.key}', 0); render()" class="text-gray-500 hover:text-red-400 text-xl px-1" aria-label="Remove">×</button>
+      <button onclick="setQty('${i.key}', 0); render()" class="text-[#a8a29e] hover:text-red-400 text-xl px-1" aria-label="Remove">×</button>
     </div>`;
   }).join("");
 

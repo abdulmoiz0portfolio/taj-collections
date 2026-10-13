@@ -81,4 +81,4 @@ const CATS = {
   wallets: { name: "Wallets",      tag: "Carry less, keep more",  img: "wallet-bifold.jpg" },
   straps:  { name: "Watch Straps", tag: "A new wrist, every day", img: "strap-brown.jpg" },
 };
-const FREE_SHIP_THRESHOLD = 3000;
+const FREE_SHIP_THRESHOLD = 8000;

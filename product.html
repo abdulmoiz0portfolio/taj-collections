@@ -7,19 +7,19 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>body{font-family:'Inter',sans-serif;background:#0c0c0c}.font-serif{font-family:'Playfair Display',serif}
+<style>body{font-family:'Inter',sans-serif;background:#ffffff}.font-serif{font-family:'Playfair Display',serif}
 .acc-body{max-height:0;overflow:hidden;transition:max-height .3s ease}</style>
 </head>
-<body class="text-gray-200">
+<body class="text-[#44403c]">
 <div id="site-header"></div>
 
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-  <a href="category.html" class="text-sm text-gray-400 hover:text-[#b07d4f]">← Back to shop</a>
+  <a href="category.html" class="text-sm text-[#78716c] hover:text-[#f97316]">← Back to shop</a>
   <div id="product-wrap" class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16"></div>
 </section>
 
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-  <h2 class="font-serif text-2xl sm:text-3xl text-white mb-8">You may also like</h2>
+  <h2 class="font-serif text-2xl sm:text-3xl text-[#1c1917] mb-8">You may also like</h2>
   <div id="related" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
 </section>
 
@@ -35,44 +35,44 @@ renderChrome(p.cat);
 let selColor = p.colors[0], selSize = p.sizes[0], qty = 1;
 
 function optBtn(list, sel, fn) {
-  return list.map(v => `<button onclick="${fn}('${v}')" class="px-4 py-2 rounded-full text-sm border transition ${v === sel ? "bg-[#b07d4f] text-black border-[#b07d4f] font-semibold" : "border-white/20 text-gray-300 hover:border-[#b07d4f]"}">${v}</button>`).join("");
+  return list.map(v => `<button onclick="${fn}('${v}')" class="px-4 py-2 rounded-full text-sm border transition ${v === sel ? "bg-[#f97316] text-white border-[#f97316] font-semibold" : "border-black/20 text-[#57534e] hover:border-[#f97316]"}">${v}</button>`).join("");
 }
 function acc(title, body) {
-  return `<div class="border-b border-white/10">
-    <button class="w-full flex justify-between items-center py-4 text-left text-white font-medium" onclick="this.nextElementSibling.style.maxHeight = this.nextElementSibling.style.maxHeight && this.nextElementSibling.style.maxHeight !== '0px' ? '0px' : this.nextElementSibling.scrollHeight + 'px'; this.querySelector('span').textContent = this.querySelector('span').textContent === '+' ? '−' : '+'">
-      ${title}<span class="text-[#b07d4f] text-xl">+</span></button>
-    <div class="acc-body text-sm text-gray-400"><div class="pb-5">${body}</div></div></div>`;
+  return `<div class="border-b border-black/10">
+    <button class="w-full flex justify-between items-center py-4 text-left text-[#1c1917] font-medium" onclick="this.nextElementSibling.style.maxHeight = this.nextElementSibling.style.maxHeight && this.nextElementSibling.style.maxHeight !== '0px' ? '0px' : this.nextElementSibling.scrollHeight + 'px'; this.querySelector('span').textContent = this.querySelector('span').textContent === '+' ? '−' : '+'">
+      ${title}<span class="text-[#f97316] text-xl">+</span></button>
+    <div class="acc-body text-sm text-[#78716c]"><div class="pb-5">${body}</div></div></div>`;
 }
 function paint() {
   document.getElementById("product-wrap").innerHTML = `
-    <div class="relative rounded-3xl overflow-hidden bg-[#141414] border border-white/5">
+    <div class="relative rounded-3xl overflow-hidden bg-[#f7f5f2] border border-black/5">
       <img src="assets/img/${p.img}" alt="${p.name}" class="w-full aspect-square object-cover">
-      <span class="absolute top-4 left-4 bg-red-700 text-white text-sm font-bold px-3 py-1.5 rounded-full">${p.badge} OFF</span>
+      <span class="absolute top-4 left-4 bg-red-700 text-[#1c1917] text-sm font-bold px-3 py-1.5 rounded-full">${p.badge} OFF</span>
     </div>
     <div>
-      <p class="text-xs uppercase tracking-widest text-[#b07d4f] mb-2">${CATS[p.cat].name}</p>
-      <h1 class="font-serif text-3xl sm:text-4xl text-white mb-4">${p.name}</h1>
+      <p class="text-xs uppercase tracking-widest text-[#f97316] mb-2">${CATS[p.cat].name}</p>
+      <h1 class="font-serif text-3xl sm:text-4xl text-[#1c1917] mb-4">${p.name}</h1>
       <div class="flex items-center gap-3 mb-5">
-        <span class="text-3xl font-bold text-[#b07d4f]">${fmt(p.price)}</span>
-        <span class="text-gray-500 line-through">${fmt(p.oldPrice)}</span>
+        <span class="text-3xl font-bold text-[#f97316]">${fmt(p.price)}</span>
+        <span class="text-[#a8a29e] line-through">${fmt(p.oldPrice)}</span>
         <span class="text-xs bg-green-900/40 text-green-400 px-2.5 py-1 rounded-full">In stock</span>
       </div>
-      <p class="text-gray-300 leading-relaxed mb-7">${p.desc}</p>
-      <div class="mb-5"><p class="text-sm text-gray-400 mb-2.5">Color: <span class="text-white">${selColor}</span></p>
+      <p class="text-[#57534e] leading-relaxed mb-7">${p.desc}</p>
+      <div class="mb-5"><p class="text-sm text-[#78716c] mb-2.5">Color: <span class="text-[#1c1917]">${selColor}</span></p>
         <div class="flex flex-wrap gap-2">${optBtn(p.colors, selColor, "setColor")}</div></div>
-      <div class="mb-7"><p class="text-sm text-gray-400 mb-2.5">Size: <span class="text-white">${selSize}</span></p>
+      <div class="mb-7"><p class="text-sm text-[#78716c] mb-2.5">Size: <span class="text-[#1c1917]">${selSize}</span></p>
         <div class="flex flex-wrap gap-2">${optBtn(p.sizes, selSize, "setSize")}</div></div>
       <div class="flex items-center gap-4 mb-8">
-        <div class="flex items-center border border-white/20 rounded-full">
-          <button onclick="chQty(-1)" class="w-11 h-12 text-xl text-gray-300 hover:text-[#b07d4f]">−</button>
-          <span id="qty" class="w-8 text-center text-white font-semibold">${qty}</span>
-          <button onclick="chQty(1)" class="w-11 h-12 text-xl text-gray-300 hover:text-[#b07d4f]">+</button>
+        <div class="flex items-center border border-black/20 rounded-full">
+          <button onclick="chQty(-1)" class="w-11 h-12 text-xl text-[#57534e] hover:text-[#f97316]">−</button>
+          <span id="qty" class="w-8 text-center text-[#1c1917] font-semibold">${qty}</span>
+          <button onclick="chQty(1)" class="w-11 h-12 text-xl text-[#57534e] hover:text-[#f97316]">+</button>
         </div>
-        <button onclick="doAdd()" class="flex-1 bg-[#b07d4f] text-black font-bold py-3.5 rounded-full hover:bg-[#c9925f] transition">Add to Cart — <span id="add-total">${fmt(p.price * qty)}</span></button>
+        <button onclick="doAdd()" class="flex-1 bg-[#f97316] text-white font-bold py-3.5 rounded-full hover:bg-[#ea580c] transition">Add to Cart — <span id="add-total">${fmt(p.price * qty)}</span></button>
       </div>
-      <div class="border-t border-white/10">
+      <div class="border-t border-black/10">
         ${acc("Details & Materials", "<ul class='list-disc pl-5 space-y-1.5'>" + p.details.map(d => `<li>${d}</li>`).join("") + "</ul>")}
-        ${acc("Shipping & Delivery", "Dispatched within 24 hours from Lahore. Delivery in 2–4 working days nationwide. <strong class='text-gray-200'>FREE delivery</strong> on orders over " + fmt(FREE_SHIP_THRESHOLD) + ", otherwise Rs 199 flat.")}
+        ${acc("Shipping & Delivery", "Dispatched within 24 hours from Lahore. Delivery in 2–4 working days nationwide. <strong class='text-[#44403c]'>FREE delivery</strong> on orders over " + fmt(FREE_SHIP_THRESHOLD) + ", otherwise Rs 199 flat.")}
         ${acc("Lifetime Warranty", "If the stitching, buckle or hardware ever fails under normal use, we repair or replace it free — for life. 7-day easy exchange for unused items.")}
       </div>
     </div>`;

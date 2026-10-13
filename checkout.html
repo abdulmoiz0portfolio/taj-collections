@@ -7,21 +7,21 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>body{font-family:'Inter',sans-serif;background:#0c0c0c}.font-serif{font-family:'Playfair Display',serif}
-.field{width:100%;background:#141414;border:1px solid rgba(255,255,255,.12);border-radius:.9rem;padding:.85rem 1.1rem;color:#fff;font-size:.95rem}
-.field:focus{outline:none;border-color:#b07d4f}.field.err{border-color:#ef4444}
+<style>body{font-family:'Inter',sans-serif;background:#ffffff}.font-serif{font-family:'Playfair Display',serif}
+.field{width:100%;background:#f7f5f2;border:1px solid rgba(255,255,255,.12);border-radius:.9rem;padding:.85rem 1.1rem;color:#fff;font-size:.95rem}
+.field:focus{outline:none;border-color:#f97316}.field.err{border-color:#ef4444}
 label.lbl{display:block;font-size:.8rem;color:#9ca3af;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em}</style>
 </head>
-<body class="text-gray-200">
+<body class="text-[#44403c]">
 <div id="site-header"></div>
 
 <section class="max-w-6xl mx-auto px-4 sm:px-6 py-14">
-  <h1 class="font-serif text-3xl sm:text-4xl text-white mb-8">Checkout</h1>
+  <h1 class="font-serif text-3xl sm:text-4xl text-[#1c1917] mb-8">Checkout</h1>
 
   <div id="checkout-main" class="grid grid-cols-1 lg:grid-cols-5 gap-8">
     <!-- form -->
-    <form id="order-form" class="lg:col-span-3 bg-[#141414] border border-white/10 rounded-2xl p-6 sm:p-8" novalidate>
-      <h2 class="text-white font-semibold text-lg mb-6">Delivery Details</h2>
+    <form id="order-form" class="lg:col-span-3 bg-[#f7f5f2] border border-black/10 rounded-2xl p-6 sm:p-8" novalidate>
+      <h2 class="text-[#1c1917] font-semibold text-lg mb-6">Delivery Details</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div><label class="lbl">Full Name *</label><input id="f-name" class="field" placeholder="e.g. Ahmed Raza"></div>
         <div><label class="lbl">Phone *</label><input id="f-phone" class="field" inputmode="tel" placeholder="03XX XXXXXXX"></div>
@@ -29,50 +29,50 @@ label.lbl{display:block;font-size:.8rem;color:#9ca3af;margin-bottom:.4rem;text-t
         <div><label class="lbl">City *</label><input id="f-city" class="field" placeholder="e.g. Lahore"></div>
         <div><label class="lbl">Order Notes (optional)</label><input id="f-notes" class="field" placeholder="Any special instructions"></div>
       </div>
-      <h2 class="text-white font-semibold text-lg mt-8 mb-4">Payment Method</h2>
-      <div class="border border-[#b07d4f]/60 bg-[#b07d4f]/10 rounded-2xl p-5 flex items-center gap-4">
-        <span class="w-6 h-6 rounded-full bg-[#b07d4f] flex items-center justify-center text-black text-sm font-bold">✓</span>
-        <div><p class="text-white font-semibold">Cash on Delivery</p><p class="text-sm text-gray-400">Pay in cash when your order arrives.</p></div>
+      <h2 class="text-[#1c1917] font-semibold text-lg mt-8 mb-4">Payment Method</h2>
+      <div class="border border-[#f97316]/60 bg-[#f97316]/10 rounded-2xl p-5 flex items-center gap-4">
+        <span class="w-6 h-6 rounded-full bg-[#f97316] flex items-center justify-center text-black text-sm font-bold">✓</span>
+        <div><p class="text-[#1c1917] font-semibold">Cash on Delivery</p><p class="text-sm text-[#78716c]">Pay in cash when your order arrives.</p></div>
       </div>
       <p id="form-err" class="hidden text-red-400 text-sm mt-5">Please fill all required fields correctly.</p>
-      <button type="submit" class="w-full mt-6 bg-[#b07d4f] text-black font-bold py-4 rounded-full hover:bg-[#c9925f] transition text-lg">Review Order →</button>
+      <button type="submit" class="w-full mt-6 bg-[#f97316] text-white font-bold py-4 rounded-full hover:bg-[#ea580c] transition text-lg">Review Order →</button>
     </form>
 
   </div><!-- /checkout-main -->
 
   <!-- review step -->
   <div id="review-step" class="hidden">
-    <div class="bg-[#141414] border border-white/10 rounded-2xl p-6 sm:p-8 max-w-2xl mx-auto">
-        <h2 class="text-white font-semibold text-xl mb-6">Review & Confirm</h2>
+    <div class="bg-[#f7f5f2] border border-black/10 rounded-2xl p-6 sm:p-8 max-w-2xl mx-auto">
+        <h2 class="text-[#1c1917] font-semibold text-xl mb-6">Review & Confirm</h2>
         <div class="mb-6">
           <p class="lbl">Deliver to</p>
-          <p id="rev-addr" class="text-white"></p>
+          <p id="rev-addr" class="text-[#1c1917]"></p>
         </div>
         <div class="mb-6">
           <p class="lbl">Items</p>
           <div id="rev-items" class="space-y-3"></div>
         </div>
-        <div class="border-t border-white/10 pt-4 space-y-2 text-sm">
-          <div class="flex justify-between text-gray-400"><span>Subtotal</span><span id="rev-sub" class="text-white"></span></div>
-          <div class="flex justify-between text-gray-400"><span>Shipping</span><span id="rev-ship" class="text-white"></span></div>
-          <div class="flex justify-between text-gray-400"><span>Payment</span><span class="text-white">Cash on Delivery</span></div>
-          <div class="flex justify-between font-bold text-lg text-white pt-2"><span>Total</span><span id="rev-grand" class="text-[#b07d4f]"></span></div>
+        <div class="border-t border-black/10 pt-4 space-y-2 text-sm">
+          <div class="flex justify-between text-[#78716c]"><span>Subtotal</span><span id="rev-sub" class="text-[#1c1917]"></span></div>
+          <div class="flex justify-between text-[#78716c]"><span>Shipping</span><span id="rev-ship" class="text-[#1c1917]"></span></div>
+          <div class="flex justify-between text-[#78716c]"><span>Payment</span><span class="text-[#1c1917]">Cash on Delivery</span></div>
+          <div class="flex justify-between font-bold text-lg text-[#1c1917] pt-2"><span>Total</span><span id="rev-grand" class="text-[#f97316]"></span></div>
         </div>
         <div class="flex flex-col sm:flex-row gap-3 mt-8">
-          <button id="back-btn" class="flex-1 border border-white/20 text-white font-semibold py-3.5 rounded-full hover:border-[#b07d4f] transition">← Edit Details</button>
-          <button id="confirm-btn" class="flex-1 bg-[#b07d4f] text-black font-bold py-3.5 rounded-full hover:bg-[#c9925f] transition text-lg">Confirm Order ✓</button>
+          <button id="back-btn" class="flex-1 border border-black/20 text-[#1c1917] font-semibold py-3.5 rounded-full hover:border-[#f97316] transition">← Edit Details</button>
+          <button id="confirm-btn" class="flex-1 bg-[#f97316] text-white font-bold py-3.5 rounded-full hover:bg-[#ea580c] transition text-lg">Confirm Order ✓</button>
         </div>
       </div>
     </div>
 
     <!-- summary -->
     <div class="lg:col-span-2">
-      <div class="bg-[#141414] border border-white/10 rounded-2xl p-6 sm:p-7 sticky top-24">
-        <h2 class="text-white font-semibold text-lg mb-5">Order Summary</h2>
+      <div class="bg-[#f7f5f2] border border-black/10 rounded-2xl p-6 sm:p-7 sticky top-24">
+        <h2 class="text-[#1c1917] font-semibold text-lg mb-5">Order Summary</h2>
         <div id="sum-items" class="space-y-4 mb-6 max-h-64 overflow-auto"></div>
-        <div class="flex justify-between text-sm text-gray-400 mb-2"><span>Subtotal</span><span id="s-sub" class="text-white"></span></div>
-        <div class="flex justify-between text-sm text-gray-400 mb-4"><span>Shipping</span><span id="s-ship" class="text-white"></span></div>
-        <div class="flex justify-between font-bold text-lg text-white border-t border-white/10 pt-4"><span>Total</span><span id="s-grand" class="text-[#b07d4f]"></span></div>
+        <div class="flex justify-between text-sm text-[#78716c] mb-2"><span>Subtotal</span><span id="s-sub" class="text-[#1c1917]"></span></div>
+        <div class="flex justify-between text-sm text-[#78716c] mb-4"><span>Shipping</span><span id="s-ship" class="text-[#1c1917]"></span></div>
+        <div class="flex justify-between font-bold text-lg text-[#1c1917] border-t border-black/10 pt-4"><span>Total</span><span id="s-grand" class="text-[#f97316]"></span></div>
       </div>
     </div>
   </div>
@@ -82,10 +82,10 @@ label.lbl{display:block;font-size:.8rem;color:#9ca3af;margin-bottom:.4rem;text-t
     <div class="w-20 h-20 mx-auto rounded-full bg-green-900/40 flex items-center justify-center mb-6">
       <span class="text-green-400 text-4xl">✓</span>
     </div>
-    <h2 class="font-serif text-3xl text-white mb-3">Shukriya! Order placed.</h2>
-    <p class="text-gray-400 mb-2">Order <span id="ord-num" class="text-[#b07d4f] font-bold"></span> is confirmed.</p>
-    <p class="text-gray-400 mb-8 text-sm">Our team will call you shortly to confirm. Pay cash on delivery.</p>
-    <a href="index.html" class="bg-[#b07d4f] text-black font-semibold px-8 py-3 rounded-full hover:bg-[#c9925f] transition">Back to Home</a>
+    <h2 class="font-serif text-3xl text-[#1c1917] mb-3">Shukriya! Order placed.</h2>
+    <p class="text-[#78716c] mb-2">Order <span id="ord-num" class="text-[#f97316] font-bold"></span> is confirmed.</p>
+    <p class="text-[#78716c] mb-8 text-sm">Our team will call you shortly to confirm. Pay cash on delivery.</p>
+    <a href="index.html" class="bg-[#f97316] text-white font-semibold px-8 py-3 rounded-full hover:bg-[#ea580c] transition">Back to Home</a>
   </div>
 </section>
 
@@ -104,9 +104,9 @@ function render() {
     const p = PRODUCTS.find(p => p.id === i.id);
     return `<div class="flex gap-3 items-center">
       <img src="assets/img/${p.img}" class="w-14 h-14 object-cover rounded-lg" alt="">
-      <div class="flex-1 min-w-0"><p class="text-sm text-white truncate">${p.name}</p>
-      <p class="text-xs text-gray-500">Qty ${i.qty}</p></div>
-      <span class="text-sm text-[#b07d4f] font-semibold">${fmt(p.price * i.qty)}</span></div>`;
+      <div class="flex-1 min-w-0"><p class="text-sm text-[#1c1917] truncate">${p.name}</p>
+      <p class="text-xs text-[#a8a29e]">Qty ${i.qty}</p></div>
+      <span class="text-sm text-[#f97316] font-semibold">${fmt(p.price * i.qty)}</span></div>`;
   }).join("");
   const sub = cartTotal();
   const sc = sub >= FREE_SHIP_THRESHOLD ? 0 : 199;
@@ -141,15 +141,15 @@ document.getElementById("order-form").addEventListener("submit", e => {
         notes = document.getElementById("f-notes").value.trim();
   document.getElementById("rev-addr").innerHTML =
     `<span class="font-semibold">${name}</span> · ${phone}<br>${addr}, ${city}` +
-    (notes ? `<br><span class="text-gray-400 text-sm">Note: ${notes}</span>` : "");
+    (notes ? `<br><span class="text-[#78716c] text-sm">Note: ${notes}</span>` : "");
   const c2 = getCart();
   document.getElementById("rev-items").innerHTML = c2.map(i => {
     const p = PRODUCTS.find(p => p.id === i.id);
-    return `<div class="flex gap-3 items-center bg-black/30 rounded-xl p-3">
+    return `<div class="flex gap-3 items-center bg-black/5 rounded-xl p-3">
       <img src="assets/img/${p.img}" class="w-12 h-12 object-cover rounded-lg" alt="">
-      <div class="flex-1 min-w-0"><p class="text-sm text-white truncate">${p.name}</p>
-      <p class="text-xs text-gray-500">${[i.color, i.size].filter(Boolean).join(" · ")} · Qty ${i.qty}</p></div>
-      <span class="text-sm text-[#b07d4f] font-semibold">${fmt(p.price * i.qty)}</span></div>`;
+      <div class="flex-1 min-w-0"><p class="text-sm text-[#1c1917] truncate">${p.name}</p>
+      <p class="text-xs text-[#a8a29e]">${[i.color, i.size].filter(Boolean).join(" · ")} · Qty ${i.qty}</p></div>
+      <span class="text-sm text-[#f97316] font-semibold">${fmt(p.price * i.qty)}</span></div>`;
   }).join("");
   const sub2 = cartTotal(), sc2 = sub2 >= FREE_SHIP_THRESHOLD ? 0 : 199;
   document.getElementById("rev-sub").textContent = fmt(sub2);
