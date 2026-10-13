@@ -35,8 +35,35 @@ label.lbl{display:block;font-size:.8rem;color:#9ca3af;margin-bottom:.4rem;text-t
         <div><p class="text-white font-semibold">Cash on Delivery</p><p class="text-sm text-gray-400">Pay in cash when your order arrives.</p></div>
       </div>
       <p id="form-err" class="hidden text-red-400 text-sm mt-5">Please fill all required fields correctly.</p>
-      <button type="submit" class="w-full mt-6 bg-[#b07d4f] text-black font-bold py-4 rounded-full hover:bg-[#c9925f] transition text-lg">Place Order</button>
+      <button type="submit" class="w-full mt-6 bg-[#b07d4f] text-black font-bold py-4 rounded-full hover:bg-[#c9925f] transition text-lg">Review Order →</button>
     </form>
+
+  </div><!-- /checkout-main -->
+
+  <!-- review step -->
+  <div id="review-step" class="hidden">
+    <div class="bg-[#141414] border border-white/10 rounded-2xl p-6 sm:p-8 max-w-2xl mx-auto">
+        <h2 class="text-white font-semibold text-xl mb-6">Review & Confirm</h2>
+        <div class="mb-6">
+          <p class="lbl">Deliver to</p>
+          <p id="rev-addr" class="text-white"></p>
+        </div>
+        <div class="mb-6">
+          <p class="lbl">Items</p>
+          <div id="rev-items" class="space-y-3"></div>
+        </div>
+        <div class="border-t border-white/10 pt-4 space-y-2 text-sm">
+          <div class="flex justify-between text-gray-400"><span>Subtotal</span><span id="rev-sub" class="text-white"></span></div>
+          <div class="flex justify-between text-gray-400"><span>Shipping</span><span id="rev-ship" class="text-white"></span></div>
+          <div class="flex justify-between text-gray-400"><span>Payment</span><span class="text-white">Cash on Delivery</span></div>
+          <div class="flex justify-between font-bold text-lg text-white pt-2"><span>Total</span><span id="rev-grand" class="text-[#b07d4f]"></span></div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 mt-8">
+          <button id="back-btn" class="flex-1 border border-white/20 text-white font-semibold py-3.5 rounded-full hover:border-[#b07d4f] transition">← Edit Details</button>
+          <button id="confirm-btn" class="flex-1 bg-[#b07d4f] text-black font-bold py-3.5 rounded-full hover:bg-[#c9925f] transition text-lg">Confirm Order ✓</button>
+        </div>
+      </div>
+    </div>
 
     <!-- summary -->
     <div class="lg:col-span-2">
@@ -106,11 +133,45 @@ document.getElementById("order-form").addEventListener("submit", e => {
   document.getElementById("form-err").classList.toggle("hidden", ok);
   if (!ok) return;
 
+  // step 2: review & confirm
+  const name = document.getElementById("f-name").value.trim(),
+        phone = document.getElementById("f-phone").value.trim(),
+        addr = document.getElementById("f-addr").value.trim(),
+        city = document.getElementById("f-city").value.trim(),
+        notes = document.getElementById("f-notes").value.trim();
+  document.getElementById("rev-addr").innerHTML =
+    `<span class="font-semibold">${name}</span> · ${phone}<br>${addr}, ${city}` +
+    (notes ? `<br><span class="text-gray-400 text-sm">Note: ${notes}</span>` : "");
+  const c2 = getCart();
+  document.getElementById("rev-items").innerHTML = c2.map(i => {
+    const p = PRODUCTS.find(p => p.id === i.id);
+    return `<div class="flex gap-3 items-center bg-black/30 rounded-xl p-3">
+      <img src="assets/img/${p.img}" class="w-12 h-12 object-cover rounded-lg" alt="">
+      <div class="flex-1 min-w-0"><p class="text-sm text-white truncate">${p.name}</p>
+      <p class="text-xs text-gray-500">${[i.color, i.size].filter(Boolean).join(" · ")} · Qty ${i.qty}</p></div>
+      <span class="text-sm text-[#b07d4f] font-semibold">${fmt(p.price * i.qty)}</span></div>`;
+  }).join("");
+  const sub2 = cartTotal(), sc2 = sub2 >= FREE_SHIP_THRESHOLD ? 0 : 199;
+  document.getElementById("rev-sub").textContent = fmt(sub2);
+  document.getElementById("rev-ship").textContent = sc2 === 0 ? "FREE" : fmt(sc2);
+  document.getElementById("rev-grand").textContent = fmt(sub2 + sc2);
+  document.getElementById("checkout-main").classList.add("hidden");
+  document.getElementById("review-step").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+document.getElementById("back-btn").addEventListener("click", () => {
+  document.getElementById("review-step").classList.add("hidden");
+  document.getElementById("checkout-main").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+document.getElementById("confirm-btn").addEventListener("click", () => {
   const num = "TJ-" + Date.now().toString().slice(-6);
   document.getElementById("ord-num").textContent = "#" + num;
   clearCart();
   sessionStorage.setItem("taj_just_ordered", "1");
-  document.getElementById("checkout-main").classList.add("hidden");
+  document.getElementById("review-step").classList.add("hidden");
   document.getElementById("order-success").classList.remove("hidden");
   window.scrollTo({ top: 0, behavior: "smooth" });
 });

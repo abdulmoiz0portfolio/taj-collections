@@ -46,9 +46,8 @@ function productCard(p) {
       <img src="assets/img/${p.img}" alt="${p.name}" loading="lazy"
            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
       <span class="absolute top-3 left-3 bg-red-700 text-white text-xs font-bold px-2.5 py-1 rounded-full">${p.badge}</span>
-      <span class="absolute bottom-3 left-1/2 -translate-x-1/2 translate-y-14 group-hover:translate-y-0 transition-transform duration-300
-                   bg-[#b07d4f] text-black text-sm font-semibold px-5 py-2 rounded-full whitespace-nowrap"
-            onclick="event.preventDefault();quickAdd('${p.id}')">Quick Add +</span>
+      <button onclick="event.preventDefault();quickAdd('${p.id}')"
+            class="absolute bottom-3 left-1/2 -translate-x-1/2 bg-[#b07d4f] text-black text-sm font-semibold px-5 py-2 rounded-full whitespace-nowrap hover:bg-[#c9925f] transition shadow-lg">Quick Add +</button>
     </a>
     <div class="p-5">
       <p class="text-xs uppercase tracking-widest text-[#b07d4f] mb-1">${CATS[p.cat].name}</p>
