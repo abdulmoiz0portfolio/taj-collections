@@ -258,6 +258,7 @@
 
     // --- Build Hierarchical Rigged 3D Wallet ---
     const walletRoot = new THREE.Group();
+    walletRoot.scale.setScalar(0.68); // compact wallet size
     scene.add(walletRoot);
 
     const W = 2.2; // Wing width
