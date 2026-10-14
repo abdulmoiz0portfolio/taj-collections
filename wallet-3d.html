@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Executive Bifold — 3D Experience | TAJ LEATHERS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #0c0a08;
+      color: #f5ebe6;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+    .brand-font { font-family: 'Cinzel', serif; }
+    #webgl-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .scroll-track {
+      position: relative;
+      z-index: 10;
+    }
+    .stage-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 6vw;
+    }
+    .glass-card {
+      background: rgba(15, 11, 9, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(249, 115, 22, 0.25);
+    }
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ea580c, #f97316);
+      z-index: 50;
+      width: 0%;
+    }
+    .taj-orange { color: #f97316; }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- Scroll Progress Indicator -->
+  <div id="scroll-progress" class="progress-bar"></div>
+
+  <!-- Fixed Top Navigation & Dye Selector -->
+  <header class="fixed top-0 left-0 w-full z-40 flex justify-between items-center px-6 md:px-12 py-5 border-b border-orange-900/20 bg-[#0c0a08]/70 backdrop-blur-md">
+    <a href="product.html?section=leathers&id=wallet-bifold" class="flex items-center gap-3">
+      <div class="w-2.5 h-7 bg-[#f97316]"></div>
+      <div>
+        <h1 class="brand-font text-xl md:text-2xl tracking-[0.25em] text-[#f97316] font-bold">TAJ LEATHERS</h1>
+        <p class="text-[9px] tracking-[0.3em] uppercase text-stone-400">The Executive Bifold • 3D Experience</p>
+      </div>
+    </a>
+
+    <!-- Real-time Leather Dye Switcher -->
+    <div class="flex items-center gap-3">
+      <span class="hidden md:inline text-[11px] uppercase tracking-widest text-stone-400 mr-2">Hide Finish:</span>
+      <button data-color="#4A1409" data-stitch="#d6c1a7" class="swatch w-6 h-6 rounded-full bg-[#4A1409] ring-2 ring-[#f97316] scale-110 transition"></button>
+      <button data-color="#6B3A19" data-stitch="#f3e5ab" class="swatch w-6 h-6 rounded-full bg-[#6B3A19] ring-1 ring-stone-600 hover:scale-110 transition"></button>
+      <button data-color="#141414" data-stitch="#888888" class="swatch w-6 h-6 rounded-full bg-[#141414] ring-1 ring-stone-600 hover:scale-110 transition"></button>
+    </div>
+  </header>
+
+  <!-- Fixed 3D Canvas -->
+  <div id="webgl-canvas"></div>
+
+  <!-- Scroll Story Sections (400vh Total) -->
+  <main class="scroll-track">
+
+    <!-- STAGE 1: Front Closed View (0% - 25%) -->
+    <section class="stage-section justify-start">
+      <div class="glass-card max-w-md p-8 rounded-sm space-y-4">
+        <div class="text-[#f97316] text-xs uppercase tracking-[0.25em] font-semibold">01 / Front Silhouette</div>
+        <h2 class="brand-font text-3xl md:text-4xl font-bold text-white leading-tight">FULL-GRAIN VEGETABLE HIDE</h2>
+        <p class="text-stone-300 text-sm leading-relaxed">
+          We start with the closed front profile. Cut from a single piece of 1.4mm top-tier calfskin, featuring a hand-burnished edge and a solid brushed brass TAJ emblem.
+        </p>
+        <div class="pt-2 flex items-center gap-2 text-xs text-[#f97316] uppercase tracking-widest animate-bounce">
+          <span>Scroll Down to Rotate 360°</span> ↓
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGE 2: 360° Spine & Stitching Inspection (25% - 50%) -->
+    <section class="stage-section justify-end">
+      <div class="glass-card max-w-md p-8 rounded-sm space-y-4">
+        <div class="text-[#f97316] text-xs uppercase tracking-[0.25em] font-semibold">02 / 360° Spine & Saddle Stitch</div>
+        <h2 class="brand-font text-3xl md:text-4xl font-bold text-white leading-tight">REINFORCED TENSION FOLD</h2>
+        <p class="text-stone-300 text-sm leading-relaxed">
+          As the wallet rotates in 3D space, inspect the ultra-slim 9mm folded profile and waxed linen saddle stitching—engineered so the spine never cracks under pocket pressure.
+        </p>
+      </div>
+    </section>
+
+    <!-- STAGE 3: Unfolding the Bifold (50% - 75%) -->
+    <section class="stage-section justify-start">
+      <div class="glass-card max-w-md p-8 rounded-sm space-y-4">
+        <div class="text-[#f97316] text-xs uppercase tracking-[0.25em] font-semibold">03 / Interior Reveal</div>
+        <h2 class="brand-font text-3xl md:text-4xl font-bold text-white leading-tight">180° BUTTERFLY UNFOLD</h2>
+        <p class="text-stone-300 text-sm leading-relaxed">
+          Watch the dual-hinge mechanism open flat. The interior reveals skived V-cut card slots on both wings, balancing maximum card grip with zero unnecessary bulk.
+        </p>
+      </div>
+    </section>
+
+    <!-- STAGE 4: Exploded Space & Capacity Inspection (75% - 100%) -->
+    <section class="stage-section justify-end">
+      <div class="glass-card max-w-md p-8 rounded-sm space-y-5">
+        <div class="text-[#f97316] text-xs uppercase tracking-[0.25em] font-semibold">04 / Internal Space & Capacity</div>
+        <h2 class="brand-font text-3xl md:text-4xl font-bold text-white leading-tight">ENGINEERED COMPARTMENTS</h2>
+        <p class="text-stone-300 text-sm leading-relaxed">
+          Every millimeter is accounted for. In this exploded view, see how the cards, hidden RFID shield, and full-length PKR/USD cash divider sit cleanly inside the frame:
+        </p>
+        <ul class="text-xs text-stone-200 space-y-2 border-t border-stone-800 pt-3">
+          <li class="flex justify-between"><span>• 6 Quick-Access Card Slots</span> <span class="text-[#f97316]">Left & Right Wings</span></li>
+          <li class="flex justify-between"><span>• Dual Full-Length Cash Sleeves</span> <span class="text-[#f97316]">Top Billfold Divider</span></li>
+          <li class="flex justify-between"><span>• 2 Hidden Stash Pockets</span> <span class="text-[#f97316]">Underneath Card Stack</span></li>
+        </ul>
+        <button id="order-btn" class="w-full py-3.5 bg-[#f97316] hover:bg-[#ea580c] text-white font-bold text-xs uppercase tracking-[0.2em] transition rounded-sm">
+          Add to Cart — Rs 2,499
+        </button>
+        <a href="product.html?section=leathers&id=wallet-bifold" class="block text-center text-xs text-stone-400 hover:text-[#f97316] uppercase tracking-widest transition">← Back to product page</a>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script>
+    document.getElementById("order-btn").addEventListener("click", () => {
+      const p = PRODUCTS.find(p => p.id === "wallet-bifold");
+      addToCart("wallet-bifold", 1, p.colors[0], p.sizes[0]);
+      window.location.href = "cart.html";
+    });
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+    const container = document.getElementById('webgl-canvas');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x0c0a08, 0.035);
+
+    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 7.2);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.3;
+    container.appendChild(renderer.domElement);
+
+    // --- Procedural Fine Pebble Leather Bump Texture ---
+    function generateLeatherBump() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024;
+      canvas.height = 1024;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#808080';
+      ctx.fillRect(0, 0, 1024, 1024);
+
+      for (let i = 0; i < 110000; i++) {
+        const x = Math.random() * 1024;
+        const y = Math.random() * 1024;
+        const r = Math.random() * 1.8 + 0.4;
+        const v = Math.random() > 0.5 ? 170 : 90;
+        ctx.fillStyle = `rgba(${v},${v},${v},0.24)`;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.wrapS = THREE.RepeatWrapping;
+      tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(4, 4);
+      return tex;
+    }
+
+    // --- Procedural Currency Note Texture (PKR / Luxury Note Style) ---
+    function generateCashTexture() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 256;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#1e3a2f';
+      ctx.fillRect(0, 0, 512, 256);
+      ctx.strokeStyle = '#84a98c';
+      ctx.lineWidth = 8;
+      ctx.strokeRect(16, 16, 480, 224);
+      ctx.fillStyle = '#cad2c5';
+      ctx.font = 'bold 28px Cinzel, serif';
+      ctx.fillText('TAJ RESERVE • 5000', 110, 135);
+      return new THREE.CanvasTexture(canvas);
+    }
+
+    const leatherBump = generateLeatherBump();
+
+    // --- Materials ---
+    const outerLeatherMat = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color('#4A1409'),
+      roughness: 0.36,
+      metalness: 0.05,
+      bumpMap: leatherBump,
+      bumpScale: 0.016,
+      clearcoat: 0.32,
+      clearcoatRoughness: 0.25
+    });
+
+    const innerLeatherMat = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color('#360e06'),
+      roughness: 0.48,
+      bumpMap: leatherBump,
+      bumpScale: 0.012
+    });
+
+    const pocketLeatherMat = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color('#5a1a0d'),
+      roughness: 0.42,
+      bumpMap: leatherBump,
+      bumpScale: 0.014
+    });
+
+    const brassMat = new THREE.MeshStandardMaterial({
+      color: 0xd4af37,
+      metalness: 0.95,
+      roughness: 0.18
+    });
+
+    const stitchMat = new THREE.MeshBasicMaterial({ color: 0xd6c1a7 });
+
+    // --- Build Hierarchical Rigged 3D Wallet ---
+    const walletRoot = new THREE.Group();
+    scene.add(walletRoot);
+
+    const W = 2.2; // Wing width
+    const H = 1.75; // Wallet height
+    const T = 0.08; // Leather panel thickness
+
+    // 1. RIGHT WING (Base Anchor Wing: X from 0 to +W)
+    const rightWing = new THREE.Group();
+    walletRoot.add(rightWing);
+
+    const rightOuterPanel = new THREE.Mesh(
+      new RoundedBoxGeometry(W, H, T, 5, 0.04),
+      outerLeatherMat
+    );
+    rightOuterPanel.position.set(W / 2, 0, -T / 2);
+    rightOuterPanel.castShadow = true;
+    rightWing.add(rightOuterPanel);
+
+    // Inner Cash Divider Wall (Expands backward during Stage 4 to show bill compartment)
+    const cashDividerMesh = new THREE.Mesh(
+      new RoundedBoxGeometry(W * 1.92, H * 0.92, 0.03, 4, 0.02),
+      innerLeatherMat
+    );
+    cashDividerMesh.position.set(0, -0.02, -0.02);
+    walletRoot.add(cashDividerMesh);
+
+    // 2. Currency Notes Inside Billfold Compartment (Ejects upward in Stage 4)
+    const cashGroup = new THREE.Group();
+    const cashGeo = new THREE.PlaneGeometry(3.6, 1.45, 24, 1);
+    const cashMat = new THREE.MeshStandardMaterial({
+      map: generateCashTexture(),
+      roughness: 0.6,
+      side: THREE.DoubleSide
+    });
+    const bill1 = new THREE.Mesh(cashGeo, cashMat);
+    const bill2 = new THREE.Mesh(cashGeo, cashMat);
+    bill2.position.set(0.08, 0.06, -0.03);
+    bill2.rotation.z = -0.02;
+    cashGroup.add(bill1, bill2);
+    cashGroup.position.set(0, 0, -0.04);
+    cashGroup.scale.set(0.01, 1, 1); // Compressed while wallet is folded
+    walletRoot.add(cashGroup);
+
+    // 3. Right Wing Card Slots & Credit Cards (3 Tiered Slots)
+    const rightCards = [];
+    const rightSlotMeshes = [];
+    const cardColors = [0x111111, 0xd4af37, 0x1e293b];
+
+    for (let i = 0; i < 3; i++) {
+      // Leather Card Pocket Layer
+      const slotH = H * (0.45 + i * 0.14);
+      const slotMesh = new THREE.Mesh(
+        new RoundedBoxGeometry(W * 0.92, slotH, 0.025, 4, 0.02),
+        pocketLeatherMat
+      );
+      slotMesh.position.set(W / 2, -H / 2 + slotH / 2 + 0.05, 0.02 + (2 - i) * 0.022);
+      rightWing.add(slotMesh);
+      rightSlotMeshes.push(slotMesh);
+
+      // Interactive 3D Card inside slot
+      const cardMesh = new THREE.Mesh(
+        new RoundedBoxGeometry(W * 0.82, H * 0.58, 0.02, 4, 0.03),
+        new THREE.MeshStandardMaterial({
+          color: cardColors[i],
+          metalness: i === 1 ? 0.85 : 0.3,
+          roughness: 0.25
+        })
+      );
+      const baseY = -0.15 + i * 0.18;
+      const baseZ = 0.015 + (2 - i) * 0.022;
+      cardMesh.position.set(W / 2, baseY, baseZ);
+      cardMesh.userData = { baseY, baseZ, index: i };
+      rightWing.add(cardMesh);
+      rightCards.push(cardMesh);
+    }
+
+    // 4. LEFT WING (Pivots at Spine X = 0)
+    // When closed: rotation.y = Math.PI (folded right on top of Right Wing)
+    // When open: rotation.y = 0 (unfolded flat to the left: X from -W to 0)
+    const leftHinge = new THREE.Group();
+    leftHinge.position.set(0, 0, 0.08);
+    leftHinge.rotation.y = Math.PI; // Starts Closed!
+    walletRoot.add(leftHinge);
+
+    const leftOuterPanel = new THREE.Mesh(
+      new RoundedBoxGeometry(W, H, T, 5, 0.04),
+      outerLeatherMat
+    );
+    leftOuterPanel.position.set(-W / 2, 0, -T / 2);
+    leftOuterPanel.castShadow = true;
+    leftHinge.add(leftOuterPanel);
+
+    // TAJ Brass Crest Emblem on the Front Cover (Visible when closed!)
+    const crestPlate = new THREE.Mesh(
+      new RoundedBoxGeometry(0.65, 0.22, 0.03, 4, 0.01),
+      brassMat
+    );
+    // Placed on the outer face of the left wing so when folded (rotY = PI), it faces the camera
+    crestPlate.position.set(-W / 2, -0.45, -T - 0.005);
+    leftHinge.add(crestPlate);
+
+    // Perimeter Saddle Stitching on Front Cover
+    const stitchGeo = new THREE.BoxGeometry(0.05, 0.015, 0.015);
+    for (let x = -W + 0.15; x <= -0.15; x += 0.12) {
+      const sTop = new THREE.Mesh(stitchGeo, stitchMat);
+      sTop.position.set(x, H / 2 - 0.08, -T - 0.002);
+      const sBot = sTop.clone();
+      sBot.position.y = -H / 2 + 0.08;
+      leftHinge.add(sTop, sBot);
+    }
+
+    // Left Wing Card Slots & ID Window Cards
+    const leftCards = [];
+    const leftSlotMeshes = [];
+    for (let i = 0; i < 3; i++) {
+      const slotH = H * (0.45 + i * 0.14);
+      const slotMesh = new THREE.Mesh(
+        new RoundedBoxGeometry(W * 0.92, slotH, 0.025, 4, 0.02),
+        pocketLeatherMat
+      );
+      slotMesh.position.set(-W / 2, -H / 2 + slotH / 2 + 0.05, 0.02 + (2 - i) * 0.022);
+      leftHinge.add(slotMesh);
+      leftSlotMeshes.push(slotMesh);
+
+      const cardMesh = new THREE.Mesh(
+        new RoundedBoxGeometry(W * 0.82, H * 0.58, 0.02, 4, 0.03),
+        new THREE.MeshStandardMaterial({
+          color: i === 0 ? 0x7f1d1d : 0x27272a,
+          metalness: 0.4,
+          roughness: 0.3
+        })
+      );
+      const baseY = -0.15 + i * 0.18;
+      const baseZ = 0.015 + (2 - i) * 0.022;
+      cardMesh.position.set(-W / 2, baseY, baseZ);
+      cardMesh.userData = { baseY, baseZ, index: i };
+      leftHinge.add(cardMesh);
+      leftCards.push(cardMesh);
+    }
+
+    // Center Spine Hinge Cylinder so fold looks seamless
+    const spineMesh = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.075, 0.075, H, 24),
+      outerLeatherMat
+    );
+    spineMesh.position.set(0, 0, 0.01);
+    walletRoot.add(spineMesh);
+
+    // --- Studio Lighting ---
+    scene.add(new THREE.AmbientLight(0xffffff, 0.65));
+
+    const keyLight = new THREE.SpotLight(0xffe8d6, 60);
+    keyLight.position.set(5, 6, 7);
+    keyLight.angle = Math.PI / 3;
+    keyLight.penumbra = 0.7;
+    keyLight.castShadow = true;
+    scene.add(keyLight);
+
+    const rimLight = new THREE.DirectionalLight(0xf97316, 3.0);
+    rimLight.position.set(-6, 4, -5);
+    scene.add(rimLight);
+
+    const bottomFill = new THREE.PointLight(0xea580c, 10, 12);
+    bottomFill.position.set(0, -3, 4);
+    scene.add(bottomFill);
+
+    // --- Math Helpers for Smooth Scroll Interpolation ---
+    const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
+    const remap = (val, inMin, inMax) => clamp((val - inMin) / (inMax - inMin), 0, 1);
+    const smoothstep = (t) => t * t * (3 - 2 * t);
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    let targetScroll = 0;
+    let currentScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      targetScroll = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+      document.getElementById('scroll-progress').style.width = `${targetScroll * 100}%`;
+    });
+
+    // --- Leather Color Customizer ---
+    document.querySelectorAll('.swatch').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.swatch').forEach(b => b.classList.remove('ring-2', 'ring-[#f97316]', 'scale-110'));
+        btn.classList.add('ring-2', 'ring-[#f97316]', 'scale-110');
+
+        const mainHex = btn.getAttribute('data-color');
+        const stitchHex = btn.getAttribute('data-stitch');
+        outerLeatherMat.color.set(mainHex);
+        pocketLeatherMat.color.set(mainHex).multiplyScalar(1.15);
+        innerLeatherMat.color.set(mainHex).multiplyScalar(0.65);
+        stitchMat.color.set(stitchHex);
+      });
+    });
+
+    // --- Animation Loop (4-Stage Scroll Choreography) ---
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const time = clock.getElapsedTime();
+
+      // Smoothly damp scroll value so animation feels cinematic and weighted
+      currentScroll = lerp(currentScroll, targetScroll, 0.07);
+
+      // Phase normalized progress values (0.0 to 1.0 per stage)
+      const pSpin    = smoothstep(remap(currentScroll, 0.05, 0.36)); // Stage 1 -> 2: 360° Spin
+      const pOpen    = smoothstep(remap(currentScroll, 0.36, 0.68)); // Stage 2 -> 3: Unfold Wallet
+      const pExplode = smoothstep(remap(currentScroll, 0.68, 0.96)); // Stage 3 -> 4: Explode Compartments
+
+      // 1. Wallet 360 Rotation + Isometric Inspection Tilt in Stage 4
+      walletRoot.rotation.y = pSpin * Math.PI * 2 + (pExplode * 0.28);
+      walletRoot.rotation.x = lerp(0.08, 0.38, pExplode) + Math.sin(time * 1.5) * 0.02;
+
+      // 2. Unfold the Left Flap (PI = Closed on top of Right Wing, 0 = Open Flat)
+      leftHinge.rotation.y = lerp(Math.PI, 0, pOpen);
+      leftHinge.position.z = lerp(0.08, 0.0, pOpen);
+
+      // 3. Re-center Wallet X Position as it unfolds from single-wing width to double-wing width
+      // When closed, right wing occupies X: [0, 2.2], so center is at X = -1.1. When open, center is X = 0.
+      const centerOffset = lerp(-W / 2, 0, pOpen);
+      // Shift slightly left or right depending on which side the text card is on
+      const uiClearanceShift = window.innerWidth > 1024
+        ? Math.sin(currentScroll * Math.PI * 3) * 1.15
+        : 0;
+
+      walletRoot.position.x = centerOffset + uiClearanceShift;
+      walletRoot.position.y = Math.sin(time * 1.4) * 0.05 - (pExplode * 0.25);
+
+      // 4. Explode Internal Compartments, Cards, and Cash Sleeve (Stage 4)
+      cashDividerMesh.scale.x = lerp(0.48, 1, pOpen);
+      cashDividerMesh.position.x = lerp(W / 2, 0, pOpen);
+      cashDividerMesh.position.z = lerp(-0.02, -0.22, pExplode);
+
+      // Expand & Eject Currency Notes out of the top billfold slot
+      cashGroup.scale.x = lerp(0.01, 1, pOpen);
+      cashGroup.position.y = lerp(0, 0.85, pExplode);
+      cashGroup.position.z = lerp(-0.04, -0.14, pExplode);
+
+      // Fan Out Left & Right Cards and separate Pocket Layers in Z-space
+      rightCards.forEach((card, i) => {
+        card.position.y = card.userData.baseY + pExplode * (0.42 + i * 0.32);
+        card.position.z = card.userData.baseZ + pExplode * (0.18 + (2 - i) * 0.14);
+        card.rotation.z = -pExplode * (0.04 * (i + 1));
+      });
+
+      leftCards.forEach((card, i) => {
+        card.position.y = card.userData.baseY + pExplode * (0.42 + i * 0.32);
+        card.position.z = card.userData.baseZ + pExplode * (0.18 + (2 - i) * 0.14);
+        card.rotation.z = pExplode * (0.04 * (i + 1));
+      });
+
+      rightSlotMeshes.forEach((slot, i) => {
+        slot.position.z = (0.02 + (2 - i) * 0.022) + pExplode * ((2 - i) * 0.09);
+      });
+
+      leftSlotMeshes.forEach((slot, i) => {
+        slot.position.z = (0.02 + (2 - i) * 0.022) + pExplode * ((2 - i) * 0.09);
+      });
+
+      // Zoom camera out slightly when wallet unfolds and explodes so nothing clips off-screen
+      camera.position.z = lerp(6.8, 7.8, pOpen) + (pExplode * 0.4);
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

@@ -61,6 +61,10 @@ function paint() {
         <span class="text-xs bg-green-900/40 text-green-400 px-2.5 py-1 rounded-full">In stock</span>
       </div>
       <p class="text-[#57534e] leading-relaxed mb-7">${p.desc}</p>
+      ${p.id === "wallet-bifold" ? `<a href="wallet-3d.html" class="flex items-center justify-center gap-3 mb-7 bg-gradient-to-r from-[#1c1917] to-[#44403c] border border-[#f97316]/40 rounded-2xl p-4 hover:border-[#f97316] transition group">
+        <span class="w-10 h-10 rounded-full bg-[#f97316]/15 flex items-center justify-center text-[#f97316] text-lg group-hover:scale-110 transition">◈</span>
+        <span class="text-left"><span class="block text-white font-semibold text-sm">Explore in 3D</span><span class="block text-stone-400 text-xs">Scroll-driven interactive showcase →</span></span>
+      </a>` : ""}
       <div class="mb-5"><p class="text-sm text-[#78716c] mb-2.5">Color: <span class="text-[#1c1917]">${selColor}</span></p>
         <div class="flex flex-wrap gap-2">${optBtn(p.colors, selColor, "setColor")}</div></div>
       <div class="mb-7"><p class="text-sm text-[#78716c] mb-2.5">${p.section === "fabrics" ? "Cutting" : "Size"}: <span class="text-[#1c1917]">${selSize}</span></p>
