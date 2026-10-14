@@ -71,7 +71,7 @@
 
     <div class="flex items-center gap-3">
       <span class="hidden md:inline text-[11px] uppercase tracking-widest text-stone-500 mr-1">Hide Patina:</span>
-      <button data-color="#581c0c" data-edge="#260b04" class="swatch w-7 h-7 rounded-full bg-[#581c0c] ring-2 ring-[#f97316] scale-110 transition"></button>
+      <button data-color="#672b16" data-edge="#2b1006" class="swatch w-7 h-7 rounded-full bg-[#672b16] ring-2 ring-[#f97316] scale-110 transition"></button>
       <button data-color="#783f16" data-edge="#361a05" class="swatch w-7 h-7 rounded-full bg-[#783f16] ring-1 ring-stone-400 hover:scale-110 transition"></button>
       <button data-color="#171717" data-edge="#050505" class="swatch w-7 h-7 rounded-full bg-[#171717] ring-1 ring-stone-400 hover:scale-110 transition"></button>
     </div>
@@ -174,7 +174,7 @@
 
     // --- Volumetric PBR Materials ---
     const outerHideMat = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color('#581c0c'),
+      color: new THREE.Color('#672b16'),
       roughness: 0.38,
       metalness: 0.05,
       bumpMap: bumpTex,
@@ -184,7 +184,7 @@
     });
 
     const pocketHideMat = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color('#6e2512'),
+      color: new THREE.Color('#76341b'),
       roughness: 0.42,
       bumpMap: bumpTex,
       bumpScale: 0.024,
@@ -211,7 +211,7 @@
     });
 
     const stitchMat = new THREE.MeshStandardMaterial({
-      color: 0xfde68a,
+      color: 0xf3e9d2,
       roughness: 0.4
     });
 
@@ -348,17 +348,10 @@
     frontCoverStitches.position.x = -W / 2;
     leftHinge.add(frontCoverStitches);
 
-    // 3D Multi-Part Brass Badge on Front Cover
-    const badgeGroup = new THREE.Group();
-    const badgeBase = buildVolumetricSlab(0.85, 0.34, 0.04, 0.02, burnishedEdgeMat);
-    const badgeGold = buildVolumetricSlab(0.74, 0.24, 0.05, 0.018, brassMat);
-    badgeGold.position.z = -0.02;
-    const badgeCore = new THREE.Mesh(new THREE.OctahedronGeometry(0.07, 0), brassMat);
-    badgeCore.scale.set(1.5, 0.8, 0.4);
-    badgeCore.position.z = -0.055;
-    badgeGroup.add(badgeBase, badgeGold, badgeCore);
-    badgeGroup.position.set(-W / 2, -0.45, -0.22);
-    leftHinge.add(badgeGroup);
+    // Subtle debossed logo plate on front cover (matches the real wallet — no brass crest)
+    const logoPlate = buildVolumetricSlab(0.72, 0.22, 0.02, 0.01, burnishedEdgeMat);
+    logoPlate.position.set(-W / 2, -0.45, -0.21);
+    leftHinge.add(logoPlate);
 
     const leftStashWall = buildVolumetricSlab(W * 0.94, H * 0.92, 0.06, 0.025, innerSuedeMat);
     leftStashWall.position.set(-W / 2 - 0.03, 0, -0.01);
