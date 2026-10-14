@@ -2,6 +2,7 @@
 const BRAND = "TAJ COLLECTIONS";
 const WA_NUMBER = "923001234567"; // placeholder WhatsApp number — Moiz to supply real one
 const RELAY_URL = ""; // e.g. "https://taj-order-relay.onrender.com" — leave "" to disable auto-forward
+const ORDER_API_URL = "https://strictly-tribes-powered-webmaster.trycloudflare.com"; // TAJ order API on VPS (orders + email + admin) — leave "" to disable
 const SHIP_FLAT = 199;
 
 /* ---------- promos ---------- */
@@ -259,7 +260,7 @@ function renderChrome(active = "") {
 
   document.getElementById("site-footer").innerHTML = `
     <footer class="bg-[#faf9f7] border-t border-black/10 mt-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-14 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-14 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
         <div class="col-span-2 md:col-span-3 lg:col-span-1">
           <p class="font-serif text-2xl text-[#1c1917] mb-4">TAJ <span class="text-[#f97316]">COLLECTIONS</span></p>
           <p class="text-[#78716c] text-sm leading-relaxed mb-5">Premium leather goods and unstitched fabrics from Pakistan. Honest prices, honest quality.</p>
@@ -293,7 +294,17 @@ function renderChrome(active = "") {
             <a href="track.html" class="hover:text-[#f97316]">Track Your Order</a>
             <a href="cart.html" class="hover:text-[#f97316]">Your Cart</a>
             <a href="wishlist.html" class="hover:text-[#f97316]">Wishlist</a>
-            <a href="https://wa.me/${WA_NUMBER}" target="_blank" rel="noopener" class="hover:text-[#f97316]">Contact Us</a>
+            <a href="about.html" class="hover:text-[#f97316]">About Us</a>
+            <a href="contact.html" class="hover:text-[#f97316]">Contact Us</a>
+          </div>
+        </div>
+        <div>
+          <p class="text-[#1c1917] font-semibold mb-4 text-sm uppercase tracking-widest">Policies</p>
+          <div class="flex flex-col gap-2 text-sm text-[#78716c]">
+            <a href="shipping.html" class="hover:text-[#f97316]">Shipping & Delivery</a>
+            <a href="returns.html" class="hover:text-[#f97316]">Returns & Exchange</a>
+            <a href="privacy.html" class="hover:text-[#f97316]">Privacy Policy</a>
+            <a href="terms.html" class="hover:text-[#f97316]">Terms & Conditions</a>
           </div>
         </div>
         <div>
@@ -432,7 +443,46 @@ function submitWhatsAppOrder() {
   toast("Opening WhatsApp — just tap Send!");
 }
 
-/* ---------- relay auto-forward (fire-and-forget) ---------- */
+/* ---------- order API auto-forward (fire-and-forget) ---------- */
+function forwardOrderToApi(order) {
+  if (!ORDER_API_URL) return;
+  try {
+    fetch(ORDER_API_URL.replace(/\/$/, "") + "/api/order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        order_id: order.num,
+        name: order.name, phone: order.phone, email: order.email || "",
+        city: order.city, address: order.addr, notes: order.notes || "",
+        items: order.items.map(it => ({ name: it.name, variant: it.variant, qty: it.qty, price: it.price })),
+        subtotal: order.sub, discount: order.discount, total: order.total,
+        payment_method: "COD", source: "taj-collections-checkout",
+      }),
+    }).catch(() => {});
+  } catch (e) {}
+}
+
+/* ---------- remote product catalog (admin-managed, baked-in fallback) ---------- */
+(function syncRemoteCatalog() {
+  if (!ORDER_API_URL || typeof PRODUCTS === "undefined") return;
+  fetch(ORDER_API_URL.replace(/\/$/, "") + "/api/products")
+    .then(r => (r.ok ? r.json() : null))
+    .then(d => {
+      if (!d || !d.ok || !Array.isArray(d.products) || !d.products.length) return;
+      const mapped = d.products.map(p => ({
+        id: p.id, name: p.name, price: p.price, oldPrice: p.old_price,
+        cat: p.category, section: p.section,
+        img: String(p.image || "").replace(/^assets\/img\//, ""),
+        desc: p.description, badge: p.badge,
+        colors: (p.colors && p.colors.length) ? p.colors : ["Standard"],
+        sizes: (p.sizes && p.sizes.length) ? p.sizes : ["Standard"],
+      }));
+      PRODUCTS.length = 0;
+      mapped.forEach(p => PRODUCTS.push(p));
+      document.dispatchEvent(new Event("taj:catalog-updated"));
+    })
+    .catch(() => {}); // offline/API down → baked-in catalog stays
+})();
 function forwardOrderToRelay(order) {
   if (!RELAY_URL) return;
   try {

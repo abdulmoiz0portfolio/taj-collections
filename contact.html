@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — TAJ COLLECTIONS</title>
+<meta name="description" content="Contact TAJ COLLECTIONS — message us on WhatsApp for the fastest response, or use the contact form. Business hours Mon–Sat, 9am–9pm PKT.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', sans-serif; background: #ffffff; }
+  .font-serif { font-family: 'Cinzel', serif; }
+  .field{width:100%;background:#f7f5f2;border:1px solid rgba(0,0,0,.12);border-radius:.9rem;padding:.85rem 1.1rem;color:#1c1917;font-size:.95rem}
+  .field:focus{outline:none;border-color:#f97316}
+  label.lbl{display:block;font-size:.8rem;color:#78716c;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em}
+</style>
+</head>
+<body class="text-[#44403c]">
+<div id="site-header"></div>
+
+<section class="max-w-5xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
+  <p class="text-[#f97316] uppercase tracking-[0.3em] text-xs mb-4">Get In Touch</p>
+  <h1 class="font-serif text-4xl sm:text-5xl text-[#1c1917] mb-4">Contact <span class="text-[#f97316] italic">Us</span></h1>
+  <p class="text-[#78716c] mb-10 max-w-2xl">Questions about a product, an order, or delivery? The fastest way to reach us is WhatsApp — we usually reply within a few hours.</p>
+
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+    <form id="contact-form" class="lg:col-span-3 bg-[#f7f5f2] border border-black/10 rounded-2xl p-6 sm:p-8 space-y-5" novalidate>
+      <h2 class="text-[#1c1917] font-semibold text-lg">Send a Message</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div><label class="lbl">Full Name *</label><input id="c-name" class="field" placeholder="e.g. Ahmed Raza"></div>
+        <div><label class="lbl">Phone *</label><input id="c-phone" class="field" inputmode="tel" placeholder="03XX XXXXXXX"></div>
+      </div>
+      <div><label class="lbl">Email</label><input id="c-email" type="email" class="field" placeholder="you@example.com"></div>
+      <div><label class="lbl">Message *</label><textarea id="c-msg" class="field" rows="4" placeholder="How can we help?"></textarea></div>
+      <p id="c-err" class="hidden text-red-500 text-sm">Please fill your name, a valid phone number, and a message.</p>
+      <button type="submit" class="w-full bg-[#25D366] text-white font-bold py-4 rounded-full hover:brightness-95 transition text-lg">Send on WhatsApp</button>
+      <p class="text-xs text-[#a8a29e] text-center">This opens WhatsApp with your message prefilled — just press send.</p>
+    </form>
+
+    <div class="lg:col-span-2 space-y-6">
+      <div class="bg-[#f7f5f2] border border-black/10 rounded-2xl p-6">
+        <h3 class="text-[#1c1917] font-semibold mb-3">WhatsApp</h3>
+        <p class="text-sm text-[#78716c] mb-4">Fastest response — usually within a few hours.</p>
+        <a id="wa-direct" href="#" target="_blank" rel="noopener" class="inline-block bg-[#1c1917] text-white font-semibold px-6 py-3 rounded-full hover:bg-[#f97316] transition text-sm">Chat on WhatsApp</a>
+      </div>
+      <div class="bg-[#f7f5f2] border border-black/10 rounded-2xl p-6">
+        <h3 class="text-[#1c1917] font-semibold mb-3">Business Hours</h3>
+        <div class="text-sm text-[#78716c] space-y-1.5">
+          <p class="flex justify-between"><span>Monday – Saturday</span><span class="text-[#1c1917]">9:00 AM – 9:00 PM</span></p>
+          <p class="flex justify-between"><span>Sunday</span><span class="text-[#1c1917]">Closed</span></p>
+        </div>
+      </div>
+      <div class="bg-[#f7f5f2] border border-black/10 rounded-2xl p-6">
+        <h3 class="text-[#1c1917] font-semibold mb-3">Order Help</h3>
+        <p class="text-sm text-[#78716c]">Already placed an order? Track it live on the <a href="track.html" class="text-[#f97316] font-semibold hover:underline">Track Order</a> page.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="assets/js/products.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+renderChrome();
+document.getElementById("wa-direct").href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent("Assalam-o-Alaikum! I have a question about TAJ COLLECTIONS.");
+document.getElementById("contact-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const name = document.getElementById("c-name").value.trim();
+  const phone = document.getElementById("c-phone").value.trim();
+  const email = document.getElementById("c-email").value.trim();
+  const msg = document.getElementById("c-msg").value.trim();
+  const digits = phone.replace(/\D/g, "");
+  const ok = name.length >= 3 && msg.length >= 3 && digits.length >= 10 && digits.length <= 12;
+  document.getElementById("c-err").classList.toggle("hidden", ok);
+  if (!ok) return;
+  const text = "*New message from TAJ COLLECTIONS website*\n--------------------------\n" +
+    "Name: " + name + "\nPhone: " + phone +
+    (email ? "\nEmail: " + email : "") + "\nMessage: " + msg;
+  window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(text), "_blank", "noopener");
+});
+</script>
+</body>
+</html>

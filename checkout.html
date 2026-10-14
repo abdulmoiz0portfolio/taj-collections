@@ -25,6 +25,7 @@ label.lbl{display:block;font-size:.8rem;color:#78716c;margin-bottom:.4rem;text-t
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div><label class="lbl">Full Name *</label><input id="f-name" class="field" placeholder="e.g. Ahmed Raza"></div>
         <div><label class="lbl">Phone *</label><input id="f-phone" class="field" inputmode="tel" placeholder="03XX XXXXXXX"></div>
+        <div><label class="lbl">Email (optional)</label><input id="f-email" type="email" class="field" placeholder="you@example.com"></div>
         <div class="sm:col-span-2"><label class="lbl">Complete Address *</label><textarea id="f-addr" class="field" rows="2" placeholder="House, street, area"></textarea></div>
         <div><label class="lbl">City *</label><input id="f-city" class="field" placeholder="e.g. Lahore"></div>
         <div><label class="lbl">Order Notes (optional)</label><input id="f-notes" class="field" placeholder="Any special instructions"></div>
@@ -165,11 +166,14 @@ document.getElementById("order-form").addEventListener("submit", e => {
   // step 2: review & confirm
   orderInfo = {
     name: fName.value.trim(), phone: fPhone.value.trim(),
+    email: document.getElementById("f-email").value.trim(),
     addr: fAddr.value.trim(), city: fCity.value.trim(),
     notes: document.getElementById("f-notes").value.trim(),
   };
   document.getElementById("rev-addr").innerHTML =
-    `<span class="font-semibold">${orderInfo.name}</span> · ${orderInfo.phone}<br>${orderInfo.addr}, ${orderInfo.city}` +
+    `<span class="font-semibold">${orderInfo.name}</span> · ${orderInfo.phone}` +
+    (orderInfo.email ? `<br><span class="text-[#78716c] text-sm">${orderInfo.email}</span>` : "") +
+    `<br>${orderInfo.addr}, ${orderInfo.city}` +
     (orderInfo.notes ? `<br><span class="text-[#78716c] text-sm">Note: ${orderInfo.notes}</span>` : "");
   const c2 = getCart();
   document.getElementById("rev-items").innerHTML = c2.map(i => {
@@ -205,7 +209,7 @@ function buildOrder(num) {
   const t = orderTotals();
   return {
     num, date: Date.now(), status: "Order received",
-    name: orderInfo.name, phone: orderInfo.phone,
+    name: orderInfo.name, phone: orderInfo.phone, email: orderInfo.email,
     addr: orderInfo.addr, city: orderInfo.city, notes: orderInfo.notes,
     items: getCart().map(i => {
       const p = PRODUCTS.find(p => p.id === i.id);
@@ -228,6 +232,7 @@ function waLink(order) {
     "--------------------------",
     "Name: " + order.name,
     "Phone: " + order.phone,
+    ...(order.email ? ["Email: " + order.email] : []),
     "Address: " + order.addr + ", " + order.city,
     ...(order.notes ? ["Notes: " + order.notes] : []),
     "Payment: Cash on Delivery",
@@ -252,6 +257,7 @@ document.getElementById("confirm-btn").addEventListener("click", () => {
   const order = buildOrder(num);
   saveOrder(order);
   forwardOrderToRelay(order); // fire-and-forget: never blocks the success screen
+  forwardOrderToApi(order); // VPS order API: stores order + emails business (fire-and-forget)
   clearCart();
   sessionStorage.setItem("taj_just_ordered", "1");
   document.getElementById("ord-num").textContent = "#" + num;

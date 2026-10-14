@@ -75,6 +75,7 @@ function render() {
 }
 document.getElementById("sort").addEventListener("change", render);
 render();
+document.addEventListener("taj:catalog-updated", render);
 </script>
 </body>
 </html>

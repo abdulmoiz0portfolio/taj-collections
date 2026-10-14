@@ -152,10 +152,10 @@
 <script src="assets/js/app.js"></script>
 <script>
 renderChrome("fabrics-home");
-document.getElementById("featured-grid").innerHTML =
-  ["fab-09","fab-04","fab-01","fab-07"]
-    .map(id => productCard(PRODUCTS.find(p => p.id === id))).join("");
-(function renderRecent() {
+function renderFabricGrids() {
+  document.getElementById("featured-grid").innerHTML =
+    ["fab-09","fab-04","fab-01","fab-07"]
+      .map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean).map(productCard).join("");
   const items = getRecent()
     .map(id => PRODUCTS.find(p => p.id === id))
     .filter(p => p && p.section === "fabrics")
@@ -164,7 +164,9 @@ document.getElementById("featured-grid").innerHTML =
     document.getElementById("recent-sec").classList.remove("hidden");
     document.getElementById("recent-grid").innerHTML = items.map(productCard).join("");
   }
-})();
+}
+renderFabricGrids();
+document.addEventListener("taj:catalog-updated", renderFabricGrids);
 document.getElementById("newsletter-form").addEventListener("submit", e => {
   e.preventDefault();
   e.target.classList.add("hidden");
