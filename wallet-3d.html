@@ -87,66 +87,25 @@
   <!-- Fixed 3D Canvas -->
   <div id="webgl-canvas"></div>
 
-  <!-- Scroll Story Sections (400vh Total) -->
+<!-- Scroll Story Sections (400vh Total) - clean, no overlay cards -->
   <main class="scroll-track">
-
-    <!-- STAGE 1: Front Closed View (0% - 25%) -->
-    <section class="stage-section justify-start">
-      <div class="glass-card max-w-md p-8 rounded-sm space-y-4">
-        <div class="text-[#f97316] text-xs uppercase tracking-[0.25em] font-semibold">01 / Front Silhouette</div>
-        <h2 class="brand-font text-3xl md:text-4xl font-bold text-[#1c1917] leading-tight">FULL-GRAIN VEGETABLE HIDE</h2>
-        <p class="text-stone-600 text-sm leading-relaxed">
-          We start with the closed front profile. Cut from a single piece of 1.4mm top-tier calfskin, featuring a hand-burnished edge and a solid brushed brass TAJ emblem.
-        </p>
-        <div class="pt-2 flex items-center gap-2 text-xs text-[#f97316] uppercase tracking-widest animate-bounce">
-          <span>Scroll to Turn & Reveal</span> ↓
-        </div>
-      </div>
-    </section>
-
-    <!-- STAGE 2: 360° Spine & Stitching Inspection (25% - 50%) -->
-    <section class="stage-section justify-end">
-      <div class="glass-card max-w-md p-8 rounded-sm space-y-4">
-        <div class="text-[#f97316] text-xs uppercase tracking-[0.25em] font-semibold">02 / 180° Turn & Saddle Stitch</div>
-        <h2 class="brand-font text-3xl md:text-4xl font-bold text-[#1c1917] leading-tight">REINFORCED TENSION FOLD</h2>
-        <p class="text-stone-600 text-sm leading-relaxed">
-          As the wallet rotates in 3D space, inspect the ultra-slim 9mm folded profile and waxed linen saddle stitching—engineered so the spine never cracks under pocket pressure.
-        </p>
-      </div>
-    </section>
-
-    <!-- STAGE 3: Unfolding the Bifold (50% - 75%) -->
-    <section class="stage-section justify-start">
-      <div class="glass-card max-w-md p-8 rounded-sm space-y-4">
-        <div class="text-[#f97316] text-xs uppercase tracking-[0.25em] font-semibold">03 / Interior Reveal</div>
-        <h2 class="brand-font text-3xl md:text-4xl font-bold text-[#1c1917] leading-tight">180° BUTTERFLY UNFOLD</h2>
-        <p class="text-stone-600 text-sm leading-relaxed">
-          Watch the dual-hinge mechanism open flat. The interior reveals skived V-cut card slots on both wings, balancing maximum card grip with zero unnecessary bulk.
-        </p>
-      </div>
-    </section>
-
-    <!-- STAGE 4: Exploded Space & Capacity Inspection (75% - 100%) -->
-    <section class="stage-section justify-end">
-      <div class="glass-card max-w-md p-8 rounded-sm space-y-5">
-        <div class="text-[#f97316] text-xs uppercase tracking-[0.25em] font-semibold">04 / Internal Space & Capacity</div>
-        <h2 class="brand-font text-3xl md:text-4xl font-bold text-[#1c1917] leading-tight">ENGINEERED COMPARTMENTS</h2>
-        <p class="text-stone-600 text-sm leading-relaxed">
-          Every millimeter is accounted for. In this exploded view, see how the cards, hidden RFID shield, and full-length PKR/USD cash divider sit cleanly inside the frame:
-        </p>
-        <ul class="text-xs text-stone-700 space-y-2 border-t border-stone-200 pt-3">
-          <li class="flex justify-between"><span>• 6 Quick-Access Card Slots</span> <span class="text-[#f97316]">Left & Right Wings</span></li>
-          <li class="flex justify-between"><span>• Dual Full-Length Cash Sleeves</span> <span class="text-[#f97316]">Top Billfold Divider</span></li>
-          <li class="flex justify-between"><span>• 2 Hidden Stash Pockets</span> <span class="text-[#f97316]">Underneath Card Stack</span></li>
-        </ul>
-        <button id="order-btn" class="w-full py-3.5 bg-[#f97316] hover:bg-[#ea580c] text-white font-bold text-xs uppercase tracking-[0.2em] transition rounded-sm">
-          Add to Cart — Rs 2,499
-        </button>
-        <a href="product.html?section=leathers&id=wallet-bifold" class="block text-center text-xs text-stone-500 hover:text-[#f97316] uppercase tracking-widest transition">← Back to product page</a>
-      </div>
-    </section>
-
+    <section class="stage-section"></section>
+    <section class="stage-section"></section>
+    <section class="stage-section"></section>
+    <section class="stage-section"></section>
   </main>
+
+  <!-- Minimal scroll hint (fades after scrolling) -->
+  <div id="scroll-hint" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-30 text-[#1c1917]/60 text-xs uppercase tracking-[0.25em] transition-opacity duration-700 flex items-center gap-2">
+    <span>Scroll</span><span class="animate-bounce inline-block">↓</span>
+  </div>
+
+  <!-- Floating order button -->
+  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-30">
+    <button id="order-btn" class="bg-[#f97316] hover:bg-[#ea580c] text-white font-bold text-xs uppercase tracking-[0.2em] px-8 py-3.5 rounded-full shadow-[0_8px_30px_rgba(249,115,22,0.4)] transition">
+      Add to Cart — Rs 2,499
+    </button>
+  </div>
 
   <script src="assets/js/products.js"></script>
   <script src="assets/js/store.js"></script>
@@ -438,6 +397,8 @@
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       targetScroll = maxScroll > 0 ? window.scrollY / maxScroll : 0;
       document.getElementById('scroll-progress').style.width = `${targetScroll * 100}%`;
+      const hint = document.getElementById('scroll-hint');
+      if (hint) hint.style.opacity = targetScroll > 0.03 ? '0' : '1';
     });
 
     // --- Leather Color Customizer ---
