@@ -1,5 +1,5 @@
-/* TAJ LEATHERS — product catalog (all original) */
-const PRODUCTS = [
+/* TAJ COLLECTIONS — product catalog (all original) */
+const LEATHER_PRODUCTS = [
   // ---- BELTS ----
   { id: "belt-heritage", name: "Heritage Classic Belt", cat: "belts",
     price: 3499, oldPrice: 4999, img: "belt-classic.jpg",
@@ -76,9 +76,94 @@ const PRODUCTS = [
     desc: "Perforated rally styling in deep oxblood. For chronographs and anyone who likes their wrist with character.",
     details: ["Full-grain perforated leather", "Quick-release spring bars", "Rally perforation pattern", "Fits 20mm / 22mm lugs"] },
 ];
-const CATS = {
+
+const FABRIC_PRODUCTS = [
+  // ---- WASH & WEAR ----
+  { id: "fab-01", name: "Executive Wash & Wear", cat: "washwear",
+    price: 3299, oldPrice: 4499, img: "fabric-washwear.jpg",
+    colors: ["Slate Grey", "Navy", "Beige"], sizes: ["Single Suit (4m)", "Double Suit (8m)"],
+    badge: "-27%",
+    desc: "Our bestselling wash & wear — crisp, wrinkle-resistant and cool to the touch. A 4-meter cutting tailored for the perfect shalwar kameez, season after season.",
+    details: ["Premium blended wash & wear", "Wrinkle-resistant finish", "4-meter suit cutting", "Color-fast dyes"] },
+  { id: "fab-02", name: "Royal Wash & Wear", cat: "washwear",
+    price: 3999, oldPrice: 5499, img: "fabric-stack.jpg",
+    colors: ["Charcoal", "Off White"], sizes: ["Single Suit (4m)", "Double Suit (8m)"],
+    badge: "-27%",
+    desc: "A denser, richer weave for those who notice the difference. Royal Wash & Wear holds its shape from morning meetings to late dinners.",
+    details: ["High-density wash & wear weave", "Shape-retaining finish", "4-meter suit cutting", "Premium color palette"] },
+  { id: "fab-03", name: "Everyday Wash & Wear", cat: "washwear",
+    price: 2499, oldPrice: 3299, img: "fabric-washwear.jpg",
+    colors: ["Sky Blue", "Light Grey"], sizes: ["Single Suit (4m)", "Double Suit (8m)"],
+    badge: "-24%",
+    desc: "Honest fabric at an honest price. Soft, breathable and easy to maintain — the daily driver of your wardrobe.",
+    details: ["Soft-touch wash & wear", "Easy machine wash", "4-meter suit cutting", "Everyday color range"] },
+  // ---- COTTON ----
+  { id: "fab-04", name: "Premium Egyptian Cotton", cat: "cotton",
+    price: 4499, oldPrice: 5999, img: "fabric-cotton.jpg",
+    colors: ["White", "Sky"], sizes: ["Single Suit (4m)", "Double Suit (8m)"],
+    badge: "-25%",
+    desc: "Long-staple Egyptian cotton with a smooth, cool hand-feel. Breathes in the harshest summer and drapes like it was made for you.",
+    details: ["100% long-staple cotton", "Breathable summer weave", "4-meter suit cutting", "Pre-shrunk fabric"] },
+  { id: "fab-05", name: "Classic Latha Cotton", cat: "cotton",
+    price: 2999, oldPrice: 3999, img: "fabric-stack.jpg",
+    colors: ["Cream", "Beige"], sizes: ["Single Suit (4m)", "Double Suit (8m)"],
+    badge: "-25%",
+    desc: "The timeless latha — light, airy and endlessly comfortable. A wardrobe staple your tailor will thank you for.",
+    details: ["Fine-count cotton latha", "Lightweight summer feel", "4-meter suit cutting", "Fade-resistant"] },
+  { id: "fab-06", name: "Summer Breeze Cotton", cat: "cotton",
+    price: 3499, oldPrice: 4699, img: "fabric-cotton.jpg",
+    colors: ["Mint", "White"], sizes: ["Single Suit (4m)", "Double Suit (8m)"],
+    badge: "-26%",
+    desc: "An open, airy weave that moves heat away from the body. Summer Breeze is the coolest thing you'll wear this season.",
+    details: ["Open-weave breathable cotton", "Moisture-wicking feel", "4-meter suit cutting", "Soft washed finish"] },
+  // ---- KHADDAR ----
+  { id: "fab-07", name: "Heritage Handloom Khaddar", cat: "khaddar",
+    price: 3799, oldPrice: 4999, img: "fabric-khaddar.jpg",
+    colors: ["Natural", "Earth Brown"], sizes: ["Single Suit (4m)", "Double Suit (8m)"],
+    badge: "-24%",
+    desc: "Woven on traditional handlooms, our khaddar carries the texture of heritage. Warm, sturdy and full of character.",
+    details: ["Authentic handloom khaddar", "Rich natural texture", "4-meter suit cutting", "Gets softer with wear"] },
+  { id: "fab-08", name: "Winter Warm Khaddar", cat: "khaddar",
+    price: 4199, oldPrice: 5499, img: "fabric-khaddar.jpg",
+    colors: ["Camel", "Dark Brown"], sizes: ["Single Suit (4m)", "Double Suit (8m)"],
+    badge: "-24%",
+    desc: "A heavier winter-weight khaddar that keeps the chill out in style. Deep, warm tones for the cold months.",
+    details: ["Heavy winter-weight khaddar", "Insulating dense weave", "4-meter suit cutting", "Rich winter palette"] },
+  // ---- BOSKI ----
+  { id: "fab-09", name: "Shahi Boski Silk", cat: "boski",
+    price: 5999, oldPrice: 7999, img: "fabric-boski.jpg",
+    colors: ["Cream", "Champagne"], sizes: ["Single Suit (4m)", "Double Suit (8m)"],
+    badge: "-25%",
+    desc: "The king of unstitched fabrics. Shahi Boski's silk-touch sheen turns heads at every wedding and Eid gathering.",
+    details: ["Premium silk-blend boski", "Signature lustrous sheen", "4-meter suit cutting", "Wedding & festive wear"] },
+  { id: "fab-10", name: "Gold Class Boski", cat: "boski",
+    price: 5499, oldPrice: 7299, img: "fabric-boski.jpg",
+    colors: ["Ivory", "Golden"], sizes: ["Single Suit (4m)", "Double Suit (8m)"],
+    badge: "-25%",
+    desc: "Liquid-smooth boski with a golden glow. Gold Class drapes effortlessly and photographs beautifully.",
+    details: ["Silk-touch boski weave", "Golden undertone finish", "4-meter suit cutting", "Premium festive wear"] },
+];
+
+LEATHER_PRODUCTS.forEach(p => p.section = "leathers");
+FABRIC_PRODUCTS.forEach(p => p.section = "fabrics");
+const PRODUCTS = [...LEATHER_PRODUCTS, ...FABRIC_PRODUCTS];
+
+const LEATHER_CATS = {
   belts:   { name: "Belts",        tag: "Cut to last a lifetime", img: "belt-classic.jpg" },
   wallets: { name: "Wallets",      tag: "Carry less, keep more",  img: "wallet-bifold.jpg" },
   straps:  { name: "Watch Straps", tag: "A new wrist, every day", img: "strap-brown.jpg" },
 };
+const FABRIC_CATS = {
+  washwear: { name: "Wash & Wear", tag: "Wrinkle-free everyday suiting", img: "fabric-washwear.jpg" },
+  cotton:   { name: "Cotton",      tag: "Breathable summer comfort",    img: "fabric-cotton.jpg" },
+  khaddar:  { name: "Khaddar",     tag: "Handloom heritage weave",      img: "fabric-khaddar.jpg" },
+  boski:    { name: "Boski",       tag: "Silk-touch luxury",            img: "fabric-boski.jpg" },
+};
+const CATS = { ...LEATHER_CATS, ...FABRIC_CATS };
+
+const SECTIONS = {
+  leathers: { name: "TAJ LEATHERS", home: "leathers.html", sub: "Every piece, handcrafted.", cats: LEATHER_CATS },
+  fabrics:  { name: "TAJ FABRICS",  home: "fabrics.html",  sub: "Cut fresh from the roll.",  cats: FABRIC_CATS },
+};
+
 const FREE_SHIP_THRESHOLD = 8000;

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checkout — TAJ LEATHERS</title>
+<title>Checkout — TAJ COLLECTIONS</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -105,7 +105,7 @@ function render() {
     return `<div class="flex gap-3 items-center">
       <img src="assets/img/${p.img}" class="w-14 h-14 object-cover rounded-lg" alt="">
       <div class="flex-1 min-w-0"><p class="text-sm text-[#1c1917] truncate">${p.name}</p>
-      <p class="text-xs text-[#a8a29e]">Qty ${i.qty}</p></div>
+      <p class="text-xs text-[#a8a29e]">${SECTIONS[p.section].name} · Qty ${i.qty}</p></div>
       <span class="text-sm text-[#f97316] font-semibold">${fmt(p.price * i.qty)}</span></div>`;
   }).join("");
   const sub = cartTotal();
@@ -148,7 +148,7 @@ document.getElementById("order-form").addEventListener("submit", e => {
     return `<div class="flex gap-3 items-center bg-black/5 rounded-xl p-3">
       <img src="assets/img/${p.img}" class="w-12 h-12 object-cover rounded-lg" alt="">
       <div class="flex-1 min-w-0"><p class="text-sm text-[#1c1917] truncate">${p.name}</p>
-      <p class="text-xs text-[#a8a29e]">${[i.color, i.size].filter(Boolean).join(" · ")} · Qty ${i.qty}</p></div>
+      <p class="text-xs text-[#a8a29e]">${SECTIONS[p.section].name} · ${[i.color, i.size].filter(Boolean).join(" · ")} · Qty ${i.qty}</p></div>
       <span class="text-sm text-[#f97316] font-semibold">${fmt(p.price * i.qty)}</span></div>`;
   }).join("");
   const sub2 = cartTotal(), sc2 = sub2 >= FREE_SHIP_THRESHOLD ? 0 : 199;

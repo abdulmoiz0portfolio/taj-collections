@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Cart — TAJ LEATHERS</title>
+<title>Your Cart — TAJ COLLECTIONS</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -62,10 +62,10 @@ function render() {
     const p = PRODUCTS.find(p => p.id === i.id);
     if (!p) return "";
     return `<div class="bg-[#f7f5f2] border border-black/10 rounded-2xl p-4 flex gap-4 items-center">
-      <a href="product.html?id=${p.id}"><img src="assets/img/${p.img}" alt="${p.name}" class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl"></a>
+      <a href="product.html?section=${p.section}&id=${p.id}"><img src="assets/img/${p.img}" alt="${p.name}" class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl"></a>
       <div class="flex-1 min-w-0">
-        <a href="product.html?id=${p.id}" class="text-[#1c1917] font-medium hover:text-[#f97316] block truncate">${p.name}</a>
-        <p class="text-xs text-[#a8a29e] mt-1">${[i.color, i.size].filter(Boolean).join(" · ")}</p>
+        <a href="product.html?section=${p.section}&id=${p.id}" class="text-[#1c1917] font-medium hover:text-[#f97316] block truncate">${p.name}</a>
+        <p class="text-xs text-[#a8a29e] mt-1"><span class="text-[#f97316] font-semibold">${SECTIONS[p.section].name}</span> · ${[i.color, i.size].filter(Boolean).join(" · ")}</p>
         <div class="flex items-center justify-between mt-3">
           <div class="flex items-center border border-black/15 rounded-full">
             <button onclick="setQty('${i.key}', ${i.qty - 1}); render()" class="w-8 h-8 text-[#57534e] hover:text-[#f97316]">−</button>
