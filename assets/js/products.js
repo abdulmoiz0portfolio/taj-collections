@@ -27,7 +27,8 @@ const LEATHER_PRODUCTS = [
     details: ["Full-grain bridle leather", "Traditional saddle stitching", "Solid roller buckle", "Width: 38mm"] },
   // ---- WALLETS ----
   { id: "wallet-bifold", name: "Executive Bifold", cat: "wallets",
-    price: 2499, oldPrice: 3499, img: "wallet-bifold.jpg",
+    price: 2499, oldPrice: 3499, img: "wallet-real-1.jpg",
+    gallery: ["wallet-real-1.jpg","wallet-real-2.jpg","wallet-real-3.jpg","wallet-real-4.jpg","wallet-real-5.jpg"],
     colors: ["Jet Black", "Espresso"], sizes: ["Standard"],
     badge: "-29%",
     desc: "Eight cards, folded notes, and a silhouette that stays slim. The Executive Bifold is the wallet you buy once and carry for a decade.",

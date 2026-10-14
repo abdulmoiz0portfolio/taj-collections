@@ -49,7 +49,10 @@ function acc(title, body) {
 function paint() {
   document.getElementById("product-wrap").innerHTML = `
     <div class="relative rounded-3xl overflow-hidden bg-[#f7f5f2] border border-black/5">
-      <img src="assets/img/${p.img}" alt="${p.name}" class="w-full aspect-square object-cover">
+      <img id="p-main-img" src="assets/img/${p.img}" alt="${p.name}" class="w-full aspect-square object-cover">
+      ${(p.gallery||[]).length > 1 ? `<div class="flex gap-2 mt-3">` + p.gallery.map((g,i) =>
+        `<img src="assets/img/${g}" data-i="${i}" class="gal-thumb w-16 h-16 object-cover rounded-lg cursor-pointer ring-2 ${i===0?'ring-[#f97316]':'ring-transparent'} hover:ring-[#f97316] transition">`
+      ).join("") + `</div>` : ""}
       <span class="absolute top-4 left-4 bg-red-700 text-[#1c1917] text-sm font-bold px-3 py-1.5 rounded-full">${p.badge} OFF</span>
     </div>
     <div>
@@ -98,6 +101,12 @@ paint();
 document.getElementById("related").innerHTML =
   PRODUCTS.filter(x => x.section === p.section && x.cat === p.cat && x.id !== p.id).slice(0, 4)
     .map(productCard).join("");
+
+    document.querySelectorAll('.gal-thumb').forEach(t => t.addEventListener('click', () => {
+      document.getElementById('p-main-img').src = t.src;
+      document.querySelectorAll('.gal-thumb').forEach(x => { x.classList.remove('ring-[#f97316]'); x.classList.add('ring-transparent'); });
+      t.classList.remove('ring-transparent'); t.classList.add('ring-[#f97316]');
+    }));
 </script>
 </body>
 </html>
