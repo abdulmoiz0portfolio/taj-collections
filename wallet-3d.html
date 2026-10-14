@@ -479,11 +479,12 @@
       leftHinge.position.z = lerp(0.08, 0.0, pOpen);
 
       // 3. Re-center Wallet X Position as it unfolds from single-wing width to double-wing width
-      // When closed, right wing occupies X: [0, 2.2], so center is at X = -1.1. When open, center is X = 0.
-      const centerOffset = lerp(-W / 2, 0, pOpen);
-      // Shift slightly left or right depending on which side the text card is on
+      // When closed, right wing occupies local X: [0, 2.2] scaled by 0.68, so offset by -(W/2)*0.68 to center it. When open, center is X = 0.
+      const centerOffset = lerp(-W / 2 * 0.68, 0, pOpen);
+      // Keep wallet centered during the 360° spin; only shift for text-card clearance after spin completes
+      const spinDone = smoothstep(remap(currentScroll, 0.36, 0.5));
       const uiClearanceShift = window.innerWidth > 1024
-        ? Math.sin(currentScroll * Math.PI * 3) * 1.15
+        ? Math.sin(currentScroll * Math.PI * 3) * 1.15 * spinDone
         : 0;
 
       walletRoot.position.x = centerOffset + uiClearanceShift;
