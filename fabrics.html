@@ -7,10 +7,10 @@
 <meta name="description" content="TAJ FABRICS — premium unstitched Wash & Wear, Cotton, Khaddar and Boski suitings. 4-meter suit cuttings, cash on delivery across Pakistan.">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   body { font-family: 'Inter', sans-serif; background: #ffffff; }
-  .font-serif { font-family: 'Playfair Display', serif; }
+  .font-serif { font-family: 'Cinzel', serif; }
 </style>
 </head>
 <body class="text-[#44403c]">
@@ -78,6 +78,14 @@
   <div id="featured-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
 </section>
 
+<!-- RECENTLY VIEWED -->
+<section id="recent-sec" class="max-w-7xl mx-auto px-4 sm:px-6 py-10 hidden">
+  <div class="flex items-end justify-between mb-8">
+    <div><h2 class="font-serif text-3xl sm:text-4xl text-[#1c1917]">Recently Viewed</h2><p class="text-[#78716c] mt-2">Picked up where you left off.</p></div>
+  </div>
+  <div id="recent-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+</section>
+
 <!-- WHY CHOOSE -->
 <section class="bg-[#f7f5f2] border-y border-black/5 mt-20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
@@ -141,15 +149,29 @@
 <div id="site-footer"></div>
 <script src="assets/js/products.js"></script>
 <script src="assets/js/store.js"></script>
+<script src="assets/js/app.js"></script>
 <script>
 renderChrome("fabrics-home");
 document.getElementById("featured-grid").innerHTML =
   ["fab-09","fab-04","fab-01","fab-07"]
     .map(id => productCard(PRODUCTS.find(p => p.id === id))).join("");
+(function renderRecent() {
+  const items = getRecent()
+    .map(id => PRODUCTS.find(p => p.id === id))
+    .filter(p => p && p.section === "fabrics")
+    .slice(0, 4);
+  if (items.length) {
+    document.getElementById("recent-sec").classList.remove("hidden");
+    document.getElementById("recent-grid").innerHTML = items.map(productCard).join("");
+  }
+})();
 document.getElementById("newsletter-form").addEventListener("submit", e => {
   e.preventDefault();
   e.target.classList.add("hidden");
-  document.getElementById("newsletter-ok").classList.remove("hidden");
+  const ok = document.getElementById("newsletter-ok");
+  ok.innerHTML = 'Welcome to the Inner Circle — use code <strong class="text-white bg-[#f97316] px-2 py-0.5 rounded">WELCOME10</strong> for 10% off your first order.';
+  ok.classList.remove("hidden");
+  toast("Code WELCOME10 unlocked — 10% off!");
 });
 </script>
 </body>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Your Order — TAJ COLLECTIONS</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>body{font-family:'Inter',sans-serif;background:#ffffff}.font-serif{font-family:'Cinzel',serif}</style>
+</head>
+<body class="text-[#44403c]">
+<div id="site-header"></div>
+
+<section class="max-w-2xl mx-auto px-4 sm:px-6 py-14">
+  <h1 class="font-serif text-3xl sm:text-4xl text-[#1c1917] mb-2">Track Your Order</h1>
+  <p class="text-[#78716c] mb-10">Enter the order number from your confirmation (e.g. TJ-482913).</p>
+
+  <form onsubmit="return doTrack(event)" class="flex gap-2 mb-10">
+    <input id="track-num" type="text" placeholder="Order number" autocomplete="off"
+           class="flex-1 min-w-0 bg-[#f7f5f2] border border-black/10 rounded-full px-6 py-3.5 focus:outline-none focus:border-[#f97316] uppercase">
+    <button class="bg-[#f97316] text-white font-semibold px-8 py-3.5 rounded-full hover:bg-[#ea580c] transition whitespace-nowrap">Track</button>
+  </form>
+
+  <div id="track-result"></div>
+</section>
+
+<div id="site-footer"></div>
+<script src="assets/js/products.js"></script>
+<script src="assets/js/store.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+renderChrome("track");
+function doTrack(e) {
+  e.preventDefault();
+  const o = findOrder(document.getElementById("track-num").value);
+  const box = document.getElementById("track-result");
+  if (!o) {
+    box.innerHTML = `<div class="bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
+      <p class="text-[#1c1917] font-semibold mb-1">Order not found</p>
+      <p class="text-sm text-[#78716c]">Check the number and try again. Orders placed on this device appear here.</p></div>`;
+    return false;
+  }
+  const d = new Date(o.date).toLocaleDateString("en-PK", { day: "numeric", month: "short", year: "numeric" });
+  box.innerHTML = `
+    <div class="bg-[#f7f5f2] border border-black/10 rounded-2xl p-6 sm:p-8">
+      <div class="flex items-center justify-between mb-6">
+        <div><p class="text-xs uppercase tracking-widest text-[#a8a29e]">Order</p>
+        <p class="font-serif text-2xl text-[#1c1917]">#${o.num}</p></div>
+        <span class="text-xs font-semibold bg-[#f97316]/15 text-[#f97316] px-4 py-2 rounded-full">${o.status}</span>
+      </div>
+      <p class="text-xs uppercase tracking-widest text-[#a8a29e] mb-3">Items</p>
+      <div class="space-y-3 mb-6">${o.items.map(it => `
+        <div class="flex justify-between text-sm gap-3">
+          <span class="text-[#1c1917]">${it.name}${it.variant ? ` <span class="text-[#a8a29e]">(${it.variant})</span>` : ""} <span class="text-[#a8a29e]">× ${it.qty}</span></span>
+          <span class="text-[#f97316] font-semibold whitespace-nowrap">${fmt(it.price * it.qty)}</span>
+        </div>`).join("")}</div>
+      <div class="border-t border-black/10 pt-4 space-y-2 text-sm">
+        <div class="flex justify-between text-[#78716c]"><span>Subtotal</span><span class="text-[#1c1917]">${fmt(o.sub)}</span></div>
+        ${o.discount ? `<div class="flex justify-between text-green-700"><span>Discount (${o.promo})</span><span>−${fmt(o.discount)}</span></div>` : ""}
+        <div class="flex justify-between text-[#78716c]"><span>Shipping</span><span class="text-[#1c1917]">${o.ship === 0 ? "FREE" : fmt(o.ship)}</span></div>
+        <div class="flex justify-between font-bold text-lg text-[#1c1917] pt-2"><span>Total (COD)</span><span class="text-[#f97316]">${fmt(o.total)}</span></div>
+      </div>
+      <div class="mt-6 pt-5 border-t border-black/10 text-sm text-[#78716c]">
+        <p><span class="text-[#1c1917] font-medium">${o.name}</span> · ${o.phone}</p>
+        <p class="mt-1">${o.addr}, ${o.city}</p>
+        <p class="mt-1 text-xs text-[#a8a29e]">Placed ${d} · Pay cash on delivery</p>
+      </div>
+    </div>`;
+  return false;
+}
+// prefill from ?num=
+const qn = new URLSearchParams(location.search).get("num");
+if (qn) { document.getElementById("track-num").value = qn; doTrack(new Event("submit")); }
+</script>
+</body>
+</html>

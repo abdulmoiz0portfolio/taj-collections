@@ -1,6 +1,44 @@
-/* TAJ COLLECTIONS — shared store logic (cart, components) */
+/* TAJ COLLECTIONS — shared store logic (cart, promos, wishlist, reviews, orders) */
 const BRAND = "TAJ COLLECTIONS";
-const WA_NUMBER = "923001234567"; // placeholder WhatsApp number
+const WA_NUMBER = "923001234567"; // placeholder WhatsApp number — Moiz to supply real one
+const SHIP_FLAT = 199;
+
+/* ---------- promos ---------- */
+const PROMOS = {
+  WELCOME10: { type: "pct",  value: 10,  desc: "10% off your order" },
+  FLAT500:   { type: "flat", value: 500, min: 5000, desc: "Rs 500 off on orders over Rs 5,000" },
+};
+function getPromo() {
+  try { return JSON.parse(localStorage.getItem("taj_promo") || "null"); }
+  catch { return null; }
+}
+function setPromo(code) {
+  code = (code || "").trim().toUpperCase();
+  const cfg = PROMOS[code];
+  if (!cfg) return { ok: false, msg: "Invalid promo code. Try WELCOME10." };
+  const sub = cartTotal();
+  if (cfg.min && sub < cfg.min)
+    return { ok: false, msg: code + " needs a minimum order of " + fmt(cfg.min) + "." };
+  localStorage.setItem("taj_promo", JSON.stringify({ code }));
+  return { ok: true, msg: code + " applied — " + cfg.desc + "." };
+}
+function clearPromo() { localStorage.removeItem("taj_promo"); }
+function promoDiscount(sub) {
+  const pr = getPromo();
+  if (!pr) return 0;
+  const cfg = PROMOS[pr.code];
+  if (!cfg) { clearPromo(); return 0; }
+  if (cfg.min && sub < cfg.min) return 0;
+  if (cfg.type === "pct") return Math.round(sub * cfg.value / 100);
+  return Math.min(cfg.value, sub);
+}
+function shipCost(sub) { return sub >= FREE_SHIP_THRESHOLD || sub === 0 ? 0 : SHIP_FLAT; }
+function orderTotals() {
+  const sub = cartTotal();
+  const discount = promoDiscount(sub);
+  const ship = shipCost(sub); // free-ship promise evaluated on pre-discount subtotal
+  return { sub, discount, ship, total: sub - discount + ship, promo: getPromo() };
+}
 
 /* ---------- cart ---------- */
 function getCart() {
@@ -22,12 +60,14 @@ function addToCart(id, qty = 1, color = null, size = null) {
   if (found) found.qty += qty;
   else cart.push({ key, id, qty, color, size });
   saveCart(cart); updateCartBadge();
+  if (typeof renderDrawer === "function") renderDrawer();
 }
 function setQty(key, qty) {
   let cart = getCart();
   if (qty <= 0) cart = cart.filter(i => i.key !== key);
   else { const f = cart.find(i => i.key === key); if (f) f.qty = qty; }
   saveCart(cart); updateCartBadge();
+  if (typeof renderDrawer === "function") renderDrawer();
 }
 function clearCart() { saveCart([]); updateCartBadge(); }
 function updateCartBadge() {
@@ -38,20 +78,112 @@ function updateCartBadge() {
 }
 const fmt = n => "Rs " + n.toLocaleString("en-PK");
 
+/* ---------- wishlist ---------- */
+function getWish() {
+  try { return JSON.parse(localStorage.getItem("taj_wish") || "[]"); }
+  catch { return []; }
+}
+function isWished(id) { return getWish().includes(id); }
+function toggleWish(id) {
+  const w = getWish();
+  const on = !w.includes(id);
+  localStorage.setItem("taj_wish", JSON.stringify(on ? [...w, id] : w.filter(x => x !== id)));
+  updateWishBadge();
+  document.querySelectorAll('[data-wish="' + id + '"]').forEach(b => {
+    b.classList.toggle("wished", on);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  const p = PRODUCTS.find(p => p.id === id);
+  toast(on ? (p.name + " saved to wishlist") : (p.name + " removed from wishlist"));
+}
+function updateWishBadge() {
+  document.querySelectorAll(".wish-count").forEach(el => {
+    const n = getWish().length;
+    el.textContent = n; el.style.display = n > 0 ? "flex" : "none";
+  });
+}
+
+/* ---------- reviews ---------- */
+function getReviews(id) {
+  try { return (JSON.parse(localStorage.getItem("taj_reviews") || "{}"))[id] || []; }
+  catch { return []; }
+}
+function addReview(id, name, stars, text) {
+  let all = {};
+  try { all = JSON.parse(localStorage.getItem("taj_reviews") || "{}"); } catch { all = {}; }
+  (all[id] = all[id] || []).unshift({ name, stars, text, date: Date.now() });
+  localStorage.setItem("taj_reviews", JSON.stringify(all));
+}
+function avgRating(id) {
+  const r = getReviews(id);
+  if (!r.length) return { avg: 0, count: 0 };
+  return { avg: r.reduce((s, x) => s + x.stars, 0) / r.length, count: r.length };
+}
+function starsHTML(avg, count) {
+  const pct = Math.max(0, Math.min(100, (avg / 5) * 100));
+  return `<span class="relative inline-block leading-none whitespace-nowrap align-middle">
+      <span class="text-[#d6d3d1]">★★★★★</span>
+      <span class="absolute inset-0 overflow-hidden text-[#f97316] whitespace-nowrap" style="width:${pct}%">★★★★★</span>
+    </span>` + (count ? `<span class="text-xs text-[#a8a29e] ml-1.5 align-middle">(${count})</span>` : "");
+}
+
+/* ---------- recently viewed ---------- */
+function pushRecent(id) {
+  let r = [];
+  try { r = JSON.parse(localStorage.getItem("taj_recent") || "[]"); } catch { r = []; }
+  r = [id, ...r.filter(x => x !== id)].slice(0, 8);
+  localStorage.setItem("taj_recent", JSON.stringify(r));
+}
+function getRecent() {
+  try { return JSON.parse(localStorage.getItem("taj_recent") || "[]"); }
+  catch { return []; }
+}
+
+/* ---------- orders ---------- */
+function getOrders() {
+  try { return JSON.parse(localStorage.getItem("taj_orders") || "[]"); }
+  catch { return []; }
+}
+function saveOrder(o) {
+  const a = getOrders();
+  a.unshift(o);
+  localStorage.setItem("taj_orders", JSON.stringify(a));
+}
+function findOrder(num) {
+  const n = String(num || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (!n) return null;
+  return getOrders().find(o => String(o.num).toUpperCase().replace(/[^A-Z0-9]/g, "") === n) || null;
+}
+
 /* ---------- product card ---------- */
 function productCard(p) {
+  const r = avgRating(p.id);
+  const wished = isWished(p.id);
   return `
-  <div class="group bg-[#f7f5f2] rounded-2xl overflow-hidden border border-black/5 hover:border-[#f97316]/40 transition-all duration-300 hover:-translate-y-1">
-    <a href="product.html?section=${p.section}&id=${p.id}" class="block relative overflow-hidden aspect-square">
-      <img src="assets/img/${p.img}" alt="${p.name}" loading="lazy"
-           class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-      <span class="absolute top-3 left-3 bg-red-700 text-white text-xs font-bold px-2.5 py-1 rounded-full">${p.badge}</span>
+  <div class="group bg-[#f7f5f2] rounded-2xl overflow-hidden border border-black/5 hover:border-[#f97316]/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(249,115,22,0.12)]">
+    <div class="block relative overflow-hidden aspect-square">
+      <a href="product.html?section=${p.section}&id=${p.id}" class="absolute inset-0" aria-label="${p.name}">
+        <img src="assets/img/${p.img}" alt="${p.name}" loading="lazy"
+             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+      </a>
+      <span class="absolute top-3 left-3 bg-red-700 text-white text-xs font-bold px-2.5 py-1 rounded-full pointer-events-none">${p.badge}</span>
+      <div class="absolute top-3 right-3 flex flex-col gap-2">
+        <button data-wish="${p.id}" onclick="event.preventDefault();toggleWish('${p.id}')" aria-pressed="${wished}" aria-label="Wishlist"
+          class="wish-btn ${wished ? "wished" : ""} w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow hover:scale-110 transition">
+          <svg class="w-[18px] h-[18px]" fill="${wished ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 000-7.8z"/></svg>
+        </button>
+        <button onclick="event.preventDefault();openQuickView('${p.id}')" aria-label="Quick view"
+          class="w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow hover:scale-110 transition text-[#57534e] hover:text-[#f97316]">
+          <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.1 12.1a1 1 0 010-.2 14.4 14.4 0 0119.8 0 1 1 0 010 .2 14.4 14.4 0 01-19.8 0z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
       <button onclick="event.preventDefault();quickAdd('${p.id}')"
             class="absolute bottom-3 left-1/2 -translate-x-1/2 bg-[#f97316] text-white text-sm font-semibold px-5 py-2 rounded-full whitespace-nowrap hover:bg-[#ea580c] transition shadow-lg">Quick Add +</button>
-    </a>
+    </div>
     <div class="p-5">
       <p class="text-xs uppercase tracking-widest text-[#f97316] mb-1">${CATS[p.cat].name}</p>
       <a href="product.html?section=${p.section}&id=${p.id}"><h3 class="font-serif text-lg text-[#1c1917] hover:text-[#f97316] transition">${p.name}</h3></a>
+      <div class="mt-1.5">${starsHTML(r.avg, r.count)}</div>
       <div class="mt-2 flex items-center gap-2">
         <span class="text-[#f97316] font-bold text-lg">${fmt(p.price)}</span>
         <span class="text-[#a8a29e] line-through text-sm">${fmt(p.oldPrice)}</span>
@@ -71,7 +203,7 @@ function toast(msg) {
   if (!t) {
     t = document.createElement("div");
     t.id = "toast";
-    t.className = "fixed bottom-24 left-1/2 -translate-x-1/2 bg-[#f97316] text-white font-semibold px-6 py-3 rounded-full shadow-2xl z-[100] transition-all duration-300 opacity-0 translate-y-4";
+    t.className = "fixed bottom-24 left-1/2 -translate-x-1/2 bg-[#1c1917] text-white font-semibold px-6 py-3 rounded-full shadow-2xl z-[100] transition-all duration-300 opacity-0 translate-y-4 text-sm";
     document.body.appendChild(t);
   }
   t.textContent = msg;
@@ -84,9 +216,18 @@ function toast(msg) {
 function renderChrome(active = "") {
   const nav = (href, label, key) =>
     `<a href="${href}" class="hover:text-[#f97316] transition ${active === key ? "text-[#f97316]" : "text-[#57534e]"}">${label}</a>`;
+  const searchIcon = `<button onclick="openSearch()" aria-label="Search" class="text-[#57534e] hover:text-[#f97316] transition">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/></svg></button>`;
+  const wishIcon = `<a href="wishlist.html" aria-label="Wishlist" class="relative text-[#57534e] hover:text-[#f97316] transition">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 000-7.8z"/></svg>
+      <span class="wish-count absolute -top-2 -right-2 bg-[#f97316] text-white text-[10px] font-bold w-5 h-5 rounded-full items-center justify-center" style="display:none">0</span></a>`;
+  const cartBtn = `<button onclick="openDrawer()" aria-label="Cart" class="relative text-[#57534e] hover:text-[#f97316] transition">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6a1 1 0 00.9 1.4H19M9 22a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z"/></svg>
+      <span class="cart-count absolute -top-2 -right-2 bg-[#f97316] text-white text-[10px] font-bold w-5 h-5 rounded-full items-center justify-center" style="display:none">0</span></button>`;
+
   document.getElementById("site-header").innerHTML = `
     <div class="bg-[#f97316] text-white text-center text-xs sm:text-sm font-semibold py-2 px-4">
-      FREE nationwide delivery on orders over ${fmt(FREE_SHIP_THRESHOLD)} · Cash on Delivery available
+      Free delivery on orders over ${fmt(FREE_SHIP_THRESHOLD)} &nbsp;·&nbsp; Use <span class="underline underline-offset-2 font-bold">WELCOME10</span> for 10% off
     </div>
     <nav class="bg-[#ffffff]/95 backdrop-blur border-b border-black/10 sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
@@ -95,12 +236,10 @@ function renderChrome(active = "") {
           ${nav("index.html", "Home", "gateway")}
           ${nav("leathers.html", "TAJ Leathers", "leathers-home")}
           ${nav("fabrics.html", "TAJ Fabrics", "fabrics-home")}
+          ${nav("track.html", "Track Order", "track")}
         </div>
         <div class="flex items-center gap-4">
-          <a href="cart.html" class="relative text-[#57534e] hover:text-[#f97316] transition" aria-label="Cart">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6a1 1 0 00.9 1.4H19M9 22a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z"/></svg>
-            <span class="cart-count absolute -top-2 -right-2 bg-[#f97316] text-white text-[10px] font-bold w-5 h-5 rounded-full items-center justify-center" style="display:none">0</span>
-          </a>
+          ${searchIcon}${wishIcon}${cartBtn}
           <button id="menu-btn" class="md:hidden text-[#57534e]" aria-label="Menu">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
           </button>
@@ -110,17 +249,24 @@ function renderChrome(active = "") {
         ${nav("index.html", "Home", "gateway")}
         ${nav("leathers.html", "TAJ Leathers", "leathers-home")}
         ${nav("fabrics.html", "TAJ Fabrics", "fabrics-home")}
+        ${nav("wishlist.html", "Wishlist", "wishlist")}
+        ${nav("track.html", "Track Order", "track")}
       </div>
     </nav>`;
   document.getElementById("menu-btn").addEventListener("click", () =>
     document.getElementById("mobile-menu").classList.toggle("hidden"));
 
   document.getElementById("site-footer").innerHTML = `
-    <footer class="bg-[#ffffff] border-t border-black/10 mt-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-        <div>
+    <footer class="bg-[#faf9f7] border-t border-black/10 mt-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-14 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10">
+        <div class="col-span-2 md:col-span-3 lg:col-span-1">
           <p class="font-serif text-2xl text-[#1c1917] mb-4">TAJ <span class="text-[#f97316]">COLLECTIONS</span></p>
-          <p class="text-[#78716c] text-sm leading-relaxed">Premium leather goods and unstitched fabrics from Pakistan. Honest prices, honest quality.</p>
+          <p class="text-[#78716c] text-sm leading-relaxed mb-5">Premium leather goods and unstitched fabrics from Pakistan. Honest prices, honest quality.</p>
+          <form class="foot-news flex gap-2" onsubmit="return footNews(event)">
+            <input type="email" required placeholder="Email for 10% off" class="flex-1 min-w-0 bg-white border border-black/10 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:border-[#f97316]">
+            <button class="bg-[#f97316] text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#ea580c] transition whitespace-nowrap">Join</button>
+          </form>
+          <p class="foot-news-ok hidden text-[#f97316] text-xs mt-2 font-medium">Welcome! Use code <strong>WELCOME10</strong> at checkout.</p>
         </div>
         <div>
           <p class="text-[#1c1917] font-semibold mb-4 text-sm uppercase tracking-widest">TAJ Leathers</p>
@@ -138,6 +284,15 @@ function renderChrome(active = "") {
             <a href="category.html?section=fabrics&cat=cotton" class="hover:text-[#f97316]">Cotton</a>
             <a href="category.html?section=fabrics&cat=khaddar" class="hover:text-[#f97316]">Khaddar</a>
             <a href="category.html?section=fabrics&cat=boski" class="hover:text-[#f97316]">Boski</a>
+          </div>
+        </div>
+        <div>
+          <p class="text-[#1c1917] font-semibold mb-4 text-sm uppercase tracking-widest">Help</p>
+          <div class="flex flex-col gap-2 text-sm text-[#78716c]">
+            <a href="track.html" class="hover:text-[#f97316]">Track Your Order</a>
+            <a href="cart.html" class="hover:text-[#f97316]">Your Cart</a>
+            <a href="wishlist.html" class="hover:text-[#f97316]">Wishlist</a>
+            <a href="https://wa.me/${WA_NUMBER}" target="_blank" rel="noopener" class="hover:text-[#f97316]">Contact Us</a>
           </div>
         </div>
         <div>
@@ -159,5 +314,14 @@ function renderChrome(active = "") {
       <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5 0 1.47 1.07 2.9 1.22 3.1.15.2 2.1 3.2 5.1 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 01-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 019.88 9.89c0 5.45-4.44 9.88-9.89 9.88M20.5 3.49A11.8 11.8 0 0012.05 0C5.5 0 .16 5.34.16 11.9c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.9 11.9 0 005.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.9 0-3.18-1.24-6.16-3.44-8.41"/></svg>
     </a>`;
   updateCartBadge();
+  updateWishBadge();
 }
-document.addEventListener("DOMContentLoaded", updateCartBadge);
+function footNews(e) {
+  e.preventDefault();
+  const form = e.target;
+  form.classList.add("hidden");
+  form.parentElement.querySelector(".foot-news-ok").classList.remove("hidden");
+  toast("Welcome! Use code WELCOME10 for 10% off.");
+  return false;
+}
+document.addEventListener("DOMContentLoaded", () => { updateCartBadge(); updateWishBadge(); });
