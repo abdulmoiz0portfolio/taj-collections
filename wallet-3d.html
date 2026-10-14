@@ -548,7 +548,8 @@
       walletMaster.position.x = lerp(-W / 2 * 0.55, 0, pOpen);
       walletMaster.position.y = Math.sin(time * 1.4) * 0.05 - (pExplode * 0.25);
 
-      // Cash divider drifts back in exploded view
+      // Cash divider drifts back + expands in exploded view (stays hidden inside when closed)
+      cashDividerWall.scale.x = lerp(0.526, 1, pOpen);
       cashDividerWall.position.z = lerp(-0.22, -0.45, pExplode);
 
       // Banknotes expand + eject upward
