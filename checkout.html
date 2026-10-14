@@ -249,7 +249,9 @@ document.getElementById("wa-btn").addEventListener("click", () => {
 
 document.getElementById("confirm-btn").addEventListener("click", () => {
   const num = "TJ-" + Date.now().toString().slice(-6);
-  saveOrder(buildOrder(num));
+  const order = buildOrder(num);
+  saveOrder(order);
+  forwardOrderToRelay(order); // fire-and-forget: never blocks the success screen
   clearCart();
   sessionStorage.setItem("taj_just_ordered", "1");
   document.getElementById("ord-num").textContent = "#" + num;

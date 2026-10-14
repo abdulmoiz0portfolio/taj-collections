@@ -1,6 +1,7 @@
 /* TAJ COLLECTIONS — shared store logic (cart, promos, wishlist, reviews, orders) */
 const BRAND = "TAJ COLLECTIONS";
 const WA_NUMBER = "923001234567"; // placeholder WhatsApp number — Moiz to supply real one
+const RELAY_URL = ""; // e.g. "https://taj-order-relay.onrender.com" — leave "" to disable auto-forward
 const SHIP_FLAT = 199;
 
 /* ---------- promos ---------- */
@@ -325,3 +326,126 @@ function footNews(e) {
   return false;
 }
 document.addEventListener("DOMContentLoaded", () => { updateCartBadge(); updateWishBadge(); });
+
+/* ---------- per-product "Order on WhatsApp" ---------- */
+let _waCtx = null;
+function openWhatsAppOrder(id, color, size, qty) {
+  const p = PRODUCTS.find(p => p.id === id);
+  if (!p) return;
+  _waCtx = { p, color: color || p.colors[0], size: size || p.sizes[0], qty: Math.max(1, qty || 1) };
+  let m = document.getElementById("wa-order-modal");
+  if (!m) {
+    m = document.createElement("div");
+    m.id = "wa-order-modal";
+    document.body.appendChild(m);
+  }
+  const c = _waCtx;
+  m.innerHTML = `
+    <div class="fixed inset-0 z-[120] bg-black/55 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this)closeWhatsAppOrder()">
+      <div class="bg-white rounded-3xl w-full max-w-md p-6 sm:p-8 shadow-2xl max-h-[92dvh] overflow-auto">
+        <div class="flex items-start justify-between mb-1">
+          <h3 class="font-serif text-2xl text-[#1c1917]">Order on WhatsApp</h3>
+          <button onclick="closeWhatsAppOrder()" class="text-[#a8a29e] hover:text-[#f97316] text-2xl leading-none">×</button>
+        </div>
+        <p class="text-sm text-[#78716c] mb-4">Fill this in — WhatsApp will open with your order ready to send.</p>
+        <div class="flex gap-3 items-center bg-[#f7f5f2] rounded-2xl p-3 mb-5">
+          <img src="assets/img/${c.p.img}" alt="" class="w-14 h-14 object-cover rounded-xl">
+          <div class="min-w-0">
+            <p class="font-semibold text-sm text-[#1c1917] truncate">${c.p.name}</p>
+            <p class="text-xs text-[#78716c]">${SECTIONS[c.p.section].name} · ${c.color} / ${c.size} · Qty <span id="wa-qty-show">${c.qty}</span></p>
+            <p class="text-sm text-[#f97316] font-bold" id="wa-total-show">${fmt(c.p.price * c.qty)}</p>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div>
+            <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">Your name *</label>
+            <input id="wa-f-name" type="text" placeholder="e.g. Ahmed Raza" class="mt-1 w-full border border-black/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#25D366]">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">Phone *</label>
+            <input id="wa-f-phone" type="tel" placeholder="03XXXXXXXXX" class="mt-1 w-full border border-black/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#25D366]">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">City / Area *</label>
+            <input id="wa-f-city" type="text" placeholder="e.g. DHA Phase 5, Lahore" class="mt-1 w-full border border-black/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#25D366]">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">Full address <span class="text-[#a8a29e] font-normal">(optional)</span></label>
+            <input id="wa-f-addr" type="text" placeholder="House / street" class="mt-1 w-full border border-black/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#25D366]">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">Quantity</label>
+            <div class="mt-1 flex items-center border border-black/15 rounded-xl w-32">
+              <button onclick="waChQty(-1)" class="w-10 h-10 text-lg text-[#57534e]">−</button>
+              <span id="wa-f-qty" class="flex-1 text-center font-semibold">${c.qty}</span>
+              <button onclick="waChQty(1)" class="w-10 h-10 text-lg text-[#57534e]">+</button>
+            </div>
+          </div>
+          <p id="wa-f-err" class="hidden text-xs text-red-600">Please fill name, a valid phone number (10–12 digits) and city/area.</p>
+          <button onclick="submitWhatsAppOrder()" class="w-full bg-[#25D366] hover:bg-[#1fb857] text-white font-bold py-3.5 rounded-full transition flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5 0 1.47 1.07 2.9 1.22 3.1.15.2 2.1 3.2 5.1 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 01-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 019.88 9.89c0 5.45-4.44 9.88-9.89 9.88M20.5 3.49A11.8 11.8 0 0012.05 0C5.5 0 .16 5.34.16 11.9c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.9 11.9 0 005.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.9 0-3.18-1.24-6.16-3.44-8.41"/></svg>
+            Send Order via WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>`;
+  m.style.display = "block";
+  document.body.style.overflow = "hidden";
+}
+function closeWhatsAppOrder() {
+  const m = document.getElementById("wa-order-modal");
+  if (m) m.style.display = "none";
+  document.body.style.overflow = "";
+  _waCtx = null;
+}
+function waChQty(d) {
+  if (!_waCtx) return;
+  _waCtx.qty = Math.max(1, Math.min(9, _waCtx.qty + d));
+  document.getElementById("wa-f-qty").textContent = _waCtx.qty;
+  document.getElementById("wa-qty-show").textContent = _waCtx.qty;
+  document.getElementById("wa-total-show").textContent = fmt(_waCtx.p.price * _waCtx.qty);
+}
+function submitWhatsAppOrder() {
+  if (!_waCtx) return;
+  const name = document.getElementById("wa-f-name").value.trim();
+  const phone = document.getElementById("wa-f-phone").value.trim();
+  const city = document.getElementById("wa-f-city").value.trim();
+  const addr = document.getElementById("wa-f-addr").value.trim();
+  const digits = phone.replace(/\D/g, "");
+  const bad = !(name.length >= 2 && digits.length >= 10 && digits.length <= 12 && city.length >= 2);
+  document.getElementById("wa-f-err").classList.toggle("hidden", !bad);
+  if (bad) return;
+  const c = _waCtx;
+  const lines = [
+    "NEW ORDER — TAJ COLLECTIONS",
+    "Product: " + c.p.name + " (" + SECTIONS[c.p.section].name + ")",
+    "Variant: " + c.color + " / " + c.size,
+    "Qty: " + c.qty + " — Price: " + fmt(c.p.price * c.qty),
+    "----",
+    "Name: " + name,
+    "Phone: " + phone,
+    "Location: " + city,
+    "Address: " + (addr || "—"),
+  ];
+  window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(lines.join("\n")), "_blank", "noopener");
+  closeWhatsAppOrder();
+  toast("Opening WhatsApp — just tap Send!");
+}
+
+/* ---------- relay auto-forward (fire-and-forget) ---------- */
+function forwardOrderToRelay(order) {
+  if (!RELAY_URL) return;
+  try {
+    fetch(RELAY_URL.replace(/\/$/, "") + "/order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        orderNumber: order.num,
+        items: order.items.map(it => ({ name: it.name, variant: it.variant, qty: it.qty, price: it.price })),
+        subtotal: order.sub, discount: order.discount, shipping: order.ship, total: order.total,
+        customer: { name: order.name, phone: order.phone, address: order.addr, city: order.city },
+        source: "taj-collections-checkout",
+      }),
+    }).catch(() => {});
+  } catch (e) {}
+}
