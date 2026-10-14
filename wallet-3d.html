@@ -107,7 +107,7 @@
     <!-- STAGE 2: 360° Spine & Stitching Inspection (25% - 50%) -->
     <section class="stage-section justify-end">
       <div class="glass-card max-w-md p-8 rounded-sm space-y-4">
-        <div class="text-[#f97316] text-xs uppercase tracking-[0.25em] font-semibold">02 / 360° Spine & Saddle Stitch</div>
+        <div class="text-[#f97316] text-xs uppercase tracking-[0.25em] font-semibold">02 / 180° Turn & Saddle Stitch</div>
         <h2 class="brand-font text-3xl md:text-4xl font-bold text-[#1c1917] leading-tight">REINFORCED TENSION FOLD</h2>
         <p class="text-stone-600 text-sm leading-relaxed">
           As the wallet rotates in 3D space, inspect the ultra-slim 9mm folded profile and waxed linen saddle stitching—engineered so the spine never cracks under pocket pressure.
@@ -472,7 +472,7 @@
       const pPeek = smoothstep(remap(currentScroll, 0.28, 0.42)); // cards peek out right after the 180° turn
 
       // 1. Wallet 360 Rotation + Isometric Inspection Tilt in Stage 4
-      walletRoot.rotation.y = pSpin * Math.PI + (pExplode * 0.28);
+      walletRoot.rotation.y = pSpin * Math.PI + pOpen * Math.PI + (pExplode * 0.28);
       walletRoot.rotation.x = lerp(0.08, 0.38, pExplode) + Math.sin(time * 1.5) * 0.02;
 
       // 2. Unfold the Left Flap (PI = Closed on top of Right Wing, 0 = Open Flat)
