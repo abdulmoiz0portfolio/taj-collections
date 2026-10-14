@@ -99,7 +99,7 @@
           We start with the closed front profile. Cut from a single piece of 1.4mm top-tier calfskin, featuring a hand-burnished edge and a solid brushed brass TAJ emblem.
         </p>
         <div class="pt-2 flex items-center gap-2 text-xs text-[#f97316] uppercase tracking-widest animate-bounce">
-          <span>Scroll Down to Rotate 360°</span> ↓
+          <span>Scroll to Turn & Reveal</span> ↓
         </div>
       </div>
     </section>
@@ -258,7 +258,7 @@
 
     // --- Build Hierarchical Rigged 3D Wallet ---
     const walletRoot = new THREE.Group();
-    walletRoot.scale.setScalar(0.68); // compact wallet size
+    walletRoot.scale.setScalar(0.55); // compact wallet size
     scene.add(walletRoot);
 
     const W = 2.2; // Wing width
@@ -466,12 +466,13 @@
       currentScroll = lerp(currentScroll, targetScroll, 0.07);
 
       // Phase normalized progress values (0.0 to 1.0 per stage)
-      const pSpin    = smoothstep(remap(currentScroll, 0.05, 0.36)); // Stage 1 -> 2: 360° Spin
+      const pSpin    = smoothstep(remap(currentScroll, 0.05, 0.36)); // Stage 1 -> 2: 180° Turn
       const pOpen    = smoothstep(remap(currentScroll, 0.36, 0.68)); // Stage 2 -> 3: Unfold Wallet
       const pExplode = smoothstep(remap(currentScroll, 0.68, 0.96)); // Stage 3 -> 4: Explode Compartments
+      const pPeek = smoothstep(remap(currentScroll, 0.28, 0.42)); // cards peek out right after the 180° turn
 
       // 1. Wallet 360 Rotation + Isometric Inspection Tilt in Stage 4
-      walletRoot.rotation.y = pSpin * Math.PI * 2 + (pExplode * 0.28);
+      walletRoot.rotation.y = pSpin * Math.PI + (pExplode * 0.28);
       walletRoot.rotation.x = lerp(0.08, 0.38, pExplode) + Math.sin(time * 1.5) * 0.02;
 
       // 2. Unfold the Left Flap (PI = Closed on top of Right Wing, 0 = Open Flat)
@@ -479,8 +480,8 @@
       leftHinge.position.z = lerp(0.08, 0.0, pOpen);
 
       // 3. Re-center Wallet X Position as it unfolds from single-wing width to double-wing width
-      // When closed, right wing occupies local X: [0, 2.2] scaled by 0.68, so offset by -(W/2)*0.68 to center it. When open, center is X = 0.
-      const centerOffset = lerp(-W / 2 * 0.68, 0, pOpen);
+      // When closed, right wing occupies local X: [0, 2.2] scaled by 0.55, so offset by -(W/2)*0.55 to center it. When open, center is X = 0.
+      const centerOffset = lerp(-W / 2 * 0.55, 0, pOpen);
       // Keep wallet centered during the 360° spin; only shift for text-card clearance after spin completes
       const spinDone = smoothstep(remap(currentScroll, 0.36, 0.5));
       const uiClearanceShift = window.innerWidth > 1024
@@ -502,13 +503,13 @@
 
       // Fan Out Left & Right Cards and separate Pocket Layers in Z-space
       rightCards.forEach((card, i) => {
-        card.position.y = card.userData.baseY + pExplode * (0.42 + i * 0.32);
+        card.position.y = card.userData.baseY + pPeek * 0.16 + pExplode * (0.42 + i * 0.32);
         card.position.z = card.userData.baseZ + pExplode * (0.18 + (2 - i) * 0.14);
         card.rotation.z = -pExplode * (0.04 * (i + 1));
       });
 
       leftCards.forEach((card, i) => {
-        card.position.y = card.userData.baseY + pExplode * (0.42 + i * 0.32);
+        card.position.y = card.userData.baseY + pPeek * 0.16 + pExplode * (0.42 + i * 0.32);
         card.position.z = card.userData.baseZ + pExplode * (0.18 + (2 - i) * 0.14);
         card.rotation.z = pExplode * (0.04 * (i + 1));
       });
