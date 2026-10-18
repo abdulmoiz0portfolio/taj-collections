@@ -323,6 +323,12 @@ function renderChrome(active = "") {
     </a>`;
   updateCartBadge();
   updateWishBadge();
+  if (!document.getElementById("taj-ios-fix")) {
+    const st = document.createElement("style");
+    st.id = "taj-ios-fix";
+    st.textContent = "@media (max-width: 640px){ input, textarea, select { font-size: 16px !important; } }";
+    document.head.appendChild(st);
+  }
 }
 function footNews(e) {
   e.preventDefault();
@@ -381,6 +387,15 @@ function openWhatsAppOrder(id, color, size, qty) {
             <input id="wa-f-addr" type="text" placeholder="House / street" class="mt-1 w-full border border-black/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#25D366]">
           </div>
           <div>
+            <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">Promo code <span class="text-[#a8a29e] font-normal">(optional)</span></label>
+            <div class="mt-1 flex gap-2">
+              <input id="wa-f-promo" type="text" placeholder="e.g. WELCOME10" class="flex-1 min-w-0 border border-black/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#25D366]">
+              <button onclick="waApplyPromo()" class="bg-[#1c1917] text-white text-sm font-semibold px-5 rounded-xl hover:bg-[#f97316] transition whitespace-nowrap">Apply</button>
+            </div>
+            <p id="wa-promo-ok" class="hidden text-xs text-green-600 mt-1.5 font-medium">Code noted — mention it in chat and we will apply your discount manually.</p>
+            <p id="wa-promo-bad" class="hidden text-xs text-red-600 mt-1.5">That code is not valid.</p>
+          </div>
+          <div>
             <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">Quantity</label>
             <div class="mt-1 flex items-center border border-black/15 rounded-xl w-32">
               <button onclick="waChQty(-1)" class="w-10 h-10 text-lg text-[#57534e]">−</button>
@@ -412,6 +427,14 @@ function waChQty(d) {
   document.getElementById("wa-qty-show").textContent = _waCtx.qty;
   document.getElementById("wa-total-show").textContent = fmt(_waCtx.p.price * _waCtx.qty);
 }
+function waApplyPromo() {
+  const el = document.getElementById("wa-f-promo");
+  const v = (el.value || "").trim().toUpperCase();
+  const ok = v === "WELCOME10";
+  document.getElementById("wa-promo-ok").classList.toggle("hidden", !ok);
+  document.getElementById("wa-promo-bad").classList.toggle("hidden", ok || !v);
+  if (_waCtx) _waCtx.promo = ok ? v : "";
+}
 function submitWhatsAppOrder() {
   if (!_waCtx) return;
   const name = document.getElementById("wa-f-name").value.trim();
@@ -433,6 +456,7 @@ function submitWhatsAppOrder() {
     "Phone: " + phone,
     "Location: " + city,
     "Address: " + (addr || "—"),
+    "Promo: ",
   ];
   window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(lines.join("\n")), "_blank", "noopener");
   closeWhatsAppOrder();

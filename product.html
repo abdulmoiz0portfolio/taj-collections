@@ -4,7 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Product — TAJ LEATHERS</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TAJ LEATHERS">
+<meta property="og:title" content="TAJ LEATHERS — Handcrafted Leather Goods">
+<meta property="og:description" content="Premium handcrafted leather belts, wallets and watch straps. Full-grain leather, lifetime warranty.">
+<meta property="og:image" content="https://abdulmoiz0portfolio.github.io/taj-leathers/assets/img/hero.jpg">
+<meta property="og:url" content="https://abdulmoiz0portfolio.github.io/taj-leathers/product.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TAJ LEATHERS — Handcrafted Leather Goods">
+<meta name="twitter:description" content="Premium handcrafted leather belts, wallets and watch straps. Full-grain leather, lifetime warranty.">
+<meta name="twitter:image" content="https://abdulmoiz0portfolio.github.io/taj-leathers/assets/img/hero.jpg">
+<link rel="canonical" href="https://abdulmoiz0portfolio.github.io/taj-leathers/product.html">
+<link rel="stylesheet" href="assets/css/styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>body{font-family:'Inter',sans-serif;background:#ffffff}.font-serif{font-family:'Cinzel',serif}
@@ -50,6 +61,19 @@ const section = SECTIONS[qs2.get("section")] ? qs2.get("section") : "leathers";
 const id = qs2.get("id");
 const p = PRODUCTS.find(p => p.id === id) || PRODUCTS.find(p => p.section === section) || PRODUCTS[0];
 document.title = p.name + " — " + SECTIONS[p.section].name;
+(function () {
+  const set = (sel, attr, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, val); };
+  const img = "https://abdulmoiz0portfolio.github.io/taj-leathers/assets/img/" + p.img;
+  const url = "https://abdulmoiz0portfolio.github.io/taj-leathers/product.html?section=" + p.section + "&id=" + p.id;
+  set('meta[property="og:title"]', "content", p.name + " — TAJ LEATHERS");
+  set('meta[property="og:description"]', "content", p.desc);
+  set('meta[property="og:image"]', "content", img);
+  set('meta[property="og:url"]', "content", url);
+  set('meta[name="twitter:title"]', "content", p.name + " — TAJ LEATHERS");
+  set('meta[name="twitter:description"]', "content", p.desc);
+  set('meta[name="twitter:image"]', "content", img);
+  set('link[rel="canonical"]', "href", url);
+})();
 document.querySelector('a[href="category.html"]').href = "category.html?section=" + p.section;
 renderChrome(p.section + "-home");
 

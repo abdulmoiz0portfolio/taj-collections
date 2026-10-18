@@ -1,0 +1,23 @@
+{
+  "name": "leathers-store",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdulmoiz0portfolio/taj-leathers.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abdulmoiz0portfolio/taj-leathers/issues"
+  },
+  "homepage": "https://github.com/abdulmoiz0portfolio/taj-leathers#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}
