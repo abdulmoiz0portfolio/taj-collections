@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact Us — TAJ COLLECTIONS</title>
-<meta name="description" content="Contact TAJ COLLECTIONS — message us on WhatsApp for the fastest response, or use the contact form. Business hours Mon–Sat, 9am–9pm PKT.">
+<title>Contact Us — TAJ LEATHERS</title>
+<meta name="description" content="Contact TAJ LEATHERS — message us on WhatsApp for the fastest response, or use the contact form. Business hours Mon–Sat, 9am–9pm PKT.">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -65,7 +65,7 @@
 <script src="assets/js/app.js"></script>
 <script>
 renderChrome();
-document.getElementById("wa-direct").href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent("Assalam-o-Alaikum! I have a question about TAJ COLLECTIONS.");
+document.getElementById("wa-direct").href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent("Assalam-o-Alaikum! I have a question about TAJ LEATHERS.");
 document.getElementById("contact-form").addEventListener("submit", function (e) {
   e.preventDefault();
   const name = document.getElementById("c-name").value.trim();
@@ -76,7 +76,7 @@ document.getElementById("contact-form").addEventListener("submit", function (e) 
   const ok = name.length >= 3 && msg.length >= 3 && digits.length >= 10 && digits.length <= 12;
   document.getElementById("c-err").classList.toggle("hidden", ok);
   if (!ok) return;
-  const text = "*New message from TAJ COLLECTIONS website*\n--------------------------\n" +
+  const text = "*New message from TAJ LEATHERS website*\n--------------------------\n" +
     "Name: " + name + "\nPhone: " + phone +
     (email ? "\nEmail: " + email : "") + "\nMessage: " + msg;
   window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(text), "_blank", "noopener");

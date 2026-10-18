@@ -1,5 +1,5 @@
-/* TAJ COLLECTIONS — shared store logic (cart, promos, wishlist, reviews, orders) */
-const BRAND = "TAJ COLLECTIONS";
+/* TAJ LEATHERS — shared store logic (cart, promos, wishlist, reviews, orders) */
+const BRAND = "TAJ LEATHERS";
 const WA_NUMBER = "923001234567"; // placeholder WhatsApp number — Moiz to supply real one
 const RELAY_URL = ""; // e.g. "https://taj-order-relay.onrender.com" — leave "" to disable auto-forward
 const ORDER_API_URL = "https://strictly-tribes-powered-webmaster.trycloudflare.com"; // TAJ order API on VPS (orders + email + admin) — leave "" to disable
@@ -233,11 +233,13 @@ function renderChrome(active = "") {
     </div>
     <nav class="bg-[#ffffff]/95 backdrop-blur border-b border-black/10 sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <a href="index.html" class="font-serif text-2xl tracking-wide text-[#1c1917]">TAJ <span class="text-[#f97316]">COLLECTIONS</span></a>
+        <a href="index.html" class="font-serif text-2xl tracking-wide text-[#1c1917]">TAJ <span class="text-[#f97316]">LEATHERS</span></a>
         <div class="hidden md:flex items-center gap-8 text-sm font-medium">
           ${nav("index.html", "Home", "gateway")}
-          ${nav("leathers.html", "TAJ Leathers", "leathers-home")}
-          ${nav("fabrics.html", "TAJ Fabrics", "fabrics-home")}
+          ${nav("leathers.html", "Shop All", "leathers-home")}
+          ${nav("category.html?section=leathers&cat=wallets", "Wallets", "wallets")}
+          ${nav("category.html?section=leathers&cat=belts", "Belts", "belts")}
+          ${nav("category.html?section=leathers&cat=straps", "Watch Straps", "straps")}
           ${nav("track.html", "Track Order", "track")}
         </div>
         <div class="flex items-center gap-4">
@@ -249,8 +251,10 @@ function renderChrome(active = "") {
       </div>
       <div id="mobile-menu" class="md:hidden hidden border-t border-black/10 px-4 py-3 flex flex-col gap-3 text-sm">
         ${nav("index.html", "Home", "gateway")}
-        ${nav("leathers.html", "TAJ Leathers", "leathers-home")}
-        ${nav("fabrics.html", "TAJ Fabrics", "fabrics-home")}
+        ${nav("leathers.html", "Shop All", "leathers-home")}
+        ${nav("category.html?section=leathers&cat=wallets", "Wallets", "wallets")}
+        ${nav("category.html?section=leathers&cat=belts", "Belts", "belts")}
+        ${nav("category.html?section=leathers&cat=straps", "Watch Straps", "straps")}
         ${nav("wishlist.html", "Wishlist", "wishlist")}
         ${nav("track.html", "Track Order", "track")}
       </div>
@@ -262,8 +266,8 @@ function renderChrome(active = "") {
     <footer class="bg-[#faf9f7] border-t border-black/10 mt-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 py-14 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
         <div class="col-span-2 md:col-span-3 lg:col-span-1">
-          <p class="font-serif text-2xl text-[#1c1917] mb-4">TAJ <span class="text-[#f97316]">COLLECTIONS</span></p>
-          <p class="text-[#78716c] text-sm leading-relaxed mb-5">Premium leather goods and unstitched fabrics from Pakistan. Honest prices, honest quality.</p>
+          <p class="font-serif text-2xl text-[#1c1917] mb-4">TAJ <span class="text-[#f97316]">LEATHERS</span></p>
+          <p class="text-[#78716c] text-sm leading-relaxed mb-5">Premium handcrafted leather goods from Pakistan. Honest prices, honest quality.</p>
           <form class="foot-news flex gap-2" onsubmit="return footNews(event)">
             <input type="email" required placeholder="Email for 10% off" class="flex-1 min-w-0 bg-white border border-black/10 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:border-[#f97316]">
             <button class="bg-[#f97316] text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#ea580c] transition whitespace-nowrap">Join</button>
@@ -271,23 +275,15 @@ function renderChrome(active = "") {
           <p class="foot-news-ok hidden text-[#f97316] text-xs mt-2 font-medium">Welcome! Use code <strong>WELCOME10</strong> at checkout.</p>
         </div>
         <div>
-          <p class="text-[#1c1917] font-semibold mb-4 text-sm uppercase tracking-widest">TAJ Leathers</p>
+          <p class="text-[#1c1917] font-semibold mb-4 text-sm uppercase tracking-widest">Shop</p>
           <div class="flex flex-col gap-2 text-sm text-[#78716c]">
+            <a href="leathers.html" class="hover:text-[#f97316]">Shop All</a>
             <a href="category.html?section=leathers&cat=belts" class="hover:text-[#f97316]">Belts</a>
             <a href="category.html?section=leathers&cat=wallets" class="hover:text-[#f97316]">Wallets</a>
             <a href="category.html?section=leathers&cat=straps" class="hover:text-[#f97316]">Watch Straps</a>
-            <a href="leathers.html" class="hover:text-[#f97316]">Leathers Home</a>
           </div>
         </div>
-        <div>
-          <p class="text-[#1c1917] font-semibold mb-4 text-sm uppercase tracking-widest">TAJ Fabrics</p>
-          <div class="flex flex-col gap-2 text-sm text-[#78716c]">
-            <a href="category.html?section=fabrics&cat=washwear" class="hover:text-[#f97316]">Wash & Wear</a>
-            <a href="category.html?section=fabrics&cat=cotton" class="hover:text-[#f97316]">Cotton</a>
-            <a href="category.html?section=fabrics&cat=khaddar" class="hover:text-[#f97316]">Khaddar</a>
-            <a href="category.html?section=fabrics&cat=boski" class="hover:text-[#f97316]">Boski</a>
-          </div>
-        </div>
+        
         <div>
           <p class="text-[#1c1917] font-semibold mb-4 text-sm uppercase tracking-widest">Help</p>
           <div class="flex flex-col gap-2 text-sm text-[#78716c]">
@@ -311,16 +307,16 @@ function renderChrome(active = "") {
           <p class="text-[#1c1917] font-semibold mb-4 text-sm uppercase tracking-widest">Contact</p>
           <div class="flex flex-col gap-2 text-sm text-[#78716c]">
             <a href="https://wa.me/${WA_NUMBER}" target="_blank" rel="noopener" class="hover:text-[#f97316]">WhatsApp: +92 300 1234567</a>
-            <span>hello@tajcollections.pk</span>
+            <span>hello@tajleathers.pk</span>
             <span>Lahore, Pakistan</span>
           </div>
         </div>
       </div>
       <div class="border-t border-black/10 py-6 text-center text-xs text-[#a8a29e] px-4">
-        © 2026 TAJ COLLECTIONS. All rights reserved. Crafted with pride in Pakistan.
+        © 2026 TAJ LEATHERS. All rights reserved. Crafted with pride in Pakistan.
       </div>
     </footer>
-    <a href="https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Assalam-o-Alaikum! I have a question about TAJ COLLECTIONS products.")}"
+    <a href="https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Assalam-o-Alaikum! I have a question about TAJ LEATHERS products.")}"
        target="_blank" rel="noopener" aria-label="Chat on WhatsApp"
        class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[#25D366] shadow-2xl flex items-center justify-center hover:scale-110 transition-transform">
       <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5 0 1.47 1.07 2.9 1.22 3.1.15.2 2.1 3.2 5.1 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 01-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 019.88 9.89c0 5.45-4.44 9.88-9.89 9.88M20.5 3.49A11.8 11.8 0 0012.05 0C5.5 0 .16 5.34.16 11.9c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.9 11.9 0 005.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.9 0-3.18-1.24-6.16-3.44-8.41"/></svg>
@@ -428,7 +424,7 @@ function submitWhatsAppOrder() {
   if (bad) return;
   const c = _waCtx;
   const lines = [
-    "NEW ORDER — TAJ COLLECTIONS",
+    "NEW ORDER — TAJ LEATHERS",
     "Product: " + c.p.name + " (" + SECTIONS[c.p.section].name + ")",
     "Variant: " + c.color + " / " + c.size,
     "Qty: " + c.qty + " — Price: " + fmt(c.p.price * c.qty),
@@ -456,7 +452,7 @@ function forwardOrderToApi(order) {
         city: order.city, address: order.addr, notes: order.notes || "",
         items: order.items.map(it => ({ name: it.name, variant: it.variant, qty: it.qty, price: it.price })),
         subtotal: order.sub, discount: order.discount, total: order.total,
-        payment_method: "COD", source: "taj-collections-checkout",
+        payment_method: "COD", source: "taj-leathers-checkout",
       }),
     }).catch(() => {});
   } catch (e) {}
@@ -494,7 +490,7 @@ function forwardOrderToRelay(order) {
         items: order.items.map(it => ({ name: it.name, variant: it.variant, qty: it.qty, price: it.price })),
         subtotal: order.sub, discount: order.discount, shipping: order.ship, total: order.total,
         customer: { name: order.name, phone: order.phone, address: order.addr, city: order.city },
-        source: "taj-collections-checkout",
+        source: "taj-leathers-checkout",
       }),
     }).catch(() => {});
   } catch (e) {}

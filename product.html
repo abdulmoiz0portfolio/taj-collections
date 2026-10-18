@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Product — TAJ COLLECTIONS</title>
+<title>Product — TAJ LEATHERS</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -89,7 +89,7 @@ function paint() {
       </a>` : ""}
       <div class="mb-5"><p class="text-sm text-[#78716c] mb-2.5">Color: <span class="text-[#1c1917]">${selColor}</span></p>
         <div class="flex flex-wrap gap-2">${optBtn(p.colors, selColor, "setColor")}</div></div>
-      <div class="mb-7"><p class="text-sm text-[#78716c] mb-2.5">${p.section === "fabrics" ? "Cutting" : "Size"}: <span class="text-[#1c1917]">${selSize}</span></p>
+      <div class="mb-7"><p class="text-sm text-[#78716c] mb-2.5">${"Size"}: <span class="text-[#1c1917]">${selSize}</span></p>
         <div class="flex flex-wrap gap-2">${optBtn(p.sizes, selSize, "setSize")}</div></div>
       <div class="flex items-center gap-4 mb-8">
         <div class="flex items-center border border-black/20 rounded-full">
@@ -111,7 +111,7 @@ function paint() {
       <div class="border-t border-black/10">
         ${acc("Details & Materials", "<ul class='list-disc pl-5 space-y-1.5'>" + p.details.map(d => `<li>${d}</li>`).join("") + "</ul>")}
         ${acc("Shipping & Delivery", "Dispatched within 24 hours from Lahore. Delivery in 2–4 working days nationwide. <strong class='text-[#44403c]'>FREE delivery</strong> on orders over " + fmt(FREE_SHIP_THRESHOLD) + ", otherwise Rs 199 flat.")}
-        ${p.section === "fabrics"
+        ${false
           ? acc("Easy Exchange", "Unstitched cutting not quite right? Exchange it within 7 days — unused and in original condition. We want you to love what your tailor makes.")
           : acc("Lifetime Warranty", "If the stitching, buckle or hardware ever fails under normal use, we repair or replace it free — for life. 7-day easy exchange for unused items.")}
       </div>
