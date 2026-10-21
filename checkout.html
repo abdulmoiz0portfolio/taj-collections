@@ -126,6 +126,7 @@ function renderSummary() {
   const c = getCart();
   document.getElementById("sum-items").innerHTML = c.map(i => {
     const p = PRODUCTS.find(p => p.id === i.id);
+    if (!p) return "";
     return `<div class="flex gap-3 items-center">
       <img src="assets/img/${p.img}" class="w-14 h-14 object-cover rounded-lg" alt="">
       <div class="flex-1 min-w-0"><p class="text-sm text-[#1c1917] truncate">${p.name}</p>
@@ -178,6 +179,7 @@ document.getElementById("order-form").addEventListener("submit", e => {
   const c2 = getCart();
   document.getElementById("rev-items").innerHTML = c2.map(i => {
     const p = PRODUCTS.find(p => p.id === i.id);
+    if (!p) return "";
     return `<div class="flex gap-3 items-center bg-black/5 rounded-xl p-3">
       <img src="assets/img/${p.img}" class="w-12 h-12 object-cover rounded-lg" alt="">
       <div class="flex-1 min-w-0"><p class="text-sm text-[#1c1917] truncate">${p.name}</p>
