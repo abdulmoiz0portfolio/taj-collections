@@ -239,7 +239,6 @@ function renderChrome(active = "") {
           ${nav("leathers.html", "Shop All", "leathers-home")}
           ${nav("category.html?section=leathers&cat=wallets", "Wallets", "wallets")}
           ${nav("category.html?section=leathers&cat=belts", "Belts", "belts")}
-          ${nav("category.html?section=leathers&cat=straps", "Watch Straps", "straps")}
           ${nav("track.html", "Track Order", "track")}
         </div>
         <div class="flex items-center gap-4">
@@ -254,7 +253,6 @@ function renderChrome(active = "") {
         ${nav("leathers.html", "Shop All", "leathers-home")}
         ${nav("category.html?section=leathers&cat=wallets", "Wallets", "wallets")}
         ${nav("category.html?section=leathers&cat=belts", "Belts", "belts")}
-        ${nav("category.html?section=leathers&cat=straps", "Watch Straps", "straps")}
         ${nav("wishlist.html", "Wishlist", "wishlist")}
         ${nav("track.html", "Track Order", "track")}
       </div>
@@ -280,7 +278,6 @@ function renderChrome(active = "") {
             <a href="leathers.html" class="hover:text-[#f97316]">Shop All</a>
             <a href="category.html?section=leathers&cat=belts" class="hover:text-[#f97316]">Belts</a>
             <a href="category.html?section=leathers&cat=wallets" class="hover:text-[#f97316]">Wallets</a>
-            <a href="category.html?section=leathers&cat=straps" class="hover:text-[#f97316]">Watch Straps</a>
           </div>
         </div>
         

@@ -27,30 +27,6 @@ const LEATHER_PRODUCTS = [
     details: ["Full-grain bridle leather", "Traditional saddle stitching", "Solid roller buckle", "Width: 38mm"] },
   // ---- WALLETS ----
   // ---- WATCH STRAPS ----
-  { id: "strap-brown", name: "Classic Brown Strap", cat: "straps",
-    price: 1499, oldPrice: 2199, img: "strap-brown.jpg",
-    colors: ["Brown", "Tan"], sizes: ["20mm", "22mm"],
-    badge: "-32%",
-    desc: "Give your watch a second life. Padded, hand-stitched, and quick-release — swap it in seconds, wear it for years.",
-    details: ["Full-grain leather, padded", "Quick-release spring bars", "Hand saddle-stitching", "Fits 20mm / 22mm lugs"] },
-  { id: "strap-black", name: "Midnight Black Strap", cat: "straps",
-    price: 1599, oldPrice: 2299, img: "strap-black.jpg",
-    colors: ["Black"], sizes: ["20mm", "22mm"],
-    badge: "-30%",
-    desc: "Understated and sharp. The Midnight Black strap disappears under a cuff and goes with every dial you own.",
-    details: ["Full-grain leather", "Quick-release spring bars", "Contrast stitching option", "Fits 20mm / 22mm lugs"] },
-  { id: "strap-tan", name: "Tan Suede Strap", cat: "straps",
-    price: 1799, oldPrice: 2499, img: "strap-brown.jpg",
-    colors: ["Sand", "Taupe"], sizes: ["20mm", "22mm"],
-    badge: "-28%",
-    desc: "Soft suede with a casual soul. Pairs beautifully with field watches and weekend plans.",
-    details: ["Genuine suede leather", "Quick-release spring bars", "Soft nubuck lining", "Fits 20mm / 22mm lugs"] },
-  { id: "strap-oxblood", name: "Oxblood Rally Strap", cat: "straps",
-    price: 1899, oldPrice: 2699, img: "strap-black.jpg",
-    colors: ["Oxblood"], sizes: ["20mm", "22mm"],
-    badge: "-30%",
-    desc: "Perforated rally styling in deep oxblood. For chronographs and anyone who likes their wrist with character.",
-    details: ["Full-grain perforated leather", "Quick-release spring bars", "Rally perforation pattern", "Fits 20mm / 22mm lugs"] },
   // ---- NEW WALLETS (2026-10-21 batch, price Rs 1,600) ----
   { id: "wallet-onyx", name: "Onyx Black Bifold", cat: "wallets",
     price: 1600, oldPrice: 2000, img: "new-products/black-bifold-closed.jpg",
@@ -96,7 +72,6 @@ const PRODUCTS = [...LEATHER_PRODUCTS];
 const LEATHER_CATS = {
   belts:   { name: "Belts",        tag: "Cut to last a lifetime", img: "belt-classic.jpg" },
   wallets: { name: "Wallets",      tag: "Carry less, keep more",  img: "wallet-bifold.jpg" },
-  straps:  { name: "Watch Straps", tag: "A new wrist, every day", img: "strap-brown.jpg" },
 };
 const CATS = { ...LEATHER_CATS };
 

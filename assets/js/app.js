@@ -31,7 +31,7 @@
     <div id="search-panel">
       <div class="flex items-center gap-3 px-5 py-4 border-b border-black/10">
         <svg class="w-5 h-5 text-[#a8a29e]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/></svg>
-        <input id="search-input" type="text" placeholder="Search belts, wallets, straps…" autocomplete="off"
+        <input id="search-input" type="text" placeholder="Search belts, wallets…" autocomplete="off"
                class="flex-1 text-lg focus:outline-none placeholder-[#a8a29e] text-[#1c1917]">
         <button onclick="closeSearch()" aria-label="Close search" class="text-[#a8a29e] hover:text-[#f97316] text-2xl leading-none px-1">×</button>
       </div>
