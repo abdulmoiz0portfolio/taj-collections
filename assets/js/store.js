@@ -124,9 +124,9 @@ function avgRating(id) {
 function starsHTML(avg, count) {
   const pct = Math.max(0, Math.min(100, (avg / 5) * 100));
   return `<span class="relative inline-block leading-none whitespace-nowrap align-middle">
-      <span class="text-[#d6d3d1]">★★★★★</span>
-      <span class="absolute inset-0 overflow-hidden text-[#f97316] whitespace-nowrap" style="width:${pct}%">★★★★★</span>
-    </span>` + (count ? `<span class="text-xs text-[#a8a29e] ml-1.5 align-middle">(${count})</span>` : "");
+      <span class="text-[#d4d4d4]">★★★★★</span>
+      <span class="absolute inset-0 overflow-hidden text-[#D4AF37] whitespace-nowrap" style="width:${pct}%">★★★★★</span>
+    </span>` + (count ? `<span class="text-xs text-[#737373] ml-1.5 align-middle">(${count})</span>` : "");
 }
 
 /* ---------- recently viewed ---------- */
@@ -162,7 +162,7 @@ function productCard(p) {
   const r = avgRating(p.id);
   const wished = isWished(p.id);
   return `
-  <div class="group bg-[#f7f5f2] rounded-2xl overflow-hidden border border-black/5 hover:border-[#f97316]/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(249,115,22,0.12)]">
+  <div class="group bg-[#fafafa] rounded-2xl overflow-hidden border border-black/5 hover:border-[#D4AF37]/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(249,115,22,0.12)]">
     <div class="block relative overflow-hidden aspect-square">
       <a href="product.html?section=${p.section}&id=${p.id}" class="absolute inset-0" aria-label="${p.name}">
         <img src="assets/img/${p.img}" alt="${p.name}" loading="lazy"
@@ -175,20 +175,20 @@ function productCard(p) {
           <svg class="w-[18px] h-[18px]" fill="${wished ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 000-7.8z"/></svg>
         </button>
         <button onclick="event.preventDefault();openQuickView('${p.id}')" aria-label="Quick view"
-          class="w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow hover:scale-110 transition text-[#57534e] hover:text-[#f97316]">
+          class="w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow hover:scale-110 transition text-[#262626] hover:text-[#D4AF37]">
           <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.1 12.1a1 1 0 010-.2 14.4 14.4 0 0119.8 0 1 1 0 010 .2 14.4 14.4 0 01-19.8 0z"/><circle cx="12" cy="12" r="3"/></svg>
         </button>
       </div>
       <button onclick="event.preventDefault();quickAdd('${p.id}')"
-            class="absolute bottom-3 left-1/2 -translate-x-1/2 bg-[#f97316] text-white text-sm font-semibold px-5 py-2 rounded-full whitespace-nowrap hover:bg-[#ea580c] transition shadow-lg">Quick Add +</button>
+            class="absolute bottom-3 left-1/2 -translate-x-1/2 bg-[#D4AF37] text-black text-sm font-semibold px-5 py-2 rounded-full whitespace-nowrap hover:bg-[#B8860B] transition shadow-lg">Quick Add +</button>
     </div>
     <div class="p-5">
-      <p class="text-xs uppercase tracking-widest text-[#f97316] mb-1">${CATS[p.cat].name}</p>
-      <a href="product.html?section=${p.section}&id=${p.id}"><h3 class="font-serif text-lg text-[#1c1917] hover:text-[#f97316] transition">${p.name}</h3></a>
+      <p class="text-xs uppercase tracking-widest text-[#D4AF37] mb-1">${CATS[p.cat].name}</p>
+      <a href="product.html?section=${p.section}&id=${p.id}"><h3 class="font-serif text-lg text-[#000000] hover:text-[#D4AF37] transition">${p.name}</h3></a>
       <div class="mt-1.5">${starsHTML(r.avg, r.count)}</div>
       <div class="mt-2 flex items-center gap-2">
-        <span class="text-[#f97316] font-bold text-lg">${fmt(p.price)}</span>
-        <span class="text-[#a8a29e] line-through text-sm">${fmt(p.oldPrice)}</span>
+        <span class="text-[#D4AF37] font-bold text-lg">${fmt(p.price)}</span>
+        <span class="text-[#737373] line-through text-sm">${fmt(p.oldPrice)}</span>
       </div>
     </div>
   </div>`;
@@ -205,7 +205,7 @@ function toast(msg) {
   if (!t) {
     t = document.createElement("div");
     t.id = "toast";
-    t.className = "fixed bottom-24 left-1/2 -translate-x-1/2 bg-[#1c1917] text-white font-semibold px-6 py-3 rounded-full shadow-2xl z-[100] transition-all duration-300 opacity-0 translate-y-4 text-sm";
+    t.className = "fixed bottom-24 left-1/2 -translate-x-1/2 bg-[#000000] text-white font-semibold px-6 py-3 rounded-full shadow-2xl z-[100] transition-all duration-300 opacity-0 translate-y-4 text-sm";
     document.body.appendChild(t);
   }
   t.textContent = msg;
@@ -217,23 +217,23 @@ function toast(msg) {
 /* ---------- shared chrome ---------- */
 function renderChrome(active = "") {
   const nav = (href, label, key) =>
-    `<a href="${href}" class="hover:text-[#f97316] transition ${active === key ? "text-[#f97316]" : "text-[#57534e]"}">${label}</a>`;
-  const searchIcon = `<button onclick="openSearch()" aria-label="Search" class="text-[#57534e] hover:text-[#f97316] transition">
+    `<a href="${href}" class="hover:text-[#D4AF37] transition ${active === key ? "text-[#D4AF37]" : "text-[#262626]"}">${label}</a>`;
+  const searchIcon = `<button onclick="openSearch()" aria-label="Search" class="text-[#262626] hover:text-[#D4AF37] transition">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/></svg></button>`;
-  const wishIcon = `<a href="wishlist.html" aria-label="Wishlist" class="relative text-[#57534e] hover:text-[#f97316] transition">
+  const wishIcon = `<a href="wishlist.html" aria-label="Wishlist" class="relative text-[#262626] hover:text-[#D4AF37] transition">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 000-7.8z"/></svg>
-      <span class="wish-count absolute -top-2 -right-2 bg-[#f97316] text-white text-[10px] font-bold w-5 h-5 rounded-full items-center justify-center" style="display:none">0</span></a>`;
-  const cartBtn = `<button onclick="openDrawer()" aria-label="Cart" class="relative text-[#57534e] hover:text-[#f97316] transition">
+      <span class="wish-count absolute -top-2 -right-2 bg-[#D4AF37] text-black text-[10px] font-bold w-5 h-5 rounded-full items-center justify-center" style="display:none">0</span></a>`;
+  const cartBtn = `<button onclick="openDrawer()" aria-label="Cart" class="relative text-[#262626] hover:text-[#D4AF37] transition">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6a1 1 0 00.9 1.4H19M9 22a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z"/></svg>
-      <span class="cart-count absolute -top-2 -right-2 bg-[#f97316] text-white text-[10px] font-bold w-5 h-5 rounded-full items-center justify-center" style="display:none">0</span></button>`;
+      <span class="cart-count absolute -top-2 -right-2 bg-[#D4AF37] text-black text-[10px] font-bold w-5 h-5 rounded-full items-center justify-center" style="display:none">0</span></button>`;
 
   document.getElementById("site-header").innerHTML = `
-    <div class="bg-[#f97316] text-white text-center text-xs sm:text-sm font-semibold py-2 px-4">
+    <div class="bg-[#D4AF37] text-black text-center text-xs sm:text-sm font-semibold py-2 px-4">
       Free delivery on orders over ${fmt(FREE_SHIP_THRESHOLD)} &nbsp;·&nbsp; Use <span class="underline underline-offset-2 font-bold">WELCOME10</span> for 10% off
     </div>
     <nav class="bg-[#ffffff]/95 backdrop-blur border-b border-black/10 sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <a href="index.html" class="font-serif text-2xl tracking-wide text-[#1c1917]">TAJ <span class="text-[#f97316]">LEATHERS</span></a>
+        <a href="index.html" class="font-serif text-2xl tracking-wide text-[#000000]">TAJ <span class="gold-shine-text">LEATHERS</span></a>
         <div class="hidden md:flex items-center gap-8 text-sm font-medium">
           ${nav("index.html", "Home", "gateway")}
           ${nav("leathers.html", "Shop All", "leathers-home")}
@@ -243,7 +243,7 @@ function renderChrome(active = "") {
         </div>
         <div class="flex items-center gap-4">
           ${searchIcon}${wishIcon}${cartBtn}
-          <button id="menu-btn" class="md:hidden text-[#57534e]" aria-label="Menu">
+          <button id="menu-btn" class="md:hidden text-[#262626]" aria-label="Menu">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
           </button>
         </div>
@@ -261,55 +261,55 @@ function renderChrome(active = "") {
     document.getElementById("mobile-menu").classList.toggle("hidden"));
 
   document.getElementById("site-footer").innerHTML = `
-    <footer class="bg-[#faf9f7] border-t border-black/10 mt-20">
+    <footer class="bg-[#fafafa] border-t border-black/10 mt-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 py-14 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
         <div class="col-span-2 md:col-span-3 lg:col-span-1">
-          <p class="font-serif text-2xl text-[#1c1917] mb-4">TAJ <span class="text-[#f97316]">LEATHERS</span></p>
-          <p class="text-[#78716c] text-sm leading-relaxed mb-5">Premium handcrafted leather goods from Pakistan. Honest prices, honest quality.</p>
+          <p class="font-serif text-2xl text-[#000000] mb-4">TAJ <span class="gold-shine-text">LEATHERS</span></p>
+          <p class="text-[#525252] text-sm leading-relaxed mb-5">Premium handcrafted leather goods from Pakistan. Honest prices, honest quality.</p>
           <form class="foot-news flex gap-2" onsubmit="return footNews(event)">
-            <input type="email" required placeholder="Email for 10% off" class="flex-1 min-w-0 bg-white border border-black/10 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:border-[#f97316]">
-            <button class="bg-[#f97316] text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#ea580c] transition whitespace-nowrap">Join</button>
+            <input type="email" required placeholder="Email for 10% off" class="flex-1 min-w-0 bg-white border border-black/10 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4AF37]">
+            <button class="bg-[#D4AF37] text-black text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#B8860B] transition whitespace-nowrap">Join</button>
           </form>
-          <p class="foot-news-ok hidden text-[#f97316] text-xs mt-2 font-medium">Welcome! Use code <strong>WELCOME10</strong> at checkout.</p>
+          <p class="foot-news-ok hidden text-[#D4AF37] text-xs mt-2 font-medium">Welcome! Use code <strong>WELCOME10</strong> at checkout.</p>
         </div>
         <div>
-          <p class="text-[#1c1917] font-semibold mb-4 text-sm uppercase tracking-widest">Shop</p>
-          <div class="flex flex-col gap-2 text-sm text-[#78716c]">
-            <a href="leathers.html" class="hover:text-[#f97316]">Shop All</a>
-            <a href="category.html?section=leathers&cat=belts" class="hover:text-[#f97316]">Belts</a>
-            <a href="category.html?section=leathers&cat=wallets" class="hover:text-[#f97316]">Wallets</a>
+          <p class="text-[#000000] font-semibold mb-4 text-sm uppercase tracking-widest">Shop</p>
+          <div class="flex flex-col gap-2 text-sm text-[#525252]">
+            <a href="leathers.html" class="hover:text-[#D4AF37]">Shop All</a>
+            <a href="category.html?section=leathers&cat=belts" class="hover:text-[#D4AF37]">Belts</a>
+            <a href="category.html?section=leathers&cat=wallets" class="hover:text-[#D4AF37]">Wallets</a>
           </div>
         </div>
         
         <div>
-          <p class="text-[#1c1917] font-semibold mb-4 text-sm uppercase tracking-widest">Help</p>
-          <div class="flex flex-col gap-2 text-sm text-[#78716c]">
-            <a href="track.html" class="hover:text-[#f97316]">Track Your Order</a>
-            <a href="cart.html" class="hover:text-[#f97316]">Your Cart</a>
-            <a href="wishlist.html" class="hover:text-[#f97316]">Wishlist</a>
-            <a href="about.html" class="hover:text-[#f97316]">About Us</a>
-            <a href="contact.html" class="hover:text-[#f97316]">Contact Us</a>
+          <p class="text-[#000000] font-semibold mb-4 text-sm uppercase tracking-widest">Help</p>
+          <div class="flex flex-col gap-2 text-sm text-[#525252]">
+            <a href="track.html" class="hover:text-[#D4AF37]">Track Your Order</a>
+            <a href="cart.html" class="hover:text-[#D4AF37]">Your Cart</a>
+            <a href="wishlist.html" class="hover:text-[#D4AF37]">Wishlist</a>
+            <a href="about.html" class="hover:text-[#D4AF37]">About Us</a>
+            <a href="contact.html" class="hover:text-[#D4AF37]">Contact Us</a>
           </div>
         </div>
         <div>
-          <p class="text-[#1c1917] font-semibold mb-4 text-sm uppercase tracking-widest">Policies</p>
-          <div class="flex flex-col gap-2 text-sm text-[#78716c]">
-            <a href="shipping.html" class="hover:text-[#f97316]">Shipping & Delivery</a>
-            <a href="returns.html" class="hover:text-[#f97316]">Returns & Exchange</a>
-            <a href="privacy.html" class="hover:text-[#f97316]">Privacy Policy</a>
-            <a href="terms.html" class="hover:text-[#f97316]">Terms & Conditions</a>
+          <p class="text-[#000000] font-semibold mb-4 text-sm uppercase tracking-widest">Policies</p>
+          <div class="flex flex-col gap-2 text-sm text-[#525252]">
+            <a href="shipping.html" class="hover:text-[#D4AF37]">Shipping & Delivery</a>
+            <a href="returns.html" class="hover:text-[#D4AF37]">Returns & Exchange</a>
+            <a href="privacy.html" class="hover:text-[#D4AF37]">Privacy Policy</a>
+            <a href="terms.html" class="hover:text-[#D4AF37]">Terms & Conditions</a>
           </div>
         </div>
         <div>
-          <p class="text-[#1c1917] font-semibold mb-4 text-sm uppercase tracking-widest">Contact</p>
-          <div class="flex flex-col gap-2 text-sm text-[#78716c]">
-            <a href="https://wa.me/${WA_NUMBER}" target="_blank" rel="noopener" class="hover:text-[#f97316]">WhatsApp: +92 314 8253657</a>
+          <p class="text-[#000000] font-semibold mb-4 text-sm uppercase tracking-widest">Contact</p>
+          <div class="flex flex-col gap-2 text-sm text-[#525252]">
+            <a href="https://wa.me/${WA_NUMBER}" target="_blank" rel="noopener" class="hover:text-[#D4AF37]">WhatsApp: +92 314 8253657</a>
             <span>hello@tajleathers.pk</span>
             <span>Lahore, Pakistan</span>
           </div>
         </div>
       </div>
-      <div class="border-t border-black/10 py-6 text-center text-xs text-[#a8a29e] px-4">
+      <div class="border-t border-black/10 py-6 text-center text-xs text-[#737373] px-4">
         © 2026 TAJ LEATHERS. All rights reserved. Crafted with pride in Pakistan.
       </div>
     </footer>
@@ -354,54 +354,54 @@ function openWhatsAppOrder(id, color, size, qty) {
     <div class="fixed inset-0 z-[120] bg-black/55 backdrop-blur-sm flex items-center justify-center p-4" onclick="if(event.target===this)closeWhatsAppOrder()">
       <div class="bg-white rounded-3xl w-full max-w-md p-6 sm:p-8 shadow-2xl max-h-[92dvh] overflow-auto">
         <div class="flex items-start justify-between mb-1">
-          <h3 class="font-serif text-2xl text-[#1c1917]">Order on WhatsApp</h3>
-          <button onclick="closeWhatsAppOrder()" class="text-[#a8a29e] hover:text-[#f97316] text-2xl leading-none">×</button>
+          <h3 class="font-serif text-2xl text-[#000000]">Order on WhatsApp</h3>
+          <button onclick="closeWhatsAppOrder()" class="text-[#737373] hover:text-[#D4AF37] text-2xl leading-none">×</button>
         </div>
-        <p class="text-sm text-[#78716c] mb-4">Fill this in — WhatsApp will open with your order ready to send.</p>
-        <div class="flex gap-3 items-center bg-[#f7f5f2] rounded-2xl p-3 mb-5">
+        <p class="text-sm text-[#525252] mb-4">Fill this in — WhatsApp will open with your order ready to send.</p>
+        <div class="flex gap-3 items-center bg-[#fafafa] rounded-2xl p-3 mb-5">
           <img src="assets/img/${c.p.img}" alt="" class="w-14 h-14 object-cover rounded-xl">
           <div class="min-w-0">
-            <p class="font-semibold text-sm text-[#1c1917] truncate">${c.p.name}</p>
-            <p class="text-xs text-[#78716c]">${SECTIONS[c.p.section].name} · ${c.color} / ${c.size} · Qty <span id="wa-qty-show">${c.qty}</span></p>
-            <p class="text-sm text-[#f97316] font-bold" id="wa-total-show">${fmt(c.p.price * c.qty)}</p>
+            <p class="font-semibold text-sm text-[#000000] truncate">${c.p.name}</p>
+            <p class="text-xs text-[#525252]">${SECTIONS[c.p.section].name} · ${c.color} / ${c.size} · Qty <span id="wa-qty-show">${c.qty}</span></p>
+            <p class="text-sm text-[#D4AF37] font-bold" id="wa-total-show">${fmt(c.p.price * c.qty)}</p>
           </div>
         </div>
         <div class="space-y-3">
           <div>
-            <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">Your name *</label>
+            <label class="text-xs font-semibold text-[#262626] uppercase tracking-wider">Your name *</label>
             <input id="wa-f-name" type="text" placeholder="e.g. Ahmed Raza" class="mt-1 w-full border border-black/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#25D366]">
           </div>
           <div>
-            <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">Phone *</label>
+            <label class="text-xs font-semibold text-[#262626] uppercase tracking-wider">Phone *</label>
             <input id="wa-f-phone" type="tel" placeholder="03XXXXXXXXX" class="mt-1 w-full border border-black/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#25D366]">
           </div>
           <div>
-            <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">City / Area *</label>
+            <label class="text-xs font-semibold text-[#262626] uppercase tracking-wider">City / Area *</label>
             <input id="wa-f-city" type="text" placeholder="e.g. DHA Phase 5, Lahore" class="mt-1 w-full border border-black/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#25D366]">
           </div>
           <div>
-            <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">Full address *</label>
+            <label class="text-xs font-semibold text-[#262626] uppercase tracking-wider">Full address *</label>
             <input id="wa-f-addr" type="text" placeholder="House / street" class="mt-1 w-full border border-black/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#25D366]">
           </div>
           <div>
-            <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">Nearest landmark <span class="text-[#a8a29e] font-normal">(optional)</span></label>
+            <label class="text-xs font-semibold text-[#262626] uppercase tracking-wider">Nearest landmark <span class="text-[#737373] font-normal">(optional)</span></label>
             <input id="wa-f-landmark" type="text" placeholder="e.g. Near Dolmen Mall" class="mt-1 w-full border border-black/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#25D366]">
           </div>
           <div>
-            <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">Promo code <span class="text-[#a8a29e] font-normal">(optional)</span></label>
+            <label class="text-xs font-semibold text-[#262626] uppercase tracking-wider">Promo code <span class="text-[#737373] font-normal">(optional)</span></label>
             <div class="mt-1 flex gap-2">
               <input id="wa-f-promo" type="text" placeholder="e.g. WELCOME10" class="flex-1 min-w-0 border border-black/15 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#25D366]">
-              <button onclick="waApplyPromo()" class="bg-[#1c1917] text-white text-sm font-semibold px-5 rounded-xl hover:bg-[#f97316] transition whitespace-nowrap">Apply</button>
+              <button onclick="waApplyPromo()" class="bg-[#000000] text-black text-sm font-semibold px-5 rounded-xl hover:bg-[#D4AF37] transition whitespace-nowrap">Apply</button>
             </div>
             <p id="wa-promo-ok" class="hidden text-xs text-green-600 mt-1.5 font-medium">Code noted — mention it in chat and we will apply your discount manually.</p>
             <p id="wa-promo-bad" class="hidden text-xs text-red-600 mt-1.5">That code is not valid.</p>
           </div>
           <div>
-            <label class="text-xs font-semibold text-[#57534e] uppercase tracking-wider">Quantity</label>
+            <label class="text-xs font-semibold text-[#262626] uppercase tracking-wider">Quantity</label>
             <div class="mt-1 flex items-center border border-black/15 rounded-xl w-32">
-              <button onclick="waChQty(-1)" class="w-10 h-10 text-lg text-[#57534e]">−</button>
+              <button onclick="waChQty(-1)" class="w-10 h-10 text-lg text-[#262626]">−</button>
               <span id="wa-f-qty" class="flex-1 text-center font-semibold">${c.qty}</span>
-              <button onclick="waChQty(1)" class="w-10 h-10 text-lg text-[#57534e]">+</button>
+              <button onclick="waChQty(1)" class="w-10 h-10 text-lg text-[#262626]">+</button>
             </div>
           </div>
           <p id="wa-f-err" class="hidden text-xs text-red-600">Please fill name, a valid phone number (10–12 digits), city/area and full address.</p>

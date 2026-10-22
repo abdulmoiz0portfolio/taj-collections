@@ -23,24 +23,24 @@
 <style>body{font-family:'Inter',sans-serif;background:#ffffff}.font-serif{font-family:'Cinzel',serif}
 .acc-body{max-height:0;overflow:hidden;transition:max-height .3s ease}</style>
 </head>
-<body class="text-[#44403c]">
+<body class="text-[#1a1a1a]">
 <div id="site-header"></div>
 
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-  <a href="category.html" class="text-sm text-[#78716c] hover:text-[#f97316]">← Back to shop</a>
+  <a href="category.html" class="text-sm text-[#525252] hover:text-[#D4AF37]">← Back to shop</a>
   <div id="product-wrap" class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16"></div>
 </section>
 
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-  <h2 class="font-serif text-2xl sm:text-3xl text-[#1c1917] mb-8">Customer Reviews</h2>
+  <h2 class="font-serif text-2xl sm:text-3xl text-[#000000] mb-8">Customer Reviews</h2>
   <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
     <div class="lg:col-span-2">
-      <div class="bg-[#f7f5f2] border border-black/10 rounded-2xl p-6">
-        <h3 class="font-semibold text-[#1c1917] mb-4">Write a review</h3>
+      <div class="bg-[#fafafa] border border-black/10 rounded-2xl p-6">
+        <h3 class="font-semibold text-[#000000] mb-4">Write a review</h3>
         <div id="rev-stars" class="flex gap-1 mb-4"></div>
-        <input id="rev-name" type="text" placeholder="Your name" class="w-full bg-white border border-black/10 rounded-xl px-4 py-2.5 text-sm mb-3 focus:outline-none focus:border-[#f97316]">
-        <textarea id="rev-text" rows="3" placeholder="What did you think of this product?" class="w-full bg-white border border-black/10 rounded-xl px-4 py-2.5 text-sm mb-4 focus:outline-none focus:border-[#f97316]"></textarea>
-        <button onclick="submitReview()" class="bg-[#f97316] text-white font-semibold px-6 py-2.5 rounded-full hover:bg-[#ea580c] transition text-sm">Submit Review</button>
+        <input id="rev-name" type="text" placeholder="Your name" class="w-full bg-white border border-black/10 rounded-xl px-4 py-2.5 text-sm mb-3 focus:outline-none focus:border-[#D4AF37]">
+        <textarea id="rev-text" rows="3" placeholder="What did you think of this product?" class="w-full bg-white border border-black/10 rounded-xl px-4 py-2.5 text-sm mb-4 focus:outline-none focus:border-[#D4AF37]"></textarea>
+        <button onclick="submitReview()" class="bg-[#D4AF37] text-black font-semibold px-6 py-2.5 rounded-full hover:bg-[#B8860B] transition text-sm">Submit Review</button>
         <p id="rev-err" class="hidden text-red-500 text-xs mt-2">Please pick a star rating, add your name and a few words.</p>
       </div>
     </div>
@@ -49,7 +49,7 @@
 </section>
 
 <section class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-  <h2 class="font-serif text-2xl sm:text-3xl text-[#1c1917] mb-8">You may also like</h2>
+  <h2 class="font-serif text-2xl sm:text-3xl text-[#000000] mb-8">You may also like</h2>
   <div id="related" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
 </section>
 
@@ -82,61 +82,61 @@ renderChrome(p.section + "-home");
 let selColor = p.colors[0], selSize = p.sizes[0], qty = 1;
 
 function optBtn(list, sel, fn) {
-  return list.map(v => `<button onclick="${fn}('${v}')" class="px-4 py-2 rounded-full text-sm border transition ${v === sel ? "bg-[#f97316] text-white border-[#f97316] font-semibold" : "border-black/20 text-[#57534e] hover:border-[#f97316]"}">${v}</button>`).join("");
+  return list.map(v => `<button onclick="${fn}('${v}')" class="px-4 py-2 rounded-full text-sm border transition ${v === sel ? "bg-[#D4AF37] text-white border-[#D4AF37] font-semibold" : "border-black/20 text-[#262626] hover:border-[#D4AF37]"}">${v}</button>`).join("");
 }
 function acc(title, body) {
   return `<div class="border-b border-black/10">
-    <button class="w-full flex justify-between items-center py-4 text-left text-[#1c1917] font-medium" onclick="this.nextElementSibling.style.maxHeight = this.nextElementSibling.style.maxHeight && this.nextElementSibling.style.maxHeight !== '0px' ? '0px' : this.nextElementSibling.scrollHeight + 'px'; this.querySelector('span').textContent = this.querySelector('span').textContent === '+' ? '−' : '+'">
-      ${title}<span class="text-[#f97316] text-xl">+</span></button>
-    <div class="acc-body text-sm text-[#78716c]"><div class="pb-5">${body}</div></div></div>`;
+    <button class="w-full flex justify-between items-center py-4 text-left text-[#000000] font-medium" onclick="this.nextElementSibling.style.maxHeight = this.nextElementSibling.style.maxHeight && this.nextElementSibling.style.maxHeight !== '0px' ? '0px' : this.nextElementSibling.scrollHeight + 'px'; this.querySelector('span').textContent = this.querySelector('span').textContent === '+' ? '−' : '+'">
+      ${title}<span class="text-[#D4AF37] text-xl">+</span></button>
+    <div class="acc-body text-sm text-[#525252]"><div class="pb-5">${body}</div></div></div>`;
 }
 function paint() {
   document.getElementById("product-wrap").innerHTML = `
-    <div class="relative rounded-3xl overflow-hidden bg-[#f7f5f2] border border-black/5">
+    <div class="relative rounded-3xl overflow-hidden bg-[#fafafa] border border-black/5">
       <img id="p-main-img" src="assets/img/${p.img}" alt="${p.name}" class="w-full aspect-square object-cover">
       ${(p.gallery||[]).length > 1 ? `<div class="flex gap-2 mt-3">` + p.gallery.map((g,i) =>
-        `<img src="assets/img/${g}" data-i="${i}" class="gal-thumb w-16 h-16 object-cover rounded-lg cursor-pointer ring-2 ${i===0?'ring-[#f97316]':'ring-transparent'} hover:ring-[#f97316] transition">`
+        `<img src="assets/img/${g}" data-i="${i}" class="gal-thumb w-16 h-16 object-cover rounded-lg cursor-pointer ring-2 ${i===0?'ring-[#D4AF37]':'ring-transparent'} hover:ring-[#D4AF37] transition">`
       ).join("") + `</div>` : ""}
-      <span class="absolute top-4 left-4 bg-red-700 text-[#1c1917] text-sm font-bold px-3 py-1.5 rounded-full">${p.badge} OFF</span>
+      <span class="absolute top-4 left-4 bg-red-700 text-[#000000] text-sm font-bold px-3 py-1.5 rounded-full">${p.badge} OFF</span>
     </div>
     <div>
-      <p class="text-xs uppercase tracking-widest text-[#f97316] mb-2">${CATS[p.cat].name}</p>
-      <h1 class="font-serif text-3xl sm:text-4xl text-[#1c1917] mb-4">${p.name}</h1>
+      <p class="text-xs uppercase tracking-widest text-[#D4AF37] mb-2">${CATS[p.cat].name}</p>
+      <h1 class="font-serif text-3xl sm:text-4xl text-[#000000] mb-4">${p.name}</h1>
       <div class="flex items-center gap-3 mb-2">
-        <span class="text-3xl font-bold text-[#f97316]">${fmt(p.price)}</span>
-        <span class="text-[#a8a29e] line-through">${fmt(p.oldPrice)}</span>
+        <span class="text-3xl font-bold text-[#D4AF37]">${fmt(p.price)}</span>
+        <span class="text-[#737373] line-through">${fmt(p.oldPrice)}</span>
         <span class="text-xs bg-green-900/40 text-green-400 px-2.5 py-1 rounded-full">In stock</span>
       </div>
       <div class="mb-5" id="p-rating"></div>
-      <p class="text-[#57534e] leading-relaxed mb-7">${p.desc}</p>
-      ${p.id === "wallet-bifold" ? `<a href="wallet-3d.html" class="flex items-center justify-center gap-3 mb-7 bg-gradient-to-r from-[#1c1917] to-[#44403c] border border-[#f97316]/40 rounded-2xl p-4 hover:border-[#f97316] transition group">
-        <span class="w-10 h-10 rounded-full bg-[#f97316]/15 flex items-center justify-center text-[#f97316] text-lg group-hover:scale-110 transition">◈</span>
+      <p class="text-[#262626] leading-relaxed mb-7">${p.desc}</p>
+      ${p.id === "wallet-bifold" ? `<a href="wallet-3d.html" class="flex items-center justify-center gap-3 mb-7 bg-gradient-to-r from-[#000000] to-[#1a1a1a] border border-[#D4AF37]/40 rounded-2xl p-4 hover:border-[#D4AF37] transition group">
+        <span class="w-10 h-10 rounded-full bg-[#D4AF37]/15 flex items-center justify-center text-[#D4AF37] text-lg group-hover:scale-110 transition">◈</span>
         <span class="text-left"><span class="block text-white font-semibold text-sm">Explore in 3D</span><span class="block text-stone-400 text-xs">Scroll-driven interactive showcase →</span></span>
       </a>` : ""}
-      <div class="mb-5"><p class="text-sm text-[#78716c] mb-2.5">Color: <span class="text-[#1c1917]">${selColor}</span></p>
+      <div class="mb-5"><p class="text-sm text-[#525252] mb-2.5">Color: <span class="text-[#000000]">${selColor}</span></p>
         <div class="flex flex-wrap gap-2">${optBtn(p.colors, selColor, "setColor")}</div></div>
-      <div class="mb-7"><p class="text-sm text-[#78716c] mb-2.5">${"Size"}: <span class="text-[#1c1917]">${selSize}</span></p>
+      <div class="mb-7"><p class="text-sm text-[#525252] mb-2.5">${"Size"}: <span class="text-[#000000]">${selSize}</span></p>
         <div class="flex flex-wrap gap-2">${optBtn(p.sizes, selSize, "setSize")}</div></div>
       <div class="flex items-center gap-4 mb-8">
         <div class="flex items-center border border-black/20 rounded-full">
-          <button onclick="chQty(-1)" class="w-11 h-12 text-xl text-[#57534e] hover:text-[#f97316]">−</button>
-          <span id="qty" class="w-8 text-center text-[#1c1917] font-semibold">${qty}</span>
-          <button onclick="chQty(1)" class="w-11 h-12 text-xl text-[#57534e] hover:text-[#f97316]">+</button>
+          <button onclick="chQty(-1)" class="w-11 h-12 text-xl text-[#262626] hover:text-[#D4AF37]">−</button>
+          <span id="qty" class="w-8 text-center text-[#000000] font-semibold">${qty}</span>
+          <button onclick="chQty(1)" class="w-11 h-12 text-xl text-[#262626] hover:text-[#D4AF37]">+</button>
         </div>
-        <button onclick="doAdd()" class="flex-1 bg-[#f97316] text-white font-bold py-3.5 rounded-full hover:bg-[#ea580c] transition">Add to Cart — <span id="add-total">${fmt(p.price * qty)}</span></button>
+        <button onclick="doAdd()" class="flex-1 bg-[#D4AF37] text-black font-bold py-3.5 rounded-full hover:bg-[#B8860B] transition">Add to Cart — <span id="add-total">${fmt(p.price * qty)}</span></button>
         <button onclick="openWhatsAppOrder(p.id, selColor, selSize, qty)" aria-label="Order on WhatsApp"
           class="h-[52px] px-5 rounded-full bg-[#25D366] text-white font-bold text-sm hover:bg-[#1fb857] transition flex items-center gap-2 shrink-0">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5 0 1.47 1.07 2.9 1.22 3.1.15.2 2.1 3.2 5.1 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 01-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 019.88 9.89c0 5.45-4.44 9.88-9.89 9.88M20.5 3.49A11.8 11.8 0 0012.05 0C5.5 0 .16 5.34.16 11.9c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.9 11.9 0 005.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.9 0-3.18-1.24-6.16-3.44-8.41"/></svg>
           <span class="hidden sm:inline">WhatsApp</span>
         </button>
         <button data-wish="${p.id}" onclick="toggleWish('${p.id}')" aria-label="Add to wishlist"
-          class="wish-btn ${isWished(p.id) ? "wished" : ""} w-[52px] h-[52px] rounded-full border border-black/20 flex items-center justify-center hover:border-[#f97316] transition shrink-0">
+          class="wish-btn ${isWished(p.id) ? "wished" : ""} w-[52px] h-[52px] rounded-full border border-black/20 flex items-center justify-center hover:border-[#D4AF37] transition shrink-0">
           <svg class="w-5 h-5" fill="${isWished(p.id) ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 000-7.8z"/></svg>
         </button>
       </div>
       <div class="border-t border-black/10">
         ${acc("Details & Materials", "<ul class='list-disc pl-5 space-y-1.5'>" + p.details.map(d => `<li>${d}</li>`).join("") + "</ul>")}
-        ${acc("Shipping & Delivery", "Dispatched within 24 hours from Lahore. Delivery in 2–4 working days nationwide. <strong class='text-[#44403c]'>FREE delivery</strong> on orders over " + fmt(FREE_SHIP_THRESHOLD) + ", otherwise Rs 199 flat.")}
+        ${acc("Shipping & Delivery", "Dispatched within 24 hours from Lahore. Delivery in 2–4 working days nationwide. <strong class='text-[#1a1a1a]'>FREE delivery</strong> on orders over " + fmt(FREE_SHIP_THRESHOLD) + ", otherwise Rs 199 flat.")}
         ${false
           ? acc("Easy Exchange", "Unstitched cutting not quite right? Exchange it within 7 days — unused and in original condition. We want you to love what your tailor makes.")
           : acc("Lifetime Warranty", "If the stitching, buckle or hardware ever fails under normal use, we repair or replace it free — for life. 7-day easy exchange for unused items.")}
@@ -156,24 +156,24 @@ pushRecent(p.id);
 let revStars = 5;
 function paintRevStars() {
   document.getElementById("rev-stars").innerHTML = [1,2,3,4,5].map(i =>
-    `<button onclick="revStars=${i};paintRevStars()" aria-label="${i} stars" class="text-2xl ${i <= revStars ? "text-[#f97316]" : "text-[#d6d3d1]"} hover:scale-110 transition">★</button>`).join("");
+    `<button onclick="revStars=${i};paintRevStars()" aria-label="${i} stars" class="text-2xl ${i <= revStars ? "text-[#D4AF37]" : "text-[#d4d4d4]"} hover:scale-110 transition">★</button>`).join("");
 }
 function renderReviews() {
   const rs = getReviews(p.id);
   const r = avgRating(p.id);
   document.getElementById("p-rating").innerHTML = r.count
-    ? starsHTML(r.avg, r.count) + `<a href="#rev-list" class="text-xs text-[#f97316] ml-2 hover:underline">Read reviews</a>`
-    : `<span class="text-xs text-[#a8a29e]">No reviews yet — be the first!</span>`;
+    ? starsHTML(r.avg, r.count) + `<a href="#rev-list" class="text-xs text-[#D4AF37] ml-2 hover:underline">Read reviews</a>`
+    : `<span class="text-xs text-[#737373]">No reviews yet — be the first!</span>`;
   document.getElementById("rev-list").innerHTML = rs.length ? rs.map(x => `
-    <div class="bg-[#f7f5f2] border border-black/5 rounded-2xl p-5">
+    <div class="bg-[#fafafa] border border-black/5 rounded-2xl p-5">
       <div class="flex items-center justify-between mb-2">
-        <p class="font-semibold text-sm text-[#1c1917]">${x.name.replace(/</g,"&lt;")}</p>
-        <span class="text-[#f97316] text-sm">${"★".repeat(x.stars)}<span class="text-[#d6d3d1]">${"★".repeat(5 - x.stars)}</span></span>
+        <p class="font-semibold text-sm text-[#000000]">${x.name.replace(/</g,"&lt;")}</p>
+        <span class="text-[#D4AF37] text-sm">${"★".repeat(x.stars)}<span class="text-[#d4d4d4]">${"★".repeat(5 - x.stars)}</span></span>
       </div>
-      <p class="text-sm text-[#57534e] leading-relaxed">${x.text.replace(/</g,"&lt;")}</p>
-      <p class="text-xs text-[#a8a29e] mt-2">${new Date(x.date).toLocaleDateString("en-PK", { day:"numeric", month:"short", year:"numeric" })}</p>
+      <p class="text-sm text-[#262626] leading-relaxed">${x.text.replace(/</g,"&lt;")}</p>
+      <p class="text-xs text-[#737373] mt-2">${new Date(x.date).toLocaleDateString("en-PK", { day:"numeric", month:"short", year:"numeric" })}</p>
     </div>`).join("")
-    : `<p class="text-[#a8a29e] text-sm py-6">No reviews yet. Share your experience with this product.</p>`;
+    : `<p class="text-[#737373] text-sm py-6">No reviews yet. Share your experience with this product.</p>`;
 }
 function submitReview() {
   const name = document.getElementById("rev-name").value.trim();
@@ -196,8 +196,8 @@ document.getElementById("related").innerHTML =
 
     document.querySelectorAll('.gal-thumb').forEach(t => t.addEventListener('click', () => {
       document.getElementById('p-main-img').src = t.src;
-      document.querySelectorAll('.gal-thumb').forEach(x => { x.classList.remove('ring-[#f97316]'); x.classList.add('ring-transparent'); });
-      t.classList.remove('ring-transparent'); t.classList.add('ring-[#f97316]');
+      document.querySelectorAll('.gal-thumb').forEach(x => { x.classList.remove('ring-[#D4AF37]'); x.classList.add('ring-transparent'); });
+      t.classList.remove('ring-transparent'); t.classList.add('ring-[#D4AF37]');
     }));
 </script>
 </body>

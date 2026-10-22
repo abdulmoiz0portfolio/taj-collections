@@ -11,33 +11,33 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>body{font-family:'Inter',sans-serif;background:#ffffff}.font-serif{font-family:'Cinzel',serif}</style>
 </head>
-<body class="text-[#44403c]">
+<body class="text-[#1a1a1a]">
 <div id="site-header"></div>
 
 <section class="max-w-5xl mx-auto px-4 sm:px-6 py-14">
-  <h1 class="font-serif text-3xl sm:text-4xl text-[#1c1917] mb-8">Your Cart</h1>
+  <h1 class="font-serif text-3xl sm:text-4xl text-[#000000] mb-8">Your Cart</h1>
   <div id="ship-bar" class="mb-8"></div>
   <div id="cart-items" class="space-y-4"></div>
 
   <div id="cart-empty" class="hidden text-center py-20">
-    <p class="font-serif text-2xl text-[#1c1917] mb-3">Your cart is empty</p>
-    <p class="text-[#78716c] mb-8">Good leather waits for no one.</p>
-    <a href="category.html" class="bg-[#f97316] text-white font-semibold px-8 py-3 rounded-full hover:bg-[#ea580c] transition">Start Shopping</a>
+    <p class="font-serif text-2xl text-[#000000] mb-3">Your cart is empty</p>
+    <p class="text-[#525252] mb-8">Good leather waits for no one.</p>
+    <a href="category.html" class="bg-[#D4AF37] text-black font-semibold px-8 py-3 rounded-full hover:bg-[#B8860B] transition">Start Shopping</a>
   </div>
 
-  <div id="cart-summary" class="hidden mt-10 bg-[#f7f5f2] border border-black/10 rounded-2xl p-7">
+  <div id="cart-summary" class="hidden mt-10 bg-[#fafafa] border border-black/10 rounded-2xl p-7">
     <div class="flex gap-2 mb-2">
-      <input id="cart-promo" type="text" placeholder="Promo code (try WELCOME10)" class="flex-1 min-w-0 bg-white border border-black/10 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:border-[#f97316] uppercase">
-      <button onclick="applyCartPromo()" class="bg-[#1c1917] text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#f97316] transition">Apply</button>
+      <input id="cart-promo" type="text" placeholder="Promo code (try WELCOME10)" class="flex-1 min-w-0 bg-white border border-black/10 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4AF37] uppercase">
+      <button onclick="applyCartPromo()" class="bg-[#000000] text-black text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-[#D4AF37] transition">Apply</button>
     </div>
     <p id="cart-promo-msg" class="promo-msg text-xs mb-3"></p>
-    <div class="flex justify-between text-sm text-[#78716c] mb-2"><span>Subtotal</span><span id="sub" class="text-[#1c1917]"></span></div>
+    <div class="flex justify-between text-sm text-[#525252] mb-2"><span>Subtotal</span><span id="sub" class="text-[#000000]"></span></div>
     <div id="disc-row" class="hidden justify-between text-sm text-green-700 mb-2"><span>Discount <span id="disc-code"></span></span><span id="disc"></span></div>
-    <div class="flex justify-between text-sm text-[#78716c] mb-4"><span>Shipping</span><span id="ship" class="text-[#1c1917]"></span></div>
-    <div class="flex justify-between font-bold text-lg text-[#1c1917] border-t border-black/10 pt-4 mb-6"><span>Total</span><span id="grand" class="text-[#f97316]"></span></div>
+    <div class="flex justify-between text-sm text-[#525252] mb-4"><span>Shipping</span><span id="ship" class="text-[#000000]"></span></div>
+    <div class="flex justify-between font-bold text-lg text-[#000000] border-t border-black/10 pt-4 mb-6"><span>Total</span><span id="grand" class="text-[#D4AF37]"></span></div>
     <div class="flex flex-col sm:flex-row gap-3">
-      <a href="checkout.html" class="flex-1 text-center bg-[#f97316] text-white font-bold py-3.5 rounded-full hover:bg-[#ea580c] transition">Proceed to Checkout</a>
-      <a href="category.html" class="flex-1 text-center border border-black/20 text-[#1c1917] font-semibold py-3.5 rounded-full hover:border-[#f97316] transition">Continue Shopping</a>
+      <a href="checkout.html" class="flex-1 text-center bg-[#D4AF37] text-black font-bold py-3.5 rounded-full hover:bg-[#B8860B] transition">Proceed to Checkout</a>
+      <a href="category.html" class="flex-1 text-center border border-black/20 text-[#000000] font-semibold py-3.5 rounded-full hover:border-[#D4AF37] transition">Continue Shopping</a>
     </div>
   </div>
 </section>
@@ -65,33 +65,33 @@ function render() {
   const t = orderTotals();
   const pct = Math.min(100, Math.round(t.sub / FREE_SHIP_THRESHOLD * 100));
   document.getElementById("ship-bar").innerHTML = empty ? "" : `
-    <div class="bg-[#f7f5f2] border border-black/10 rounded-2xl p-5">
+    <div class="bg-[#fafafa] border border-black/10 rounded-2xl p-5">
       <p class="text-sm mb-3">${t.sub >= FREE_SHIP_THRESHOLD
         ? '<span class="text-green-700 font-semibold">🎉 You unlocked FREE delivery!</span>'
-        : `Add <span class="text-[#f97316] font-semibold">${fmt(FREE_SHIP_THRESHOLD - t.sub)}</span> more for FREE delivery`}</p>
+        : `Add <span class="text-[#D4AF37] font-semibold">${fmt(FREE_SHIP_THRESHOLD - t.sub)}</span> more for FREE delivery`}</p>
       <div class="h-2 bg-black/10 rounded-full overflow-hidden">
-        <div class="h-full bg-[#f97316] rounded-full transition-all duration-500" style="width:${pct}%"></div>
+        <div class="h-full bg-[#D4AF37] rounded-full transition-all duration-500" style="width:${pct}%"></div>
       </div>
     </div>`;
 
   document.getElementById("cart-items").innerHTML = cart.map(i => {
     const p = PRODUCTS.find(p => p.id === i.id);
     if (!p) return "";
-    return `<div class="bg-[#f7f5f2] border border-black/10 rounded-2xl p-4 flex gap-4 items-center">
+    return `<div class="bg-[#fafafa] border border-black/10 rounded-2xl p-4 flex gap-4 items-center">
       <a href="product.html?section=${p.section}&id=${p.id}"><img src="assets/img/${p.img}" alt="${p.name}" class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl"></a>
       <div class="flex-1 min-w-0">
-        <a href="product.html?section=${p.section}&id=${p.id}" class="text-[#1c1917] font-medium hover:text-[#f97316] block truncate">${p.name}</a>
-        <p class="text-xs text-[#a8a29e] mt-1"><span class="text-[#f97316] font-semibold">${SECTIONS[p.section].name}</span> · ${[i.color, i.size].filter(Boolean).join(" · ")}</p>
+        <a href="product.html?section=${p.section}&id=${p.id}" class="text-[#000000] font-medium hover:text-[#D4AF37] block truncate">${p.name}</a>
+        <p class="text-xs text-[#737373] mt-1"><span class="text-[#D4AF37] font-semibold">${SECTIONS[p.section].name}</span> · ${[i.color, i.size].filter(Boolean).join(" · ")}</p>
         <div class="flex items-center justify-between mt-3">
           <div class="flex items-center border border-black/15 rounded-full">
-            <button onclick="setQty('${i.key}', ${i.qty - 1}); render()" class="w-8 h-8 text-[#57534e] hover:text-[#f97316]">−</button>
-            <span class="w-7 text-center text-sm text-[#1c1917] font-semibold">${i.qty}</span>
-            <button onclick="setQty('${i.key}', ${i.qty + 1}); render()" class="w-8 h-8 text-[#57534e] hover:text-[#f97316]">+</button>
+            <button onclick="setQty('${i.key}', ${i.qty - 1}); render()" class="w-8 h-8 text-[#262626] hover:text-[#D4AF37]">−</button>
+            <span class="w-7 text-center text-sm text-[#000000] font-semibold">${i.qty}</span>
+            <button onclick="setQty('${i.key}', ${i.qty + 1}); render()" class="w-8 h-8 text-[#262626] hover:text-[#D4AF37]">+</button>
           </div>
-          <span class="text-[#f97316] font-bold">${fmt(p.price * i.qty)}</span>
+          <span class="text-[#D4AF37] font-bold">${fmt(p.price * i.qty)}</span>
         </div>
       </div>
-      <button onclick="setQty('${i.key}', 0); render()" class="text-[#a8a29e] hover:text-red-400 text-xl px-1" aria-label="Remove">×</button>
+      <button onclick="setQty('${i.key}', 0); render()" class="text-[#737373] hover:text-red-400 text-xl px-1" aria-label="Remove">×</button>
     </div>`;
   }).join("");
 
